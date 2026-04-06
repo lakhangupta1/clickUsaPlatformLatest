@@ -1,0 +1,91 @@
+<div class="container" (click)="closePopover()"></div>
+<div class="input-group" [ngbPopover]="dateTimeRangeTemplate" [autoClose]="false" #popover="ngbPopover"
+    [placement]="['auto']" (click)="showPopover ? openPopover() : closePopover()">
+    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+    <input type="text" class="form-control bg-transparent" [value]="dateTimeRange" readonly>
+</div>
+
+<ng-template #dateTimeRangeTemplate>
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-md-3 border-end">
+                <div>
+                    <select size="7" class="border-0 w-100 overflow-hidden" [value]="dateTimeRangeOption"
+                        (change)="onChangedateTimeRangeOption($event);">
+                        <option class="py-2 ps-2" value="1" selected>Today</option>
+                        <option class="py-2 ps-2" value="2">Yesterday</option>
+                        <option class="py-2 ps-2" value="3">This Week</option>
+                        <option class="py-2 ps-2" value="4">Last Week</option>
+                        <option class="py-2 ps-2" value="5">This Month</option>
+                        <option class="py-2 ps-2" value="6">Last Month</option>
+                        <option class="py-2 ps-2" value="7">Custom Range</option>
+                    </select>
+                </div>
+                <!-- <div class=" align-items-center p-2">
+                    <span>
+                        <small class="fw-bold text-dark">
+                            {{ startDate['year'] }}/{{ startDate['month'] }}/{{ startDate['day'] }},
+                            {{ startTime['hour'] }}:{{ startTime['minute'] }}
+                            -
+                            {{ endDate['year'] }}/{{ endDate['month'] }}/{{ endDate['day'] }},
+                            {{ endTime['hour'] }}:{{ endTime['minute'] }}
+                        </small>
+                    </span>
+                    <div class="d-flex mt-1">
+                        <div class="mx-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                (click)="closePopover()">Cancel</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                (click)="setDateTimeRange(); closePopover()">Apply</button>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="d-block col-md-9 m-0 p-0">
+                <div>
+                    <div class="row m-0 p-0">
+                        <div class="col-md-6 text-center  ">
+                            <div class="d-flex justify-content-center">
+                                <ngb-datepicker #dp [(ngModel)]="startDate"></ngb-datepicker>
+                            </div>
+                            <div class="d-flex justify-content-center p-2">
+                                <ngb-timepicker [(ngModel)]="startTime"></ngb-timepicker>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center ">
+                            <div class="d-flex justify-content-center">
+                                <ngb-datepicker #dp [(ngModel)]="endDate"></ngb-datepicker>
+                            </div>
+                            <div class="d-flex justify-content-center p-2">
+                                <ngb-timepicker [(ngModel)]="endTime"></ngb-timepicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end p-2 border-top">
+                <div class="d-flex align-items-center">
+                    <span class="mx-2">
+                        <p class="rounded bg-primary p-1 text-white fw-bold m-0">
+                            {{ startDate['year'] }}/{{ startDate['month'] }}/{{ startDate['day'] }},
+                            {{ startTime['hour'] }}:{{ startTime['minute'] }}
+                            -
+                            {{ endDate['year'] }}/{{ endDate['month'] }}/{{ endDate['day'] }},
+                            {{ endTime['hour'] }}:{{ endTime['minute'] }}
+                        </p>
+                    </span>
+                    <div class="mx-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            (click)="closePopover()">Cancel</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            (click)="setDateTimeRange(); closePopover()">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,274 @@
+<div class="card">
+  <div class="card-header bg-white border-bottom">
+    <span class="font-weight-bolder pointer-cursor" (click)="showOptions=!showOptions">
+      OPTIONS <i [ngClass]="showOptions?'fa fa-minus':'fa fa-plus'"></i>
+    </span>
+  </div>
+  <div class="card-body " [ngClass]="showOptions?'show-fields':'hide-fields'" *ngIf="showOptions">
+    <div class="row">
+      <div class="form-group col-sm-12 col-md-8 col-lg-12 mb-2">
+        <!-- <ng-select [items]="pubReportColList" bindLabel="field_name" placeholder="Select Columns"
+          [(ngModel)]="currSelectedColumns" [multiple]="true">
+
+        </ng-select> -->
+        <ng-select [items]="selectPubConColList" bindLabel="field_name" placeholder="Select Columns"
+          [(ngModel)]="currSelectedColumns" [multiple]="true" [closeOnSelect]="false">
+          <ng-template ng-option-tmp let-item="item" let-index="index">
+            <div *ngIf="item.field_name === 'Select All'" (click)="$event.stopPropagation()"
+              class="d-flex align-items-center">
+              <input type="checkbox" [checked]="isAllSelected" (change)="toggleSelectAll($event)"
+                class="form-check-input" style="width: 20px; height: 20px;">
+              <label class="ms-2 fs-5 mb-0">Select All</label>
+            </div>
+            <div *ngIf="item.field_name !== 'Select All'">
+              {{ item.field_name }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <!-- <div class="form-group col-sm-12 col-md-8 col-lg-12 mb-2" *ngIf="pubReportColList.length > 0">
+        <app-multiselected [dropdownSettings]="dropdownSettings" [dropdownData]="pubReportColList"
+          (onSelect)="onColumnSelect($event)" [selectedData]="currSelectedColumns">
+        </app-multiselected>
+      </div> -->
+
+
+      <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+        <input type="text" class="form-control" placeholder="Offer Ids" [(ngModel)]="offerId">
+      </div>
+      <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+        <input type="text" class="form-control" placeholder="Offer Name" [(ngModel)]="offerName">
+      </div>
+      <!-- <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+        <input type="text" class="form-control" placeholder="Click Id" [(ngModel)]="clickId">
+      </div> -->
+      <!-- <div class="form-group col-md-4 mb-2">
+        <select class="form-control text-capitalize" [(ngModel)]="selectedTimezone">
+          <option value=''>Select TimeZone</option>
+          <option *ngFor="let item of timezoneList" [value]="item">
+            {{item}}
+          </option>
+        </select>
+      </div> -->
+      <!-- <div class="form-group col-md-4 mb-2">
+        <ng-select [items]="timezoneList" [(ngModel)]="selectedTimezone" placeholder="Select TimeZone"
+          [clearable]="true" class="text-capitalize">
+        </ng-select>
+      </div> -->
+      <!-- <div class="form-group col-md-4 mb-2">
+        <select class="form-control text-capitalize" [(ngModel)]="country">
+
+          <option value="">Select Country</option>
+          <option *ngFor="let item of countryList" [value]="item.key">
+            {{ item.value }}
+          </option>
+        </select>
+      </div> -->
+
+      <div class="form-group col-md-4 mb-2">
+        <select class="form-select" [(ngModel)]="selectedTimezone">
+          <option value="" disabled selected>Select Timezone</option>
+          <option *ngFor="let item of timezoneList" [value]="item.name">
+            {{ item.name + " UTC " +item.dstOffsetStr }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-sm-12 col-md-4 col-lg-2 mb-2">
+        <select class="form-control" [(ngModel)]="limit">
+          <option [value]="0" disabled>Select Limit</option>
+          <option [value]="10">10</option>
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+          <option [value]="250">250</option>
+          <option [value]="500">500</option>
+          <option [value]="1000">1000</option>
+        </select>
+      </div>
+      <div class="form-group col-sm-12 col-md-8 col-lg-6 mb-2">
+        <app-datetime-range-picker [dateTimeRangeOption]="rangeOption"
+          (dateTimeRangeData)="getDateTimeRangeData($event)">
+        </app-datetime-range-picker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group text-sm-start text-md-center mb-2">
+        <button type="submit" class="btn btn-outline-primary me-2" (click)="onFilter();">Filter</button>
+        <button type="button" class="btn btn-outline-danger me-2" (click)="onReset();">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="d-flex flex-row-reverse mb-1">
+  <button class="btn btn-sm btn-outline-secondary">Apply</button>
+</div> -->
+<!-- Total Report count -->
+<div class="d-flex justify-content-end w-100 gap-3 mb-2">
+  <span class="bg-white border p-2 rounded-pill shadow-sm">
+    Total:
+    <strong>
+      {{(totalReportCount<=limit)?totalReportCount:(limit*currentPage>
+        totalReportCount?totalReportCount:limit*currentPage)}} / {{totalReportCount}}
+    </strong>
+  </span>
+  <!-- <span><a (click)="openExportModal(exportModal)" class="btn btn-primary rounded-pill">Export</a></span> -->
+  <span>
+    <button type="button" class="btn btn-primary rounded-pill" (click)="openExportModal(exportModal)">
+      <i class="fa fa-download me-1"></i> Export
+    </button>
+  </span>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="card ">
+      <div class="table-responsive table-bordered">
+        <table class="table table-striped mb-0 no-wrap">
+          <thead>
+            <tr>
+              <th>#</th>
+              <ng-container *ngFor="let item of groupSelectedColumns">
+                <th>{{item.field_name}}</th>
+              </ng-container>
+              <ng-container *ngFor="let item of projSelectedColumns">
+                <th>{{item.field_name}}</th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="allReportList.length > 0 else elseBlock">
+              <tr *ngFor="let item of allReportList;let i=index;">
+                <td>{{i+1}}</td>
+                <ng-container *ngFor="let obj of groupSelectedColumns">
+                  <td *ngIf="obj.db_name =='offer'">
+                    <a href="" [routerLink]="['/offers/detail/', item['_id'].offer_id]" target="_blank"
+                      ngbTooltip="{{item.offer_name}}" placement="top">
+                      <span class="m-0 text-primary">{{item.offer_name | shorten2}}</span>
+                    </a>
+                    <p class="m-0">({{item['_id'].offer_id}})</p>
+                  </td>
+                  <td *ngIf="obj.db_name =='source'">
+                    <span>{{item['_id']['source']}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='day' || obj.db_name =='month'">
+                    <span *ngIf="item['_id']['year']">{{item['_id']['year']}}</span>
+                    <span *ngIf="item['_id']['month']">/{{item['_id']['month']}}</span>
+                    <span *ngIf="item['_id']['day']">/{{item['_id']['day']}}</span>
+                  </td>
+                </ng-container>
+                <ng-container *ngFor="let obj of projSelectedColumns">
+                  <td *ngIf="obj.db_name !='cr'">
+                    <span>{{round(item[obj.db_name])}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='cr'">
+                    <span>{{(item['click']?((item['conversion']/item['click'])*100||0):0)|number:'1.1-4'}}</span>
+                  </td>
+                </ng-container>
+              </tr>
+              <tr class="fw-bold text-center">
+                <td [attr.colspan]="(groupSelectedColumns.length + 1)">Total:</td>
+                <ng-container *ngFor="let obj of projSelectedColumns">
+                  <td *ngIf="obj.db_name =='click'">
+                    <span>{{reportTotalSumData['click']}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='conversion'">
+                    <span>{{reportTotalSumData['conversion']}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='payout'">
+                    <span>{{round(reportTotalSumData['payout'])}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='cr'">
+                    <span>{{(((reportTotalSumData['conversion']/reportTotalSumData['click'])*100) ||
+                      0)|number:'1.3-3'}}</span>
+                  </td>
+                </ng-container>
+              </tr>
+              <tr class="fw-bold text-center">
+                <td [attr.colspan]="(groupSelectedColumns.length + 1)">Gross Total:</td>
+                <ng-container *ngFor="let obj of projSelectedColumns">
+                  <td *ngIf="obj.db_name =='click'">
+                    <span>{{reportGrossData['click']}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='conversion'">
+                    <span>{{reportGrossData['conversion']}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='payout'">
+                    <span>{{round(reportGrossData['payout'])}}</span>
+                  </td>
+                  <td *ngIf="obj.db_name =='cr'">
+                    <span>{{(((reportGrossData['conversion']/reportGrossData['click'])*100) ||
+                      0)|number:'1.3-3'}}</span>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+            <ng-template #elseBlock>
+              <tr>
+                <td [attr.colspan]="currSelectedColumns.length + 1">
+                  No Record Found
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex justify-content-end mt-5">
+        <!-- <ngb-pagination [collectionSize]="pageSize" [maxSize]="5" [rotate]="true" [(page)]="page"
+          (pageChange)="getPage($event)" aria-label="Default pagination">
+        </ngb-pagination> -->
+        <ngb-pagination [collectionSize]="totalReportCount" [pageSize]="limit" [maxSize]="5" [rotate]="true"
+          [page]="currentPage" (pageChange)="getPage($event)" aria-label="Default pagination">
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #exportModal let-modal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">Export Conversion Report</h5>
+    <button type="button" class="btn-close" (click)="cancelExport(modal)"></button>
+  </div>
+
+  <div class="modal-body">
+
+    <!-- Select Columns -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Select Columns</label>
+
+      <ng-select [items]="pubReportColList" bindLabel="field_name" bindValue="db_name"
+        [(ngModel)]="exportSelectedColumns" [multiple]="true" [compareWith]="compareDb" [closeOnSelect]="false"
+        placeholder="Select columns">
+      </ng-select>
+    </div>
+
+    <!-- Start Date -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Start Date</label>
+      <input type="date" class="form-control" [(ngModel)]="exportStartDate">
+    </div>
+
+
+
+    <!-- End Date -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">End Date</label>
+      <input type="date" class="form-control" [(ngModel)]="exportEndDate">
+    </div>
+
+
+  </div>
+
+  <div class="modal-footer">
+
+    <button class="btn btn-secondary" (click)="cancelExport(modal)">
+      Cancel
+    </button>
+
+    <button class="btn btn-primary" (click)="confirmExport(modal)">
+      Export CSV
+    </button>
+
+  </div>
+
+</ng-template>

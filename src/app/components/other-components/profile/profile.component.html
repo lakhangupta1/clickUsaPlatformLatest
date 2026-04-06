@@ -1,0 +1,407 @@
+<div class="card p-3">
+    <div class="container-fluid" *ngIf="publisherDataload">
+
+        <h6 class="fw-bold mb-3">Publisher Details</h6>
+
+        <div class="row align-items-center" *ngIf="publisherData">
+            <div class="text-end">
+                <button class="btn btn-sm btn-outline-info" (click)="openEditModal(editPublisherModal)"
+                    ngbTooltip="Edit">
+                    <i class="fa fa-edit"></i>
+
+                </button>
+            </div>
+            <div class="col-md-3 text-center">
+
+                <img *ngIf="publisherData?.company_logo; else defaultLogo"
+                    [src]="appDomain + '/' + (publisherData.company_logo?.replace('public/', ''))"
+                    class="rounded-circle border img-fluid p-1 bg-primary"
+                    style="width:125px;height:125px;object-fit:cover;">
+
+                <ng-template #defaultLogo>
+                    <img src="../../../assets/images/users/user10.jpg"
+                        class="rounded-circle border img-fluid p-1 bg-primary"
+                        style="width:125px;height:125px;object-fit:cover;">
+                </ng-template>
+
+                <div class="mt-2">
+                    <div class="mt-2">
+                        <!-- <a href="javascript:void(0)" (click)="openEditModal(editPublisherModal)">
+                            <i class="fa fa-edit text-info" ngbTooltip="Edit"></i>
+                        </a> -->
+                        <!-- <button class="btn btn-link p-0" type="button" (click)="openEditModal(editPublisherModal)">
+                            <i class="fa fa-edit text-info"></i>
+                        </button> -->
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Publisher Id</span>
+                        <div>{{publisherData.pid}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Company Name</span>
+                        <div>{{publisherData.company}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Name</span>
+                        <div>{{publisherData.name}}</div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Email</span>
+                        <div>{{publisherData.email}}</div>
+                    </div>
+
+
+
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Phone</span>
+                        <div>{{publisherData.phone}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Teams Id</span>
+                        <div>{{publisherData.skype_id}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Status</span>
+                        <div>
+                            <!-- <span class="badge bg-info text-dark">{{publisherData['status']}}</span> -->
+                            <span class="badge"
+                                [ngClass]="publisherData.status === 'Active' ? 'bg-success' : 'bg-danger'">
+                                {{ publisherData.status }}
+                            </span>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <h6 class="fw-bold mb-3">Address Details</h6>
+
+                    <!-- address details -->
+                    <div class="row mt-1" *ngIf="publisherData?.address">
+
+
+                        <div class="col-md-4 mb-2">
+                            <span class="text-muted">Address</span>
+                            <div>{{publisherData.address.address}}</div>
+                        </div>
+
+                        <div class="col-md-4 mb-2">
+                            <span class="text-muted">City</span>
+                            <div>{{publisherData.address.city}}</div>
+                        </div>
+
+                        <div class="col-md-4 mb-2">
+                            <span class="text-muted">Locality</span>
+                            <div>{{publisherData.address.locality}}</div>
+                        </div>
+
+                        <div class="col-md-4 mb-2">
+                            <span class="text-muted">Pincode</span>
+                            <div>{{publisherData.address.pincode}}</div>
+                        </div>
+
+                        <div class="col-md-4 mb-2">
+                            <span class="text-muted">State</span>
+                            <div>{{publisherData.address.state}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h6 class="fw-bold mb-3">Financial Details</h6>
+
+        <div class="row align-items-center" *ngIf="publisherData?.fD">
+            <div class="text-end">
+                <button class="btn btn-sm btn-outline-info" (click)="openFinanceEditModal(financeModal)"
+                    ngbTooltip="Edit">
+                    <i class="fa fa-edit"></i>
+
+                </button>
+            </div>
+            <!-- Manager Info -->
+            <div class="col-md-12 text-center">
+                <div class="row">
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Beneficiary Account Name</span>
+                        <div>{{publisherData?.fD?.aN}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Beneficiary Account Number</span>
+                        <div>{{publisherData?.fD?.aNumber}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Beneficiary Bank Name</span>
+                        <div>{{publisherData?.fD?.bN}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">IFSC Code</span>
+                        <div>{{publisherData?.fD?.ifcs}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">PayPal ID:</span>
+                        <div>{{publisherData?.fD?.ppId}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Payoneer ID</span>
+                        <div>{{publisherData?.fD?.payoneerId}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Account Type</span>
+                        <div>{{publisherData?.fD?.aType}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Swift Code</span>
+                        <div>{{publisherData?.fD?.wc}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Routing</span>
+                        <div>{{publisherData?.fD?.rT}}</div>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <span class="text-muted">Address</span>
+                        <div>{{publisherData?.fD?.addr}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h6 class="fw-bold mb-3">Account Manager Details</h6>
+
+        <div class="row align-items-center" *ngIf="publisherData?.account_manager">
+            <div class="col-md-3 text-center">
+                <img *ngIf="publisherData?.account_manager.profile_image; else defaultLogo"
+                    [src]="appDomain + '/' + (publisherData.account_manager.profile_image?.replace('public/', ''))"
+                    class="rounded-circle border img-fluid p-1 bg-primary"
+                    style="width:125px;height:125px;object-fit:cover;" alt="{{publisherData.account_manager.name}}">
+
+                <ng-template #defaultLogo>
+                    <img src="../../../assets/images/icon/account_manager.png"
+                        class="rounded-circle border img-fluid p-1 bg-primary"
+                        style="width:125px;height:125px;object-fit:cover;">
+                </ng-template>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Name</span>
+                        <div>{{publisherData.account_manager.name}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Email</span>
+                        <div>{{publisherData.account_manager.email}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Phone</span>
+                        <div>{{publisherData.account_manager.phone}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Teams Id</span>
+                        <div>{{publisherData.account_manager.skypeId}}</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- edit publisher details -->
+
+<ng-template #editPublisherModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Publisher</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+
+        <form #editForm="ngForm">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label>Name</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.name" name="name">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Company Name</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.company" name="company">
+                </div>
+
+                <!-- <div class="col-md-6 mb-3">
+                    <label>Email</label>
+                    <input type="email" class="form-control" [(ngModel)]="editPublisher.email" name="email" readonly>
+                </div> -->
+
+                <div class="col-md-6 mb-3">
+                    <label>Phone</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.phone" name="phone">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Teams Id</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.skype_id" name="skype_id">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Address</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.address.address" name="address">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>City</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.address.city" name="city">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Locality</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.address.locality"
+                        name="locality">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Pincode</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.address.pincode" name="pincode">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>State</label>
+                    <input type="text" class="form-control" [(ngModel)]="editPublisher.address.state" name="state">
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cancelEdit(modal)">
+            Cancel
+        </button>
+
+        <button class="btn btn-primary" (click)="updatePublisher(modal)">
+            Update
+        </button>
+    </div>
+</ng-template>
+
+<!-- financeModal details updated -->
+
+<ng-template #financeModal let-modal>
+
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Financial Details</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+
+        <form>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label>Account Name</label>
+                    <input class="form-control" [(ngModel)]="editFinance.aN" name="aN">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Account Number</label>
+                    <input class="form-control" [(ngModel)]="editFinance.aNumber" name="aNumber">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Bank Name</label>
+                    <input class="form-control" [(ngModel)]="editFinance.bN" name="bN">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>IFSC Code</label>
+                    <input class="form-control" [(ngModel)]="editFinance.ifcs" name="ifcs">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Paypal ID</label>
+                    <input class="form-control" [(ngModel)]="editFinance.ppId" name="ppId">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Payoneer ID</label>
+                    <input class="form-control" [(ngModel)]="editFinance.payoneerId" name="payoneerId">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Account Type</label>
+                    <!-- <input class="form-control" [(ngModel)]="editFinance.aType" name="aType"> -->
+                     <select name="aType" id="aType" class="form-select" [(ngModel)]="editFinance.aType">
+                        <option value="">Select Account Type</option>
+                        <option value="saving">Saving</option>
+                        <option value="current">Current</option>
+                     </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Swift Code</label>
+                    <input class="form-control" [(ngModel)]="editFinance.wc" name="wc">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Routing</label>
+                    <input class="form-control" [(ngModel)]="editFinance.rT" name="rT">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Address</label>
+                    <input class="form-control" [(ngModel)]="editFinance.addr" name="addr">
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+
+        <button class="btn btn-primary" (click)="updateFinance(modal)">Update</button>
+
+    </div>
+
+</ng-template>

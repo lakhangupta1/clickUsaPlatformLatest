@@ -1,0 +1,22 @@
+.apexcharts-datalabel text {
+  fill: #ffffff !important;  
+}
+/* For the total value inside the donut */
+.apexcharts-donut-label .apexcharts-text tspan {
+  fill: #ffffff !important;  /* Force white color */
+}
+
+/* Optional: force the name label above the total to white as well */
+.apexcharts-donut-label .apexcharts-datalabel-label {
+  fill: #ffffff !important;
+}
+
+.apexcharts-text{
+    fill: red !important;
+}
+.apexcharts-datalabels-group text{
+  fill: #ff0000 !important;  
+}
+.apexcharts-text .apexcharts-datalabel-label{
+    fill: #ff0000 !important;
+}

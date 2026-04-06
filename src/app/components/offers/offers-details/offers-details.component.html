@@ -1,0 +1,264 @@
+<div *ngIf="offerData" class="row mb-1">
+    <div class="col-md-8">
+        <!-- Offer details -->
+        <div class="card mb-1">
+            <div class="row ">
+                <div class="col-md-2 col-sm-2 text-center">
+                    <a href="{{offerData.preview_url}}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{offerData.thumbnail}}" alt="" class="card-img offer-logo">
+                    </a>
+                </div>
+                <div class="col-md-10 col-sm-10">
+                    <div class="card-body">
+                        <h5 class="card-title">{{offerData.offer_name}}</h5>
+                        <p class="card-text"><strong>Offer Id: </strong> <span>{{offerData._id}}</span></p>
+                        <p class="card-text"><strong>Status: </strong> <span
+                                class="label {{offerData.status_label}} text-white p-1 rounded-1 bg-success text-capitalize">{{offerData.status_label}}</span>
+                        </p>
+                        <p class="card-text"><strong>Preview Url: </strong><a href="{{offerData.preview_url}}"
+                                target="_blank" rel="noopener noreferrer"
+                                class="text-primary">{{offerData.preview_url}}</a></p>
+                        <p class="card-text"><strong>Category: </strong> <span>{{offerData.category}}</span></p>
+                        <p class="card-text"><strong>App id: </strong> <span>{{offerData.app_id}}</span></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Tracking Link -->
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Link</span>
+                    </div>
+
+                    <input type="text" class="form-control" value="{{offerData.tracking_link}}"
+                        [disabled]="!offerData.tracking_link" #input>
+                    <div *ngIf="offerData.tracking_link" class="input-group-append" placement="bottom"
+                        ngbTooltip="Copy Link" (click)='copyLink(input)'>
+                        <button type="button" class="input-group-text cursor-pointer h-100" placement="bottom"
+                            triggers="click" [closeDelay]="100" ngbTooltip="Copied">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="!offerData.tracking_link && offerData.status == 0" class="input-group-append"
+                        (click)="applyOfferByPublisher(offerData._id)">
+                        <span class="input-group-text btn-primary cursor-pointer">
+                            apply
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Description and KPI -->
+        <div class="card mb-1">
+            <div class="card-body">
+                <h5 class="card-title">Description:</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="card-text">
+                            <span [innerHtml]="htmlDecode(offerData.description)"></span>
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <h5 class="card-title">KPI:</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="card-text"> <span [innerHTML]="htmlDecode(offerData.kpi)"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Cap Details and Creative -->
+        <!-- <div class="row">
+            <div class="col-md-12 card-group">
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Cap Details:</h5>
+                        <div class="row">
+                            <ng-container *ngFor="let item of offerData.offer_capping | keyvalue">
+                                <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'daily_clicks'">
+                                    <p class="card-text">
+                                        <strong>Daily Clicks: </strong><span>{{item.value}} </span>
+                                    </p>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'monthly_clicks'">
+                                    <p class="card-text">
+                                        <strong>Monthly Clicks: </strong><span>{{item.value}} </span>
+                                    </p>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'daily_conv'">
+                                    <p class="card-text">
+                                        <strong>Daily Conversion: </strong><span>{{item.value}} </span>
+                                    </p>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'monthly_conv'">
+                                    <p class="card-text">
+                                        <strong>Monthly Conversion: </strong><span>{{item.value}} </span>
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="card ">
+            <div class="card-body">
+                <h5 class="card-title">Creatives:</h5>
+                <div class="row" *ngIf="offerData.creative.length > 0">
+                    <div class="col-md-12" *ngFor="let item of offerData.creative; let i=index;">
+                        <p class="card-text"><strong>{{i+1}}.
+                            </strong><span>{{item.tracking_link?item.tracking_link:'No Link'}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        <!-- Payout -->
+        <div class="card mb-1">
+            <div class="card-body">
+                <h5 class="card-title">Payout:</h5>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <p class="card-text"><strong>Payout Type: </strong>
+                            <span>{{offerData.payout_type['offer_type']}}</span>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <p class="card-text"><strong>Payout: </strong> <span>{{offerData.payout |
+                                number:'1.1-4'}}</span></p>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <p class="card-text"><strong>Currency: </strong> <span>{{offerData.currency}}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Device Platform -->
+        <div class="card mb-1">
+            <div class="card-body">
+                <h5 class="card-title">Device Platform:</h5>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <p class="card-text"><strong>Device: </strong>
+                            <span>{{offerData.device_targeting.device}}</span>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <p class="card-text"><strong>OS: </strong>
+                            <span>{{offerData.device_targeting.os}}</span>
+                        </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <p class="card-text"><strong>OS Version: </strong>
+                            <i *ngIf="offerData.device_targeting.os_version.length" (click)="showOsVersion()"
+                                class="pointer-cursor pl-1 pr-1 fas "
+                                [ngClass]="[showOsVersionDiv?'fa-chevron-down':'fa-chevron-right']"></i>
+                        </p>
+                        <ng-container *ngIf="showOsVersionDiv">
+                            <div class="row no-gutters mt-2">
+                                <div class="col-sm-6 col-6 h6 m-0"><strong>Os</strong></div>
+                                <div class="col-sm-6 col-6 h6 m-0"><strong>Version</strong></div>
+                                <!-- <div class="col-sm-6 col-6 h6 m-0"><strong>Condition</strong></div> -->
+                            </div>
+                            <div class="row no-gutters" *ngFor="let osVerItem of offerData.device_targeting.os_version">
+                                <div class="col-sm-6 col-6 small m-0"><span>{{osVerItem.os}}</span></div>
+                                <div class="col-sm-6 col-6 small m-0"><span>{{osVerItem.version}}</span></div>
+                                <!-- <div class="col-sm-4 col-4 small m-0"><span>{{osVerItem.version_condition}}</span></div> -->
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Geo Targeting -->
+        <div class="card mb-1">
+            <div class="card-body">
+                <h5 class="card-title">Geo Targeting:</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="card-text"><strong>Country Allow: </strong>
+                            <span>
+                                <ng-container *ngIf="offerData.geo_targeting && offerData.geo_targeting.country_allow">
+                                    <ng-container *ngFor="let country of offerData.geo_targeting.country_allow">
+                                        {{country['value']}},
+                                    </ng-container>
+                                </ng-container>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p class="card-text"><strong>Country Deny: </strong>
+                            <span>
+                                <ng-container *ngIf="offerData.geo_targeting && offerData.geo_targeting.country_deny">
+                                    <ng-container *ngFor="let country of offerData.geo_targeting.country_deny">
+                                        {{country['value']}},
+                                    </ng-container>
+                                </ng-container>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p class="card-text"><strong>City Allow: </strong>
+                            <span>
+                                <ng-container *ngIf="offerData.geo_targeting && offerData.geo_targeting.city_allow">
+                                    <ng-container *ngFor="let country of offerData.geo_targeting.city_allow">
+                                        {{country['value']}},
+                                    </ng-container>
+                                </ng-container>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p class="card-text"><strong>City Deny: </strong>
+                            <span>
+                                <ng-container *ngIf="offerData.geo_targeting && offerData.geo_targeting.city_deny">
+                                    <ng-container *ngFor="let country of offerData.geo_targeting.city_deny">
+                                        {{country['value']}},
+                                    </ng-container>
+                                </ng-container>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cap Details -->
+        <div class="card mb-1">
+            <div class="card-body">
+                <h5 class="card-title">Cap Details:</h5>
+                <div class="row">
+                    <ng-container *ngFor="let item of offerData.offer_capping | keyvalue">
+                        <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'daily_clicks'">
+                            <p class="card-text">
+                                <strong>Daily Clicks: </strong><span>{{item.value}} </span>
+                            </p>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'monthly_clicks'">
+                            <p class="card-text">
+                                <strong>Monthly Clicks: </strong><span>{{item.value}} </span>
+                            </p>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'daily_conv'">
+                            <p class="card-text">
+                                <strong>Daily Conversion: </strong><span>{{item.value}} </span>
+                            </p>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="item.key == 'monthly_conv'">
+                            <p class="card-text">
+                                <strong>Monthly Conversion: </strong><span>{{item.value}} </span>
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

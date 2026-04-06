@@ -1,0 +1,221 @@
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper" [ngClass]="{ 'show-sidebar': showMobileMenu }" [dir]="themeOptions.dir"
+  [attr.data-layout]="themeOptions.layout" [attr.data-bs-theme]="themeOptions.theme"
+  [attr.data-sidebartype]="themeOptions.sidebartype" [attr.data-boxed-layout]="themeOptions.boxed"
+  [attr.data-cardType]="themeOptions.cardType" [attr.data-sidebar-position]="themeOptions.sidebarpos"
+  [attr.dashboard]="themeOptions.dashboard" [class.theme-loading]="!isThemeData">
+  <!-- *ngIf="isThemeData" -->
+  <!-- ============================================================== -->
+  <!-- Left Sidebar - style you can find in sidebar.scss  -->
+  <!-- ============================================================== -->
+  <aside class="left-sidebar" (mouseover)="Logo()" (mouseout)="Logo()" [attr.data-layout]="themeOptions.layout">
+
+    <!-- Sidebar scroll-->
+    @if(themeOptions.layout === 'horizontal') {
+    <div [attr.data-bs-theme]="themeOptions.theme" [attr.data-colorTheme]="themeOptions.sidebarbg">
+      <app-horizontal-sidebar></app-horizontal-sidebar>
+    </div>
+    } @else {
+    <!-- Horizontal Header -->
+
+    <ng-scrollbar class="scroll-sidebar" [attr.data-bs-theme]="themeOptions.theme"
+      [attr.data-colorTheme]="themeOptions.sidebarbg">
+      <app-vertical-sidebar [showClass]="showMobileMenu" (notify)="handleClick($event)">
+      </app-vertical-sidebar>
+
+    </ng-scrollbar>
+
+    <!-- End Sidebar scroll-->
+    <div *ngIf="publisherData && publisherData['account_manager']" class="bg-white">
+      <div
+        style="position: relative;display: flex;padding: 0px 0px 0px 15px;align-items: center;margin-top: -60px;z-index: 9999;background: #ffffff;">
+        <ng-container *ngIf="publisherData?.account_manager?.profile_image; else elseBlock">
+
+          <img #logo class="logo-icon" style="height:50px;width:50px"
+            [src]="appDomain + '/' + (publisherData.account_manager.profile_image?.replace('public/', ''))"
+            [alt]="publisherData.account_manager?.name" class="rounded">
+
+        </ng-container>
+
+        <ng-template #elseBlock>
+          <img #logo class="logo-icon" style="height:45px" src="../../../assets/images/icon/account_manager.png"
+            alt="account_manager">
+        </ng-template>
+        <div style="font-size: 11px;font-weight: 500; color: black;" class="hide-menu p-1">
+          <p class="m-0 text-decoration-underline" style="font-size:13px;">Account Manager Details</p>
+          <p class="m-0"><strong>Name :</strong> {{publisherData['account_manager']['name'] || '' }}</p>
+          <p class="m-0"><strong>Email : </strong>{{publisherData['account_manager']['email'] || '' }}</p>
+          <p class="m-0"><strong>Teams Id : </strong>{{publisherData['account_manager']['skypeId'] || '' }}</p>
+        </div>
+      </div>
+    </div>
+
+    }
+    <!-- <div *ngIf="publisherData && publisherData['account_manager']"  class="bg-white">
+      <div style="position: relative;display: flex;padding: 2px 0px 0px 10px;align-items: center;margin-top: -60px;z-index: 9999;background: #ffffff;">
+        <ng-container *ngIf="company_logo; else elseBlock">
+          <img class="logo-icon" style="height: 50px; width: 50px" src="{{company_logo}}"
+            placeholder='../../../assets/images/logo-icon.png'>
+        </ng-container>
+        <ng-template #elseBlock>
+          <img style="height: 45px;" class="logo-icon" src="../../../assets/images/logo-icon.png"
+            placeholder='../../../assets/images/logo-icon.png'>
+        </ng-template>
+        <div style="font-size: 11px;font-weight: 500; color: black;" class="hide-menu p-1">
+          <p class="m-0 text-decoration-underline" style="font-size:13px;">Account Manager Details</p>
+          <p class="m-0"><strong>Name :</strong> {{publisherData['account_manager']['name'] || '' }}</p>
+          <p class="m-0"><strong>Email : </strong>{{publisherData['account_manager']['email'] || '' }}</p>
+          <p class="m-0"><strong>Skype Id : </strong>{{publisherData['account_manager']['skypeId'] || '' }}</p>
+        </div>
+      </div>
+    </div> -->
+  </aside>
+  <!-- ============================================================== -->
+  <!-- Topbar header - style you can find in topbar.scss -->
+  <!-- ============================================================== -->
+  <header class="topbar" [attr.data-bs-theme]="themeOptions.theme" [attr.data-colorTheme]="themeOptions.navbarbg">
+    <nav class="top-navbar navbar-expand-lg" [ngClass]="themeOptions.theme == 'light' ? 'navbar-light' : 'navbar-dark'">
+      <div class="navbar-header" [ngClass]="expandLogo ? 'expand-logo' : ''">
+        <!-- This is for the sidebar toggle which is visible on mobile only -->
+        <a (click)="showMobileMenu = !showMobileMenu"
+          class="nav-toggler nav-icon-hover-bg dark rounded-circle d-flex d-lg-none" href="javascript:void(0)">
+          <i [ngClass]="showMobileMenu ? 'ti-close' : 'ti-menu'"></i>
+        </a>
+
+        <div class="brand-logo d-flex d-lg-none align-items-center">
+          <!-- <a class="navbar-brand" [routerLink]="['/']">
+            <img src="assets/images/logos/light-logo.svg" alt="homepage" />
+          </a> -->
+          <ng-container *ngIf="data else elseblock">
+            <div *ngIf="themeOptions.sidebartype != 'mini-sidebar'" style="width: 100%;">
+              <img src="{{appDomain}}{{data}}"
+                style="color: #ffffff; font-size: 27px; height: 64px; width: 100%; vertical-align: unset;"
+                alt="{{company_name}}" />
+            </div>
+            <div *ngIf="themeOptions.sidebartype=='mini-sidebar'">
+              <img src="{{appDomain}}{{medLogo}}"
+                style="color: #ffffff; font-size: 27px; height: 64px; width: 64px; vertical-align: unset;"
+                alt="{{company_name}}" />
+            </div>
+          </ng-container>
+          <ng-template #elseblock>
+            <span style="padding: 0; margin: 0;">{{company_name}}</span>
+          </ng-template>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- Toggle which is visible on mobile only -->
+        <!-- ============================================================== -->
+        <a class="topbartoggler nav-icon-hover-bg dark rounded-circle d-flex d-lg-none " href="javascript:void(0)"
+          (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent">
+          <i class="ti-more"></i>
+        </a>
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Logo -->
+      <!-- ============================================================== -->
+      <div class="navbar-collapse collapse" id="navbarSupportedContent" [ngbCollapse]="!isCollapsed">
+        <!-- Horizontal Header -->
+        @if(themeOptions.layout === 'horizontal') {
+        <div class="w-100">
+          <app-horizontal-navigation class="w-100 d-flex align-items-center justify-content-between">
+          </app-horizontal-navigation>
+        </div>
+        } @else {
+        <!-- Vertical Header -->
+        <div class="w-100 d-flex">
+          <app-vertical-navigation (toggleSidebar)="toggleSidebarType()" class="w-100">
+          </app-vertical-navigation>
+        </div>
+        }
+      </div>
+    </nav>
+  </header>
+  <!-- ============================================================== -->
+  <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- Page wrapper  -->
+  <!-- ============================================================== -->
+  <div class="page-wrapper">
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+
+      <!-- <app-breadcrumb></app-breadcrumb> -->
+      <!-- ============================================================== -->
+      <!-- Start Page Content -->
+      <!-- ============================================================== -->
+      <!-- <router-outlet></router-outlet> -->
+
+      <!-- Show dashboards only when route is /dashboard -->
+      <ng-container>
+        <ng-container *ngIf="currentUrl.startsWith('/dashboard'); else otherRoutes">
+          <ng-container [ngSwitch]="themeOptions.dashboard">
+
+            <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+            <app-modarn *ngSwitchCase="'mordan'"></app-modarn>
+            <app-general *ngSwitchCase="'general'"></app-general>
+            <app-classy *ngSwitchCase="'classy'"></app-classy>
+            <app-awasome *ngSwitchCase="'awasome'"></app-awasome>
+            <app-analytical *ngSwitchCase="'analytical'"></app-analytical>
+            <app-minimal *ngSwitchCase="'minimal'"></app-minimal>
+            <app-luxedashboard *ngSwitchCase="'luxedashboard'"></app-luxedashboard>
+            <app-vantadashboard *ngSwitchCase="'ventadashboard'"></app-vantadashboard>
+            <app-smart-dashboard *ngSwitchCase="'smart-dashboard'"></app-smart-dashboard>
+
+            <app-luxedashboard *ngSwitchDefault></app-luxedashboard>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #otherRoutes>
+        <router-outlet></router-outlet>
+      </ng-template>
+
+
+      <!-- ============================================================== -->
+      <!-- End Start Page Content -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <!-- <footer class="footer text-center">
+      All Rights Reserved by proffcus Admin Angular. Designed and Developed by
+      <a href="http://www.proffcus.com/">proffcus.com</a>
+    </footer> -->
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Page wrapper  -->
+  <!-- ============================================================== -->
+
+  <!-- <ng-template #content let-offcanvas>
+    <div class="offcanvas-header border-bottom">
+      <h4 class="offcanvas-title" id="offcanvas-basic-title">Settings</h4>
+      <button type="button" class="btn-close shadow-none" aria-label="Close"
+        (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body customizer p-0">
+      <app-customizer></app-customizer>
+    </div>
+  </ng-template>
+  <button
+    class="btn-primary btn btn-circle rounded-circle btn-lg service-panel-toggle p-0 d-flex align-items-center justify-content-center"
+    (click)="openEnd(content)">
+    <i class="feather-sm d-flex align-items-center fa fa-cog" name="settings"></i>
+
+  </button> -->
+
+</div>

@@ -1,0 +1,188 @@
+<div class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+    style="background:url(assets/images/background/login-register.jpg) no-repeat center center;">
+    <div class="auth-box">
+        <div>
+            <div class="text-center">
+                <span class="db"><img [src]="logo" alt="logo" /></span>
+                <h5 class="font-medium">Register to Admin</h5>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <form class="form-horizontal" [formGroup]="publisherRegisterForm" (ngSubmit)="onSubmit()"
+                        novalidate>
+                        <div class="row p-3">
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="company" class="form-control"
+                                        placeholder="Company Name">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['company'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['company'].errors?.['required']">Please
+                                        enter
+                                        Compnay Name.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="name" id="name" class="form-control"
+                                        placeholder="User Name">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['name'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['name'].errors?.['required']">Please
+                                        enter
+                                        Name.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['name'].errors?.['required']">Please
+                                        enter valid Name.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="email" formControlName="email" id="email" class="form-control"
+                                        placeholder="Email">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['email'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['email'].errors?.['required']">Please
+                                        enter
+                                        email.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['email'].errors?.['email']">Please enter
+                                        valid email.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="password" formControlName="password" id="password" class="form-control"
+                                        placeholder="New Password">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['password'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['password'].errors?.['required']">Please
+                                        enter
+                                        Password.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['password'].errors?.['pattern']">Please
+                                        enter valid password.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="phone" class="form-control"
+                                        placeholder="Phone Number">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['phone'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['phone'].errors?.['required']">Please
+                                        enter
+                                        phone number.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['phone'].errors?.['pattern']">Please
+                                        enter valid phone number.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="skypeId" id="skypeId" class="form-control"
+                                        placeholder="Skype Id">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['skypeId'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['skypeId'].errors?.['required']">Please
+                                        enter
+                                        skypeId.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['skypeId'].errors?.['required']">Please
+                                        enter skypeId.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="website" id="website" class="form-control"
+                                        placeholder="Website ">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="address" id="address" class="form-control"
+                                        placeholder="Address">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="locality" id="locality" class="form-control"
+                                        placeholder="Locality">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="city" id="city" class="form-control"
+                                        placeholder="City">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['city'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['city'].errors?.['required']">Please
+                                        enter
+                                        city.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['city'].errors?.['pattern']">Please
+                                        enter city.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="pincode" id="pincode" class="form-control"
+                                        placeholder="Pin Code">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['pincode'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['pincode'].errors?.['required']">Please
+                                        enter
+                                        pincode.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['pincode'].errors?.['pattern']">Please
+                                        enter pincode.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <input type="text" formControlName="state" id="state" class="form-control"
+                                        placeholder="State">
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['state'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['state'].errors?.['required']">Please
+                                        enter
+                                        Name.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['state'].errors?.['required']">Please
+                                        enter Name.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <select formControlName="country" id="country" class="form-control">
+                                        <option value="">Select Country</option>
+                                        <option value="Uttar pradesh">Uttar Pradesh</option>
+                                    </select>
+                                </div>
+                                <div class="text-danger" *ngIf="publisherRegisterForm.controls['country'].touched">
+                                    <span *ngIf="publisherRegisterForm.controls['country'].errors?.['required']">Please
+                                        enter country.</span>
+                                    <span *ngIf="publisherRegisterForm.controls['country'].errors?.['required']">Please
+                                        enter country.</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                <div class="form-group form-check d-flex " >
+                                    <input type="checkbox" formControlName="terms" id="terms" class="form-check">
+                                    <label for="" class="text-info form-check-label mx-2">Accept Terms &
+                                        Conditions</label>
+                                </div>
+                                <div *ngIf="submitted && (!publisherRegisterForm['terms'].value || publisherRegisterForm['terms'].errors)"
+                                    class="invalid-feedback">
+                                    <div
+                                        *ngIf="submitted && (!publisherRegisterForm['terms'].value || publisherRegisterForm['terms'].errors.required)">
+                                        select terms and conditions
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 text-center mb-3">
+                                <button type="submit" class="btn btn-success">Register</button>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 text-center mb-3">
+                                <a>Already have an account?</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- <p>{{register | json }}</p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

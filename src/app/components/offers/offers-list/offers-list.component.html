@@ -1,0 +1,312 @@
+<div class="card">
+    <div class="card-header bg-white border-bottom">
+        <span class="font-weight-bolder pointer-cursor" (click)="showOptions=!showOptions">
+            OPTIONS <i [ngClass]="showOptions?'fa fa-minus':'fa fa-plus'"></i>
+        </span>
+    </div>
+    <div class="card-body " [ngClass]="showOptions?'show-fields':'hide-fields'" *ngIf="showOptions">
+        <div class="row mb-4">
+            <div class="form-group col-sm-12 col-md-4 col-lg-3 mb-2">
+                <input type="text" class="form-control" placeholder="Comma-Separated Offer Ids" [(ngModel)]="offerId">
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-3 mb-2">
+                <input type="text" class="form-control" placeholder="Offer Name" [(ngModel)]="offerName">
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-3 mb-2">
+                <input type="text" class="form-control" placeholder="App ID" [(ngModel)]="appId">
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-3 mb-2">
+                <select class="form-control text-capitalize" [(ngModel)]="os">
+                    <option value=''>Select OS</option>
+                    <option *ngFor="let item of osList" [value]="item">{{ item }}</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-2 mb-2">
+                <select class="form-control text-capitalize" [(ngModel)]="country">
+                    <option value=''>Select Country</option>
+                    <option value='none'>None</option>
+                    <option *ngFor="let item of countryList" [value]="item.key">{{item.value}}</option>
+                </select>
+            </div>
+            <div *ngIf="offerVisibleType=='all'" class="form-group col-sm-12 col-md-4 col-lg-2 mb-2">
+                <select class="form-control text-capitalize" [(ngModel)]="status">
+                    <option value="">Select Status</option>
+                    <!-- <option *ngFor="let item of statusList" [value]="item">
+                        {{ item | titlecase }}
+                    </option> -->
+                    <option *ngFor="let item of statusList" [ngValue]="item.key">
+                        {{ item.label }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-2 mb-2">
+                <select class="form-control" [(ngModel)]="limit">
+                    <option [value]="0" disabled>Select Limit</option>
+                    <option [value]="10">10</option>
+                    <option [value]="20">20</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
+                    <option [value]="250">250</option>
+                    <option [value]="500">500</option>
+                    <option [value]="1000">1000</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-5 mb-2">
+                <app-datetime-range-picker [dateTimeRangeOption]="rangeOption"
+                    (dateTimeRangeData)="getDateTimeRange($event)">
+                </app-datetime-range-picker>
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-3 mb-2">
+
+                <!-- <label class="switch">
+                    <input type="checkbox" class="rounded-pill bg-success" [(ngModel)]="isWorkingOffer" ngxPermissionsOnly="ofr.test">
+                    <span class="slider rounded-pill"></span>
+                </label>
+                Working Offers -->
+                <ng-container *ngxPermissionsOnly="['ofr.test']">
+                    <label class="switch">
+                        <input type="checkbox" class="rounded-pill bg-success" [(ngModel)]="isWorkingOffer">
+                        <span class="slider rounded-pill"></span>
+                    </label>
+                    Working Offers
+                </ng-container>
+
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-2 mb-2">
+                <!-- <select class="form-control" name="jump_limit" id="jump_limit" [(ngModel)]="jump_limit"
+                    [disabled]="!isWorkingOffer" ngxPermissionsOnly="ofr.test">
+                    <option value="0">Hop</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5+</option>
+                </select> -->
+                <ng-container *ngxPermissionsOnly="['ofr.test']">
+                    <select class="form-control" name="jump_limit" [(ngModel)]="jump_limit"
+                        [disabled]="!isWorkingOffer">
+
+                        <option value="0">Hop</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5+</option>
+
+                    </select>
+                </ng-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group text-sm-start text-md-center mb-2">
+                <button type="submit" class="btn btn-outline-primary me-2" (click)="totalOffers = 0" appDebounceClick
+                    (click)="onFilter()">Filter</button>
+                <button type="button" class="btn btn-outline-danger me-2" (click)="onReset()">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="d-flex flex-row-reverse mb-1" *ngIf="offerVisibleType=='all'">
+    <button class="btn btn-sm btn-outline-secondary"
+        [ngClass]="selectedApplyOffers.length < 2 ? 'btn-outline-secondary' : 'btn-outline-primary'"
+        [disabled]="selectedApplyOffers.length < 2" (click)="openBasicModal()">Apply</button>
+</div> -->
+<div *ngIf="offerVisibleType=='all'" class="d-flex flex-row-reverse mb-1">
+    <button class="btn btn-sm"
+        [ngClass]="selectedApplyOffers.length < 2 ? 'btn-outline-secondary' : 'btn-outline-primary'"
+        [disabled]="selectedApplyOffers.length < 2" (click)="openBasicModal(applyOfferModal)">Apply</button>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <span class="bg-white border mb-1 pe-3 ps-3 rounded-pill shadow-sm">
+                Selected : <strong> ({{ selectedApplyOffers.length }} / {{ offersData.length }})</strong>
+            </span>
+        </div>
+        <div class="card ">
+            <div class="table-responsive table-bordered">
+                <table class="table table-striped no-wrap align-left text-center ">
+                    <thead>
+                        <tr>
+                            <th *ngIf="showCheckbox">
+                                <!-- <input type="checkbox" class="form-check-input text-center" [checked]="isAllSelected"
+                                    (change)="selectAll($event.target['checked'])"> -->
+                                <input type="checkbox" class="checkmark" [checked]="isAllSelected"
+                                    [indeterminate]="isIndeterminate" (change)="selectAll($event)">
+
+                            </th>
+                            <th></th>
+                            <th scope="col" class="text-start">Offer</th>
+                            <th scope="col">Geo</th>
+                            <th scope="col">
+                                <!-- <div (click)="sortTable()">Payout 
+                                    <span class="caret cursor-pointer" [ngClass]="{ 'caret-up': sortOrder }"></span>
+                                </div> -->
+                                <div (click)="sortTable()" class="cursor-pointer">
+                                    Payout
+                                    <span class="caret" [ngClass]="{ 'caret-up': sortOrder }"></span>
+                                </div>
+
+                                <div>Currency</div>
+                            </th>
+                            <th scope="col">OS</th>
+                            <!-- <th scope="col">Payout</th> -->
+                            <th scope="col">Type</th>
+                            <!-- <th scope="col">Preview</th> -->
+                            <th *ngIf="isWorkingOffer" (click)="sortTable()">Count
+                                <span class="caret" [ngClass]="{ 'caret-up': sortOrder }"></span>
+                            </th>
+                            <th>{{offerVisibleType === 'all' ? 'Status/Action' : 'Status'}}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody *ngIf="offersData.length">
+                        <tr *ngFor="let offer of offersData; let i=index">
+                            <td *ngIf="showCheckbox">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="offer.isSelected"
+                                    (change)="saveSelectedApplyOffers(offer)">
+                            </td>
+                            <td>
+                                <!-- <input type="checkbox" class="form-check-input mx-2" name="applyOffers" id=""
+                                    [checked]="offer.isSelected"
+                                    (change)="saveSelectedApplyOffers($event.target, offer['_id'])"> -->
+                                <!-- <input type="checkbox" class="form-check-input mx-2" [(ngModel)]="offer.isSelected"
+                                    (change)="saveSelectedApplyOffers(offer)"> -->
+
+                                <img src="{{ offer['thumbnail'] }}" alt="" style="width: 40px;">
+                            </td>
+                            <td title="{{offer['offer_name']}}" class="text-start">
+                                <a [routerLink]="['/offers/detail/' , offer['_id']]" class="text-primary"
+                                    target="_blank" rel="noopener" ngbTooltip="{{offer['offer_name']}}"
+                                    placement="top">{{offer['offer_name'] | shorten2}}</a>
+                                <p>({{offer['_id']}})</p>
+                            </td>
+                            <ng-container *ngFor="let field of columnsList">
+                                <ng-container *ngIf="selectedColumns.includes(field['db_name'])">
+                                    <td *ngIf="field['db_name']=='geo_targeting.country_allow'" class="cursor-pointer">
+                                        <span ngbPopover="{{getCountries(offer['geo_targeting']['country_allow'])}}"
+                                            placement="top" triggers="mouseenter:mouseleave">
+                                            {{getCountries(offer['geo_targeting']['country_allow']) | shorten3}}
+                                        </span>
+                                    </td>
+                                    <td
+                                        *ngIf="field['db_name']!='geo_targeting.country_allow' && field['db_name']!='device_targeting.os' && field['db_name']!='payout' && field['db_name']!='payout_type' && field['db_name']!='updatedAt' && field['db_name']!='preview_url' && field['db_name']!='jumps'">
+                                        <!-- <div>{{ offer['payout_type']['enum_type'] }}</div> -->
+                                        <div>{{ offer['payout'] | number:'1.4-4' }}</div>
+                                        {{offer[field['db_name']]}}
+                                    </td>
+                                    <td *ngIf="field['db_name'] === 'device_targeting.os'">
+                                        <a [href]="offer.preview_url" target="_blank" ngbPopover="{{ offer['app_id'] }}"
+                                            triggers="mouseenter:mouseleave" [placement]="['end','auto']">
+                                            <ng-container *ngIf="offer?.device_targeting?.os as os; else unknown">
+                                                <img [src]="'../../../../assets/images/icon/' + getOSIcon(os)" alt="ios"
+                                                    style="width: 40px;" loading="lazy">
+                                            </ng-container>
+                                        </a>
+                                    </td>
+                                    <ng-template #unknown>
+                                        <span>
+                                            <img src="../../../../assets/images/icon/unknown.svg" alt="logo"
+                                                style="width: 40px;" loading="lazy">
+                                        </span>
+                                    </ng-template>
+                                    <!-- <td *ngIf="field['db_name']=='device_targeting.os'">
+                                        <a href="{{offer.preview_url}}" target="_blank" placement="top"
+                                            ngbTooltip="{{offer['app_id']}}">
+                                            <span
+                                                *ngIf="offer['device_targeting'] && offer['device_targeting'].os =='android'">
+                                                <img src="../../../../assets/images/icon/android.svg" alt=""
+                                                    style="width: 40px;">
+                                            </span>
+                                            <span
+                                                *ngIf="offer['device_targeting'] && offer['device_targeting'].os =='ios'">
+                                                <img src="../../../../assets/images/icon/ios.svg" alt=""
+                                                    style="width: 40px;">
+                                            </span>
+                                            <span
+                                                *ngIf="offer['device_targeting'] && offer['device_targeting'].os =='windows'">
+                                                <img src="../../../../assets/images/icon/windows.svg" alt=""
+                                                    style="width: 40px;">
+                                            </span>
+                                            <span
+                                                *ngIf="offer['device_targeting'] && offer['device_targeting'].os =='all'">
+                                                <img src="../../../../assets/images/icon/all.png" alt=""
+                                                    style="width: 40px;">
+                                            </span>
+
+                                        </a>
+                                    </td> -->
+                                    <td *ngIf="field['db_name']=='payout'">
+                                        <!-- <div>{{ offer['payout'] | number:'1.1-4' }}</div> -->
+                                        <div>{{ offer['payout_type']['enum_type'] }}</div>
+                                    </td>
+                                    <!-- <td *ngIf="field['db_name']=='payout_type'">
+                                        {{offer['payout_type']['enum_type']}}
+                                    </td> -->
+                                    <!-- <td *ngIf="field['db_name']=='preview_url'">
+                                        <a href="{{offer['preview_url'] }}" target="_blank" class="text-primary">
+                                            <span placement="top" ngbTooltip="{{offer['app_id']}}">{{offer['app_id'] |
+                                                shorten2 }}</span>
+                                        </a>
+
+                                    </td> -->
+                                    <!-- <td hidden *ngIf="field['db_name']=='jumps'" class="text-center">
+                                        {{offer['jumps'] || 0}}
+                                    </td> -->
+                                    <td *ngIf="field['db_name']=='jumps' && isWorkingOffer" class="text-center">
+                                        {{ offer['jumps'] || 0 }}
+                                    </td>
+                                </ng-container>
+                            </ng-container>
+                            <td class="text-center">
+                                <ng-container *ngIf="offer['status']=='new'; else elseBlock">
+                                    <div class="form-check d-flex">
+                                        <input type="checkbox" class="align-self-center border form-check-input me-1"
+                                            name="applyOffers" id="" (change)="saveSelectedApplyOffers(offer)">
+                                        <button type="button" class="btn btn-sm btn-outline-success h-100"
+                                            (click)="applySingleOffer(offer['_id'])">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </ng-container>
+                                <ng-template #elseBlock>
+                                    <span class="label label-{{offer['status']}}">
+                                        {{offer['status']}}
+                                    </span>
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end mt-5 p-1">
+                <!-- <ngb-pagination [collectionSize]="offercount" [maxSize]="5" [rotate]="true" [(page)]="page"
+                    (pageChange)="getPage($event)" aria-label="Default pagination">
+                </ngb-pagination> -->
+                <ngb-pagination *ngIf="offerCount > limit" [collectionSize]="offerCount" [(page)]="page"
+                    [pageSize]="limit" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                    (pageChange)="getPage($event)">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- apply offers -->
+
+<ng-template #applyOfferModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Apply Offers</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+        Confirm if you want to apply selected offers.
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button class="btn btn-success" (click)="confirmApply(modal)">Apply</button>
+    </div>
+</ng-template>

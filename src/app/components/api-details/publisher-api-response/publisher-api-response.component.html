@@ -1,0 +1,69 @@
+<form [formGroup]="getOffersForm" (ngSubmit)="onSubmit()" class="p-2">
+    <div class="input-group mb-2">
+        <span class="input-group-text" style="width: 7rem;">
+            limit
+        </span>
+        <input type="text" class="form-control" formControlName="limit"
+            placeholder="Records per page, default value is 100" />
+    </div>
+    <div class="input-group mb-2">
+        <span class="input-group-text" style="width: 7rem;">
+            page
+        </span>
+        <input type="text" class="form-control" formControlName="page" placeholder="Page index, default value is 1" />
+    </div>
+    <div class="input-group mb-2">
+        <span class="input-group-text" style="width: 7rem;">
+            secretkey
+        </span>
+        <input type="text" class="form-control" formControlName="secretkey"
+            placeholder="Secret Key for autherization" />
+    </div>
+    <div class="input-group mb-2">
+        <span class="input-group-text" style="width: 7rem;">
+            apikey
+        </span>
+        <input type="text" class="form-control" formControlName="apikey" placeholder="API Key for autherization" />
+    </div>
+    <div class="input-group mb-2">
+        <span class="input-group-text" style="width: 7rem;">
+            offer_type
+        </span>
+        <select class="form-control" formControlName="offer_type">
+            <option value="" selected>Select Offer Type</option>
+            <option value="all">all</option>
+            <option value="active">active</option>
+        </select>
+    </div>
+    <div class="input-group form-group justify-content-center">
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<!-- <div *ngIf="isSubmitted">
+    <div class="mt-2 response-container d-flex border-top">
+        <label class="response-heading">RESPONSE</label>
+        <pre style="margin: 1rem 1rem 0;color:black;" id="response-data">{{apiResponse | json}}</pre>
+        <div class="copy-container" (click)='copy()'>
+            <i class="far fa-copy" style="font-size: 1.5rem;" aria-hidden="true"></i>
+            <div style="font-size: 0.8rem; font-weight: 500;">COPY</div>
+        </div>
+    </div>
+</div> -->
+<div *ngIf="isSubmitted">
+    <div class="mt-2 response-container d-flex border-top">
+      <label class="response-heading">RESPONSE</label>
+      <pre style="margin: 1rem 1rem 0; color:black; max-height: 400px; overflow-y: auto;" id="response-data">
+        {{apiResponse | json}}
+      </pre>
+
+      <div class="copy-container p-2">
+        <i class="far fa-copy cursor-pointer" style="font-size: 1.5rem;" aria-hidden="true" (click)='copy()'></i>
+        <!-- Message will appear after copy action -->
+        <div *ngIf="isCopied" style="font-size: 0.8rem; font-weight: 500; color: green; margin-top: 5px;">
+          Code copied!
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  

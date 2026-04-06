@@ -1,0 +1,454 @@
+<div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="border-bottom pb-2">
+                    <ul ngbNav #nav="ngbNav" class="nav-tabs" [orientation]="'horizontal'">
+                        <li [ngbNavItem]="1">
+                            <button ngbNavLink class="mx-2">API Credentials</button>
+                            <ng-template ngbNavContent>
+                                <div class="p-2">
+                                    <div class="row mb-2">
+                                        <div class="col-md-2">
+                                            <label>Api Url</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <span>{{baseUrl}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-2">
+                                            <label>Secret Key</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <span
+                                                *ngIf="apiData && apiData['api_details'] && apiData['api_details']['secret_key']"
+                                                class="p-1">
+                                                {{ apiData['api_details']['secret_key'] }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-2">
+                                            <label>Api Key</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <span
+                                                *ngIf="apiData && apiData['api_details'] && apiData['api_details']['api_key']"
+                                                class="p-1 bg">
+                                                {{ apiData['api_details']['api_key'] }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-10">
+                                            <span style="cursor: pointer;" (click)="updateApikey(id)">
+                                                <i class="icon-refresh" style="color: green; font-weight: 600;"></i>
+                                                Regenerate API Key
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <button ngbNavLink>API Documentation</button>
+                            <ng-template ngbNavContent>
+                                <div class="p-2 d-flex">
+                                    <div class="border-end pe-2">
+                                        <ul ngbNav #ngbNavOutletVertical="ngbNav" [class]="'nav-pills'"
+                                            [orientation]="'vertical'" [(activeId)]="activeIdVertical">
+                                            <li ngbNavItem="1">
+                                                <a ngbNavLink>Get Offers</a>
+                                                <ng-template ngbNavContent>
+                                                    <div class="p-2 border" id="offerstable">
+                                                        <p><strong>Request URL:</strong> {{baseUrl}}</p>
+                                                        <p><strong>Request Method:</strong> GET</p>
+                                                        <p><strong>Request Parameters:</strong></p>
+
+                                                        <div class="table-responsive">
+                                                            <table
+                                                                class="table table-bordered table-hover align-middle text-wrap">
+                                                                <thead class="border">
+                                                                    <tr>
+                                                                        <th>Key</th>
+                                                                        <th>Type</th>
+                                                                        <th>Require</th>
+                                                                        <th>Format</th>
+                                                                        <th>Description</th>
+                                                                        <th>Example</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="border">
+                                                                    <tr *ngFor="let item of apiStaticDoc">
+                                                                        <td class="wrap-text">{{item.key}}</td>
+                                                                        <td class="wrap-text">{{item.type}}</td>
+                                                                        <td class="wrap-text">{{item.require}}</td>
+                                                                        <td class="wrap-text">{{item.format}}</td>
+                                                                        <td class="wrap-text">{{item.description}}</td>
+                                                                        <!-- <td class="wrap-text">{{item.example}}</td> -->
+                                                                        <td>{{(item.key.toLowerCase() === 'secretkey' ||
+                                                                            item.key.toLowerCase() === 'apikey') ?
+                                                                            'xxxxxx'+item.example.slice(7,20)+'xxxxx' :
+                                                                            item.example}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <p><strong>Response Keys:</strong></p>
+                                                            <table
+                                                                class="table table-bordered table-hover align-middle text-wrap">
+                                                                <thead class="border">
+                                                                    <tr>
+                                                                        <th>Key</th>
+                                                                        <th>Format</th>
+                                                                        <th>Description</th>
+                                                                        <th>Example</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="border">
+                                                                    <tr *ngFor="let item of responseStaticDoc">
+                                                                        <td>{{item.key}}</td>
+                                                                        <td>{{item.format}}</td>
+                                                                        <td>{{item.description}}</td>
+                                                                        <td>{{item.example}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <p><strong>Payload:</strong></p>
+                                                            <table
+                                                                class="table table-bordered table-hover align-middle text-wrap">
+                                                                <thead class="border">
+                                                                    <tr>
+                                                                        <th>Key</th>
+                                                                        <th>Format</th>
+                                                                        <th>Description</th>
+                                                                        <th>Example</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="border">
+                                                                    <tr *ngFor="let item of responsePayloadData">
+                                                                        <td>{{item.key}}</td>
+                                                                        <td>{{item.format}}</td>
+                                                                        <td>{{item.description}}</td>
+                                                                        <td>{{item.example}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <p><strong>Geo Targeting:</strong></p>
+                                                            <table
+                                                                class="table table-bordered table-hover align-middle text-wrap">
+                                                                <thead class="border">
+                                                                    <tr>
+                                                                        <th>Key</th>
+                                                                        <th>Format</th>
+                                                                        <th>Description</th>
+                                                                        <th>Example</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="border">
+                                                                    <tr *ngFor="let item of responseGeoTargetingData">
+                                                                        <td>{{item.key}}</td>
+                                                                        <td>{{item.format}}</td>
+                                                                        <td>{{item.description}}</td>
+                                                                        <td>{{item.example}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <p><strong>Device Targeting:</strong></p>
+                                                            <table
+                                                                class="table table-bordered table-hover align-middle text-wrap">
+                                                                <thead class="border">
+                                                                    <tr>
+                                                                        <th>Key</th>
+                                                                        <th>Format</th>
+                                                                        <th>Description</th>
+                                                                        <th>Example</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="border">
+                                                                    <tr
+                                                                        *ngFor="let item of responseDeviceTargetingData">
+                                                                        <td>{{item.key}}</td>
+                                                                        <td>{{item.format}}</td>
+                                                                        <td>{{item.description}}</td>
+                                                                        <td>{{item.example}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <p><strong>Creative:</strong></p>
+                                                            <table
+                                                                class="table table-bordered table-hover align-middle text-wrap">
+                                                                <thead class="border">
+                                                                    <tr>
+                                                                        <th>Key</th>
+                                                                        <th>Format</th>
+                                                                        <th>Description</th>
+                                                                        <th>Example</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="border">
+                                                                    <tr *ngFor="let item of responseCreativeData">
+                                                                        <td>{{item.key}}</td>
+                                                                        <td>{{item.format}}</td>
+                                                                        <td>{{item.description}}</td>
+                                                                        <td class="text-wrap">{{item.example}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+
+                                            </li>
+                                            <li ngbNavItem="2">
+                                                <a ngbNavLink>Download Doc</a>
+
+                                                <ng-template ngbNavContent>
+                                                    <div class="p-2">
+                                                        <p>Download Api Documentation from here</p>
+
+                                                        <span style="font-size:50px; padding:0px 100px;">
+                                                            <i class="fas fa-download cursor-pointer"
+                                                                (click)="openDownloadModal(downloadModal)">
+                                                            </i>
+                                                        </span>
+                                                    </div>
+                                                </ng-template>
+                                            </li>
+
+
+                                            <ng-template #downloadModal let-modal>
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Download Documentation</h5>
+                                                    <button type="button" class="btn-close"
+                                                        (click)="modal.dismiss()"></button>
+                                                </div>
+
+                                                <div class="modal-body text-center">
+                                                    <p>Click below button to download API Documentation</p>
+
+                                                    <button class="btn btn-primary"
+                                                        (click)="generatePDF(); modal.close()">
+                                                        <i class="fas fa-download me-2"></i> Download PDF
+                                                    </button>
+                                                </div>
+                                            </ng-template>
+                                            <!-- <li ngbNavItem="2">
+                                                <a ngbNavLink>Download Doc</a>
+
+                                                <ng-template ngbNavContent>
+                                                    <div class="p-2">
+                                                        <p>Download Api Documentation from here</p>
+
+                                                        <span style="font-size: 50px; padding: 0px 100px;">
+                                                            <i class="fas fa-download cursor-pointer"
+                                                                (click)="generatePDF()"></i>
+                                                        </span>
+                                                    </div>
+                                                </ng-template>
+                                            </li> -->
+
+                                            <!-- <li ngbNavItem="2">
+                                                <a ngbNavLink>Download Doc</a>
+
+                                                <ng-template ngbNavContent>
+                                                    <div class="p-2">
+                                                        <p>Download Api Documentation from here</p>
+                                                        <span style="font-size: 50px; padding: 0px 100px; "><i
+                                                                class="fas fa-download cursor: pointer;"
+                                                                (click)="generatePDF()"></i></span>
+                                                    </div>
+                                                </ng-template>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                    <div [ngbNavOutlet]="ngbNavOutletVertical"></div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                            <button ngbNavLink class="mx-2">Test API</button>
+                            <ng-template ngbNavContent>
+                                <div class="p-2">
+                                    <div class="card">
+                                        <div class="card-body border-top">
+                                            <!-- offers -->
+                                            <div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+                                                <div ngbAccordionItem="first" class="mb-2">
+                                                    <h2 ngbAccordionHeader>
+                                                        <button ngbAccordionButton>Offers</button>
+                                                    </h2>
+                                                    <div ngbAccordionCollapse>
+                                                        <div ngbAccordionBody>
+                                                            <ng-template ngbPanelContent>
+                                                                <p class="p-2">Request URL :
+                                                                    {{baseUrl}}</p>
+                                                                <ng-container *ngIf="apiData && apiData['api_details'] &&
+                                                                     apiData['api_details']['api_key'] && 
+                                                                     apiData['api_details']['secret_key']">
+                                                                    <app-publisher-api-response
+                                                                        [secretKey]="apiData['api_details']['secret_key']"
+                                                                        [apiKey]="apiData['api_details']['api_key']"
+                                                                        [offerType]="''"
+                                                                        [domain]="'https://' + apiData['domain']">
+                                                                    </app-publisher-api-response>
+                                                                </ng-container>
+
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- All Offers  -->
+                                            <div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+                                                <div ngbAccordionItem="first" class="mb-2">
+                                                    <h2 ngbAccordionHeader>
+                                                        <button ngbAccordionButton>All Offers</button>
+                                                    </h2>
+                                                    <div ngbAccordionCollapse>
+                                                        <div ngbAccordionBody>
+                                                            <ng-template ngbPanelContent>
+                                                                <p class="p-2">Request URL :
+                                                                    {{allOffersURL}}</p>
+                                                                <ng-container
+                                                                    *ngIf="apiData && apiData['api_details'] && apiData['api_details']['api_key'] && apiData['api_details']['secret_key']">
+                                                                    <app-publisher-api-response
+                                                                        [secretKey]="apiData['api_details']['secret_key']"
+                                                                        [apiKey]="apiData['api_details']['api_key']"
+                                                                        [offerType]="'all'"
+                                                                        [domain]="'https://' + apiData['domain']">
+                                                                    </app-publisher-api-response>
+                                                                </ng-container>
+
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Active Offers  -->
+                                            <div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+                                                <div ngbAccordionItem="first" class="mb-2">
+                                                    <h2 ngbAccordionHeader>
+                                                        <button ngbAccordionButton>Active Offers</button>
+                                                    </h2>
+                                                    <div ngbAccordionCollapse>
+                                                        <div ngbAccordionBody>
+                                                            <ng-template ngbPanelContent>
+                                                                <p class="p-2">Request URL :
+                                                                    {{activeOffersURL}}</p>
+                                                                <ng-container
+                                                                    *ngIf="apiData && apiData['api_details'] && apiData['api_details']['api_key'] && apiData['api_details']['secret_key']">
+                                                                    <app-publisher-api-response
+                                                                        [secretKey]="apiData['api_details']['secret_key']"
+                                                                        [apiKey]="apiData['api_details']['api_key']"
+                                                                        [offerType]="'active'"
+                                                                        [domain]="'https://' + apiData['domain']">
+                                                                    </app-publisher-api-response>
+                                                                </ng-container>
+
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- public  Offers  -->
+                                            <div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+                                                <div ngbAccordionItem="first" class="mb-2">
+                                                    <h2 ngbAccordionHeader>
+                                                        <button ngbAccordionButton>Public Offers</button>
+                                                    </h2>
+                                                    <div ngbAccordionCollapse>
+                                                        <div ngbAccordionBody>
+                                                            <ng-template ngbPanelContent>
+                                                                <p class="p-2">Request URL :
+                                                                    {{publicOffersURL}}</p>
+                                                                <ng-container
+                                                                    *ngIf="apiData && apiData['api_details'] && apiData['api_details']['api_key'] && apiData['api_details']['secret_key']">
+                                                                    <app-publisher-api-response
+                                                                        [secretKey]="apiData['api_details']['secret_key']"
+                                                                        [apiKey]="apiData['api_details']['api_key']"
+                                                                        [offerType]="'public'"
+                                                                        [domain]="'https://' + apiData['domain']">
+                                                                    </app-publisher-api-response>
+                                                                </ng-container>
+
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- private Offers -->
+                                            <div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+                                                <div ngbAccordionItem="first" class="mb-2">
+                                                    <h2 ngbAccordionHeader>
+                                                        <button ngbAccordionButton>Private Offers</button>
+                                                    </h2>
+                                                    <div ngbAccordionCollapse>
+                                                        <div ngbAccordionBody>
+                                                            <ng-template ngbPanelContent>
+                                                                <p class="p-2">Request URL :
+                                                                    {{privateOffersURL}}</p>
+                                                                <ng-container
+                                                                    *ngIf="apiData && apiData['api_details'] && apiData['api_details']['api_key'] && apiData['api_details']['secret_key']">
+                                                                    <app-publisher-api-response
+                                                                        [secretKey]="apiData['api_details']['secret_key']"
+                                                                        [apiKey]="apiData['api_details']['api_key']"
+                                                                        [offerType]="'private'"
+                                                                        [domain]="'https://' + apiData['domain']">
+                                                                    </app-publisher-api-response>
+                                                                </ng-container>
+
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- private Offers -->
+                                            <div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+                                                <div ngbAccordionItem="first" class="mb-2">
+                                                    <h2 ngbAccordionHeader>
+                                                        <button ngbAccordionButton>Working Offers</button>
+                                                    </h2>
+                                                    <div ngbAccordionCollapse>
+                                                        <div ngbAccordionBody>
+                                                            <ng-template ngbPanelContent>
+                                                                <p class="p-2">Request URL :
+                                                                    {{workingOffersURL}}</p>
+                                                                <ng-container
+                                                                    *ngIf="apiData && apiData['api_details'] && apiData['api_details']['api_key'] && apiData['api_details']['secret_key']">
+                                                                    <app-publisher-api-response
+                                                                        [secretKey]="apiData['api_details']['secret_key']"
+                                                                        [apiKey]="apiData['api_details']['api_key']"
+                                                                        [offerType]="'Working'"
+                                                                        [domain]="'https://' + apiData['domain']">
+                                                                    </app-publisher-api-response>
+                                                                </ng-container>
+
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

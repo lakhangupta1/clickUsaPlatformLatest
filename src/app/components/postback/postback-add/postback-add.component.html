@@ -1,0 +1,146 @@
+<div class="postback-wrapper">
+    <form action="" [formGroup]="postbackForm" (ngSubmit)="onSubmit()">
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-extra" (click)="addCustomButtonClick()"><span>+</span> Add Custom
+                    Parameters </button>
+                <button type="button" class="btn btn-extra" (click)="addButtonClick()"><span>+</span> Add Parameters
+                </button>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group mb-2">
+                    <label for="postbackUrl" class="required">Postback Url</label>
+                    <input type="text" formControlName="postbackUrl" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f['postbackUrl'].errors}" id="postbackUrl"
+                        placeholder="Postback Url" (change)="onChangePostbackUrl($event)">
+                    <div *ngIf="submitted && f['postbackUrl'].errors" class="invalid-feedback">
+                        <div *ngIf="f['postbackUrl'].errors && f['postbackUrl'].errors['required']">Postback Url is
+                            required</div>
+                        <div
+                            *ngIf="f['postbackUrl'].errors && f['postbackUrl'].errors['invalidUrl'] && !f['postbackUrl'].errors['required']">
+                            Not a valid url</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="htmlForParameters" class="row attributes">
+            <label for="" class="attribute-heading">Parameters</label>
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button type="button" class="btn btn-primary" (click)="addButtonClick()">
+                        <i class="bi bi-plus-lg me-1"></i>  Add Parameters
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div formArrayName="parameter"
+                    *ngFor="let custom of postbackForm.get('parameter')['controls']; let i = index" class="form-group">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="value" class="required">Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Attribute name"
+                                        formControlName="name"
+                                        [ngClass]="{ 'is-invalid': submitted && f['parameter']['controls'][i]['controls'].name.errors }">
+                                    <div *ngIf="submitted && f['parameter']['controls'][i]['controls'].name.errors"
+                                        class="invalid-feedback">
+                                        <div *ngIf="f['parameter']['controls'][i]['controls'].name.errors.required">
+                                            name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="value" class="required">Value</label>
+
+                                    <select class="form-control" id="value" formControlName="value"
+                                        (change)="selectedParameters(i,$event.target);"
+                                        [ngClass]="{ 'is-invalid': submitted && f['parameter'][i].value.errors }">
+                                        <option selected value="">Select Parameter</option>
+                                        <option *ngFor="let items of macroList | keyvalue" value={{items.value}}>
+                                            {{items.value}}</option>
+                                    </select>
+                                    <div *ngIf="submitted && f['parameter'][i].value.errors" class="invalid-feedback">
+                                        <div *ngIf="f['parameter'][i].value.errors.required">
+                                            value
+                                            is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger btn-sm attribute-delete"
+                                    (click)="deleteButtonClick(i)">
+                                    <span class="fa fa-trash"></span> Trash
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="htmlForCustomParameters" class="row attributes">
+            <label class="attribute-heading">Custom Parameters</label>
+            <div class="row">
+                <div class="col-12 text-end mb-1 mt-0">
+                    <button type="button" class="btn btn-primary" (click)="addCustomButtonClick()"><span>+</span> Add
+                        Custom Parameters </button>
+                    <!-- <button type="button" class="btn btn-extra" (click)="addButtonClick()"><span>+</span> Add Parameters
+                    </button> -->
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div formArrayName="customParameter"
+                    *ngFor="let custom of postbackForm.get('customParameter')['controls']; let i = index"
+                    class="form-group">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="value" class="required">Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Attribute name"
+                                        formControlName="name"
+                                        [ngClass]="{ 'is-invalid': submitted && f['customParameter']['controls'][i]['controls'].name.errors }">
+                                    <div *ngIf="submitted && f['customParameter']['controls'][i]['controls'].name.errors"
+                                        class="invalid-feedback">
+                                        <div
+                                            *ngIf="f['customParameter']['controls'][i]['controls'].name.errors.required">
+                                            name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="value" class="required">Value</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Attribute name"
+                                        formControlName="value" (change)="selectedParameters(i,$event.target);"
+                                        [ngClass]="{ 'is-invalid': submitted && f['customParameter']['controls'][i]['controls'].value.errors }">
+                                    <div *ngIf="submitted && f['customParameter']['controls'][i]['controls'].value.errors"
+                                        class="invalid-feedback">
+                                        <div
+                                            *ngIf="f['customParameter']['controls'][i]['controls'].value.errors.required">
+                                            value is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger btn-sm attribute-delete"
+                                    (click)="deleteCustomButtonClick(i)">
+                                    <span class="fa fa-trash"></span> Trash
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-info m-1" style="margin: 0 5px;font-size: 13px;"
+                type="submit">{{postbackId?'Update':'Submit'}}</button>
+        </div>
+    </form>
+</div>

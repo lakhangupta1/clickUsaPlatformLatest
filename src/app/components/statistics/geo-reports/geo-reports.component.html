@@ -1,0 +1,293 @@
+<div class="card">
+
+  <div class="card-header bg-white border-bottom">
+    <span class="font-weight-bolder pointer-cursor" (click)="showOptions=!showOptions">
+      OPTIONS <i [ngClass]="showOptions?'fa fa-minus':'fa fa-plus'"></i>
+    </span>
+  </div>
+
+  <div class="card-body" *ngIf="showOptions">
+
+    <div class="row mb-2">
+
+      <div class="form-group col-md-6 mb-2">
+
+        <label>Select Columns</label>
+
+        <ng-select [items]="pubReportColList" bindLabel="field_name" [(ngModel)]="currSelectedColumns" [multiple]="true"
+          [closeOnSelect]="false">
+
+        </ng-select>
+
+      </div>
+
+      <div class="form-group col-md-6 mb-2">
+        <label>Group By</label>
+
+        <ng-select [items]="geoGroup" bindLabel="field_name" [(ngModel)]="groupSelectedColumns" [multiple]="true"
+          [closeOnSelect]="false">
+        </ng-select>
+      </div>
+
+      <div class="form-group col-md-4 mb-2">
+        <input type="text" class="form-control" placeholder="Offer Id" [(ngModel)]="offerId">
+      </div>
+
+      <div class="form-group col-md-4 mb-2">
+        <input type="text" class="form-control" placeholder="Offer Name" [(ngModel)]="offerName">
+      </div>
+      <div class="form-group col-md-4 mb-2">
+
+        <select class="form-control text-capitalize" [(ngModel)]="country">
+
+          <option value="">Select Country</option>
+          <option *ngFor="let item of countryList" [value]="item.key">
+            {{ item.value }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-4 mb-2">
+        <select class="form-select" [(ngModel)]="selectedTimezone">
+          <option value="">Select Timezone</option>
+          <option *ngFor="let item of timezoneList" [value]="item.name">
+            {{ item.name + " UTC " +item.dstOffsetStr }}
+          </option>
+        </select>
+      </div>
+      <!-- <div class="form-group col-md-4 mb-2">
+        <select class="form-control text-capitalize" [(ngModel)]="selectedTimezone">
+          <option value=''>Select TimeZone</option>
+          <option *ngFor="let item of timezoneList" [value]="item">
+            {{item}}
+          </option>
+        </select>
+      </div> -->
+      <!-- <div class="form-group col-md-4 mb-2">
+        <ng-select [items]="timezoneList" [(ngModel)]="selectedTimezone" placeholder="Select TimeZone"
+          [clearable]="true" class="text-capitalize">
+        </ng-select>
+      </div> -->
+      <div class="form-group col-md-2 mb-2">
+
+        <select class="form-control" [(ngModel)]="limit">
+
+          <option [value]="10">10</option>
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+          <option [value]="250">250</option>
+          <option [value]="500">500</option>
+          <option [value]="1000">1000</option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group col-md-6 mb-2">
+
+        <app-datetime-range-picker [dateTimeRangeOption]="rangeOption"
+          (dateTimeRangeData)="getDateTimeRangeData($event)">
+
+        </app-datetime-range-picker>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="text-center mb-2">
+        <button class="btn btn-outline-primary me-2" (click)="onFilter()">
+          Filter
+        </button>
+        <button class="btn btn-outline-danger" (click)="onReset()">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- TOTAL COUNT + EXPORT -->
+
+<div class="d-flex justify-content-end w-100 gap-3 mb-2">
+
+  <span class="bg-white border p-2 rounded-pill shadow-sm">
+
+    Total:
+    <strong>
+      {{(totalReportCount<=limit)?totalReportCount:(limit*currentPage>
+        totalReportCount?totalReportCount:limit*currentPage)}} /
+        {{totalReportCount}}
+    </strong>
+
+  </span>
+
+
+  <span>
+
+    <button class="btn btn-primary rounded-pill" (click)="openExportModal(exportModal)">
+      <i class="fa fa-download me-1"></i> Export</button>
+  </span>
+
+</div>
+
+<div class="card">
+  <div class="table-responsive table-bordered">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <ng-container *ngFor="let g of groupSelectedColumns">
+            <th *ngIf="g.db_name=='oId'">
+              Offer
+            </th>
+            <th *ngIf="g.db_name!='oId'">
+              {{g.field_name}}
+            </th>
+          </ng-container>
+          <ng-container *ngFor="let c of currSelectedColumns">
+            <th *ngIf="c.db_name!='oId'">
+              {{c.field_name}}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="allReportList.length>0 else noData">
+          <tr *ngFor="let item of allReportList; let i=index; trackBy: trackByIndex">
+            <td>
+              {{ (currentPage-1)*limit + i + 1 }}
+            </td>
+            <ng-container *ngFor="let g of groupSelectedColumns">
+              <td *ngIf="g.db_name=='oId'">
+                <a [routerLink]="['/offers/detail/', item['_id'].oId]" target="_blank" ngbTooltip="{{item.oName}}"
+                  placement="top">
+                  <span class="m-0 text-primary">{{item.oName | shorten2}}</span>
+                </a>
+                <p class="m-0">({{item['_id'].oId}})</p>
+
+                <!-- <span class="text-primary">
+                  {{item.oName}}
+                </span> -->
+                <!-- <div class="text-muted">
+                  {{item._id.oId}}
+                </div> -->
+              </td>
+
+              <td *ngIf="g.db_name=='isoCode'">
+                {{item._id.isoCode}}
+              </td>
+              <td *ngIf="g.db_name=='app'">
+                {{item._id.app}}
+              </td>
+            </ng-container>
+            <ng-container *ngFor="let c of currSelectedColumns">
+
+              <td *ngIf="c.db_name=='click'">
+                {{item.click}}
+              </td>
+
+              <td *ngIf="c.db_name=='conversion'">
+                {{item.conv || item.conversion}}
+              </td>
+
+              <td *ngIf="c.db_name=='payout'">
+                {{round(item.payout)}}
+              </td>
+
+              <td *ngIf="c.db_name=='cr'">
+                {{getCR(item.click, item.conv || item.conversion || 0)}}
+              </td>
+
+            </ng-container>
+
+          </tr>
+          <tr class="fw-bold text-center">
+
+            <td [attr.colspan]="groupSelectedColumns.length + 1">
+              Total
+            </td>
+            <ng-container *ngFor="let c of currSelectedColumns">
+              <td *ngIf="c.db_name=='click'">
+                {{reportTotalSumData.click}}
+              </td>
+              <td *ngIf="c.db_name=='conversion'">
+                {{reportTotalSumData.conversion}}
+              </td>
+              <td *ngIf="c.db_name=='payout'">
+                {{round(reportTotalSumData.payout)}}
+              </td>
+              <td *ngIf="c.db_name=='cr'">
+                {{getCR(reportTotalSumData.click, reportTotalSumData.conversion)}}
+              </td>
+            </ng-container>
+          </tr>
+          <tr class="fw-bold text-center">
+            <td [attr.colspan]="groupSelectedColumns.length + 1">
+              Gross Total
+            </td>
+            <ng-container *ngFor="let c of currSelectedColumns">
+              <td *ngIf="c.db_name=='click'">
+                {{reportGrossData.click}}
+              </td>
+              <td *ngIf="c.db_name=='conversion'">
+                {{reportGrossData.conversion}}
+              </td>
+              <td *ngIf="c.db_name=='payout'">
+                {{round(reportGrossData.payout)}}
+              </td>
+              <td *ngIf="c.db_name=='cr'">
+                {{getCR(reportGrossData.click, reportGrossData.conversion)}}
+              </td>
+            </ng-container>
+
+          </tr>
+        </ng-container>
+        <ng-template #noData>
+          <tr>
+            <td [attr.colspan]="currSelectedColumns.length + groupSelectedColumns.length + 1">
+              No Record Found
+            </td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="d-flex justify-content-end mt-4">
+
+    <ngb-pagination [collectionSize]="totalReportCount" [pageSize]="limit" [maxSize]="5" [rotate]="true"
+      [page]="currentPage" (pageChange)="getPage($event)">
+
+    </ngb-pagination>
+
+  </div>
+</div>
+<ng-template #exportModal let-modal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">Export Geo Report</h5>
+    <button type="button" class="btn-close" (click)="cancelExport(modal)">
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label>Select Columns</label>
+      <ng-select [items]="pubReportColList" bindLabel="field_name" [(ngModel)]="exportSelectedColumns" [multiple]="true"
+        [compareWith]="compareDb" [closeOnSelect]="false">
+
+      </ng-select>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="cancelExport(modal)">
+      Cancel
+    </button>
+    <button class="btn btn-primary" (click)="confirmExport(modal)">
+      Export CSV
+    </button>
+  </div>
+
+</ng-template>

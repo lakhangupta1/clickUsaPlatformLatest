@@ -1,0 +1,199 @@
+<div class="card">
+    <div class="d-flex flex-row-reverse m-2" *ngIf="!postbackList.length">
+        <button type="button" class="btn btn-primary" (click)="addPostback()">
+            Add Postback
+        </button>
+    </div>
+
+    <div class="card table-responsive m-0" *ngIf="postbackList.length">
+        <div class="card-header">
+            <h5 class="m-0">CURRENT POSTBACK</h5>
+        </div>
+
+        <div class="card-body table-responsive-sm p-0">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width:40%">Postback Url</th>
+                        <th>Token</th>
+                        <th>Status</th>
+                        <th *ngxPermissionsOnly="['aff.edit.postback']" [hidden]="holdPostbackList.length">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let items of postbackList">
+
+                        <td class="url-cell" [ngbTooltip]="items.endpoint + '?' + items.parm" placement="top"
+                            container="body">
+
+                            {{ items.endpoint + "?" + items.parm | shorten4 }}
+
+                        </td>
+
+                        <td>{{items.token}}</td>
+
+                        <td>
+                            <span class="badge" [ngClass]="items.status==1 ? 'bg-success' : 'bg-secondary'">
+
+                                {{items.status==1 ? 'Active' : 'Inactive'}}
+
+                            </span>
+                        </td>
+
+                        <td *ngxPermissionsOnly="['aff.edit.postback']" [hidden]="holdPostbackList.length">
+
+                            <button class="btn btn-primary btn-sm" [routerLink]="['/postback/edit/',items._id]"
+                                [queryParams]="{ name: items.publisher_name }">
+
+                                <i class="fa fa-edit"></i> Edit
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-3" *ngIf="holdPostbackList.length">
+        <div class="card-header">
+            <h5 class="mb-0">HOLD POSTBACK</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Postback Url</th>
+                            <th>Token</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let items of holdPostbackList">
+                            <td class="url-cell" [ngbTooltip]="items.endpoint + '?' + items.parm" placement="top" container="body">
+                                {{items.endpoint + "?" + items.parm | shorten}}
+                            </td>
+                            <td>{{items.token}}</td>
+                            <td>
+                                <span class="badge" [ngClass]="items.status==1 ? 'bg-success' : 'bg-secondary'">
+                                    {{items.status==1 ? 'Active' : 'Inactive'}}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" *ngxPermissionsOnly="['aff.edit.postback']"
+                                    [routerLink]="['/postback/edit/',items._id]"
+                                    [queryParams]="{ name: items.publisher_name }">
+                                    <i class="fa fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm ms-1"
+                                    (click)="onDeleteHoldPostback(items._id, deleteModal)">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="card table-responsive m-0" *ngIf="postbackList.length">
+        <div class="card-header">
+            <h5 class="m-0">CURRENT POSTBACK</h5>
+        </div>
+        <div class="card-body table-responsive-sm p-0">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Postback Url</th>
+                        <th>Token</th>
+                        <th>Status</th>
+                        <ng-container *ngxPermissionsOnly="['aff.edit.postback']">
+                            <th *ngIf="!holdPostbackList.length">Action</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let items of postbackList; let i=index">
+                         <td [ngbTooltip]="items.endpoint + '?' + items.parm" placement="top">
+                            {{items.endpoint+"?"+items.parm | shorten4}}</td>
+                        <td>{{items.token}}</td>
+                        <td>{{(items.status==1)?'Active':'Inactive'}}</td>
+                        <ng-container *ngxPermissionsOnly="['aff.edit.postback']">
+                            <td *ngIf="!holdPostbackList.length">
+                                <button [routerLink]="['/postback/edit/',items._id]"
+                                    [queryParams]="{ name: items.publisher_name }" class="btn btn-primary">
+                                    <i class="fa fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card table-responsive m-0" *ngIf="holdPostbackList.length">
+        <div class="card-header">
+            <h5 class="m-0">HOLD POSTBACK</h5>
+        </div>
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Postback Url</th>
+                        <th>Token</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let items of holdPostbackList">
+                        <td [ngbTooltip]="items.endpoint+'?'+items.parm" placement="top">{{items.endpoint+"?"+items.parm
+                            | shorten}}</td>
+                        <td>{{items.token}}</td>
+                        <td>{{(items.status==1)?'Active':'Inactive'}}</td>
+                        <td>
+                            <button class="btn btn-primary" *ngxPermissionsOnly="['aff.edit.postback']"
+                                [routerLink]="['/postback/edit/',items._id]"
+                                [queryParams]="{ name: items.publisher_name }">
+                                <i class="fa fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger ms-1" (click)="onDeleteHoldPostback(items._id, deleteModal)">
+                                <i class="fa fa-trash"></i>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+</div>
+
+<ng-template #deleteModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete Hold Postback</h4>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12">
+            <p class="p-0 m-0">Type <strong>DELETE</strong> in uppercase to delete hold postback.</p>
+            <p class="p-0 m-0"><strong class="text-danger">*Warning: This action can't be undone.</strong></p>
+        </div>
+        <div class="col-md-12 mt-1">
+            <input type="text" class="form-control" [(ngModel)]="deleteText">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" *ngIf="deleteText == 'DELETE'"
+            (click)="modal.close('true')">Delete</button>
+        <button type="button" class="btn btn-info" (click)="modal.close('false')">Cancel</button>
+    </div>
+</ng-template>

@@ -1,0 +1,53 @@
+.postback-wrapper {
+    // width: 100%;
+    // min-width: 100%;
+    padding: 20px;
+    // max-width: 100%;
+    border: 1px solid grey;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.attributes {
+    border: 1px solid grey;
+    margin-top: 15px;
+    border-radius: 6px;
+}
+
+.attribute-add {
+    position: absolute;
+    right: 10px;
+    top: -25px;
+    z-index: 1;
+}
+
+.attribute-delete {
+    position: relative;
+    top: 23px;
+    border-radius: 4px;
+}
+
+.attribute-heading {
+    position: relative;
+    width: fit-content;
+    top: -12px;
+    margin-left: 11px;
+    padding: 0px 10px;
+    background-color: white;
+}
+
+.name {
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 40%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.btn-extra {
+    float: right;
+    font-size: 13px;
+    background-color: linen;
+    padding: 0px 5px;
+}

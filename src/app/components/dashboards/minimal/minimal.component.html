@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="col-12 mb-2 mt-2 d-flex justify-content-end">
+        <div class="mb-1">
+            <select class="form-select" [(ngModel)]="progressCardsDateRange" (change)="onChange('progressCards')">
+                <option value="7">Today/Yesterday</option>
+                <option value="8">Last 7 Days/7 Days Before Last 7 Days</option>
+                <option value="9">This Month/Last Month</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6" *ngFor="let key of ['click','conversion','revenue']">
+        <div class="card" [ngStyle]="{'background-color': progressCardsData[key].bgcolor}">
+            <div class="card-body">
+                <div class="d-flex no-block align-items-center me-3">
+                    <div class="mt-2">
+                        <h5 class="text-white font-medium text-capitalize">{{ key }}</h5>
+                        <h6 class="text-white fw-bold fs-6">
+                            {{ progressCardsData[key].currentValue }}
+                        </h6>
+                    </div>
+                     
+                </div>
+ 
+                <div class="row text-center text-white mt-4">
+                   
+                    <div class="col-6">
+                        <!-- <span class="fs-3">Current</span> -->
+                        <p class="font-medium fs-6 fw-bold" [ngClass]="{
+                 'text-danger': progressCardsData[key].currentValue >= progressCardsData[key].previousValue,
+                 'text-success': progressCardsData[key].currentValue < progressCardsData[key].previousValue
+               }">
+                            <i class="fa" [ngClass]="{
+                   'fa-arrow-down': progressCardsData[key].currentValue >= progressCardsData[key].previousValue,
+                   'fa-arrow-up': progressCardsData[key].currentValue < progressCardsData[key].previousValue
+                 }"></i>
+                            {{ progressCardsData[key].currentValue }}
+                        </p>
+                    </div>
+ 
+                    <div class="col-6">
+                        <!-- <span class="fs-3">Previous</span> -->
+                        <p class="font-medium fs-6 fw-bold" [ngClass]="{
+                 'text-danger': progressCardsData[key].previousValue >= progressCardsData[key].currentValue,
+                 'text-success': progressCardsData[key].previousValue < progressCardsData[key].currentValue
+               }">
+                            <i class="fa" [ngClass]="{
+                   'fa-arrow-down': progressCardsData[key].previousValue >= progressCardsData[key].currentValue,
+                   'fa-arrow-up': progressCardsData[key].previousValue < progressCardsData[key].currentValue
+                 }"></i>
+                            {{ progressCardsData[key].previousValue }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div class="card">
+
+            <div class="card-body">
+                <div class="d-md-flex align-items-center">
+                    <h4 class="card-title">Statistics</h4>
+                    <div class="ms-auto">
+                        <div class="">
+                            <select class="form-select" [(ngModel)]="statChartDateRange"
+                                (change)="onChange('statChart')">
+                                <option selected value="1">Today</option>
+                                <option value="2">Yesterday</option>
+                                <option value="3">This Week</option>
+                                <option value="4">Last Week</option>
+                                <option value="5">This Month</option>
+                                <option value="6">Last Month</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <apx-chart [series]="mixedChartOptions.series" [chart]="mixedChartOptions.chart"
+                    [yaxis]="mixedChartOptions.yaxis" [xaxis]="mixedChartOptions.xaxis"
+                    [labels]="mixedChartOptions.labels" [stroke]="mixedChartOptions.stroke"
+                    [plotOptions]="mixedChartOptions.plotOptions" [markers]="mixedChartOptions.markers"
+                    [fill]="mixedChartOptions.fill" [tooltip]="mixedChartOptions.tooltip"></apx-chart>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title mb-0">Top app ids</h4>
+
+                    <div class="d-flex gap-3">
+                        <select class="form-select" [(ngModel)]="topAppIdsLimit" (change)="onChange('topAppIds')">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+
+                        <select class="form-select" [(ngModel)]="topAppIdsDateRange" (change)="onChange('topAppIds')">
+                            <option value="1">Today</option>
+                            <option value="2">Yesterday</option>
+                            <option value="3">This Week</option>
+                            <option value="4">Last Week</option>
+                            <option value="5">This Month</option>
+                            <option value="6">Last Month</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">App Id</th>
+                            <th scope="col">Offer Name</th>
+                            <th scope="col">Conversion</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="topAppIdsData.length">
+                        <tr *ngFor="let item of topAppIdsData; let i = index">
+                            <th scope="row">{{ i + 1 }}</th>
+                            <td>{{ item["app_id"] ? item["app_id"] : "" }}</td>
+                            <td>{{ item["offer_name"] ? item["offer_name"] : "" }}</td>
+                            <td>{{ item["conversion"] ? item["conversion"] : "" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

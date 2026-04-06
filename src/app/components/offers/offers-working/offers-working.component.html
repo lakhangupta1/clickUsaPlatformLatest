@@ -1,0 +1,225 @@
+<div class="card">
+    <div class="card-header bg-white border-bottom">
+        <span class="font-weight-bolder pointer-cursor" (click)="showOptions=!showOptions">
+            OPTIONS <i [ngClass]="showOptions?'fa fa-minus':'fa fa-plus'"></i>
+        </span>
+    </div>
+    <div *ngIf="showOptions" class="card-body">
+        <div class="row">
+            <div *ngIf="pubOffColList.length > 0" class="form-group col-12 mb-2">
+
+                <ng-select [items]="selectPubConColList" bindLabel="field_name" placeholder="Select Columns"
+                    [(ngModel)]="currSelectColumns" [multiple]="true" [closeOnSelect]="false">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <div *ngIf="item.field_name === 'Select All'" (click)="$event.stopPropagation()"
+                            class="d-flex align-items-center">
+                            <input type="checkbox" [checked]="isAllSelected" (change)="toggleSelectAll($event)"
+                                class="form-check-input" style="width: 20px; height: 20px;">
+                            <label class="ms-2 fs-5 mb-0">Select All</label>
+                        </div>
+                        <div *ngIf="item.field_name !== 'Select All'">
+                            {{ item.field_name }}
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+                <input type="text" name="offerId" class="form-control" placeholder="Offer id" [(ngModel)]="offerId">
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+                <input type="text" name="offerName" class="form-control" placeholder="Offer Name"
+                    [(ngModel)]="offerName">
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+                <input type="text" name="app_id" class="form-control" placeholder="app_id" [(ngModel)]="app_id">
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-4 mb-2">
+                <app-datetime-range-picker [dateTimeRangeOption]="dateRangeOption"
+                    (dateTimeRangeData)="getDateTimeRange($event)">
+                </app-datetime-range-picker>
+            </div>
+            <div class="form-group col-sm-12 col-md-2 col-lg-2 mb-2">
+                <select name="limit" class="form-control" [(ngModel)]="limit">
+                    <option [value]="0" disabled>Select Limit</option>
+                    <option [value]="10">10</option>
+                    <option [value]="20">20</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
+                    <option [value]="250">250</option>
+                    <option [value]="500">500</option>
+                    <option [value]="1000">1000</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-12 col-md-3 col-lg-3 mb-2">
+                <label class="fs-5">
+                    <input class="fs-5" type="checkbox" name="assignedOffers" [(ngModel)]="assignedOffers" />
+                    Assigned Offers
+                </label>
+            </div>
+            <div class="row">
+                <div class="form-group text-sm-start text-md-center mb-2">
+                    <button type="submit" class="btn btn-outline-primary me-2" (click)="totalOffers = 0"
+                        appDebounceClick (click)="onFilter()">Filter</button>
+                    <button type="button" class="btn btn-outline-danger me-2">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-end w-100">
+    <span class="bg-white border mb-1 pe-3 ps-3 rounded-pill shadow-sm">
+        Total: <strong>{{(totalOffers<=limit)?totalOffers:(limit*currentPage>
+                totalOffers?totalOffers:limit*currentPage)}} / {{totalOffers}}</strong>
+    </span>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card ">
+            <div class="table-responsive table-bordered">
+                <table class="table table-striped no-wrap align-left text-center ">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Offer</th>
+                            <!-- <th>
+                                <div  class="cursor-pointer">
+                                    Payout 
+                                    <span class="caret" [ngClass]="{ 'caret-up': 'caret-down' }"></span>
+                                </div>
+                                
+                                <div>Currency</div>
+                            </th> -->
+                            <ng-container *ngFor="let item of prevSelectedColumns">
+                                <th>{{item.field_name}}</th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="allOfferList.length > 0; else elseBlock">
+                            <tr *ngFor="let item of allOfferList;let i=index;">
+                                <td>{{i+1}}</td>
+                                <td title="{{item['offer_name']}}" class="text-start">
+                                    <a href="" [routerLink]="['/offers/detail', item._id]" target="_blank"
+                                        class="text-primary">
+                                        <span class="m-0">{{item['offer_name'] | shorten}}</span>
+                                    </a>
+                                    <p class="m-0">({{item._id}})</p>
+                                </td>
+                                <ng-container *ngFor="let obj of prevSelectedColumns">
+                                    <td
+                                        *ngIf=" obj.db_name != 'os' && obj.db_name !='updatedAt' && obj.db_name!='revenue_type' && obj.db_name!='payout_type' && obj.db_name!='country_allow' && obj.db_name!='category' && obj.db_name!='payout' && obj.db_name!='preview_url' && obj.db_name!='jumps' && obj.db_name!='wTime' ">
+                                        {{ item[obj.db_name]}}
+                                    </td>
+                                    <td *ngIf="obj.db_name=='updatedAt'">
+                                        <p>{{ item[obj.db_name] | date }}</p>
+                                        <p> {{ item[obj.db_name] | date: "hh:mm:ss"}}</p>
+
+                                    </td>
+                                    <td *ngIf="obj.db_name =='payout' ">
+                                        <span class="">
+                                            {{item['payout'] | number : '1.1-4'}}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="obj.db_name=='os'">
+                                        <ng-container [ngSwitch]="determineCase(item)">
+                                            <a *ngSwitchCase="'android'" [href]="item.preview_url" target="_blank"
+                                                ngbPopover="{{item.app_id}}" triggers="mouseenter:mouseleave"
+                                                [placement]="['auto']">
+                                                <img src="../../../../assets/images/icon/android.svg"
+                                                    style="width: 40px;" alt="Android">
+                                            </a>
+                                            <a *ngSwitchCase="'ios'" [href]="item.preview_url" target="_blank"
+                                                ngbPopover="{{item.app_id}}" triggers="mouseenter:mouseleave"
+                                                [placement]="['auto']">
+                                                <img src="../../../../assets/images/icon/ios.svg" style="width: 40px;"
+                                                    alt="iOS">
+                                            </a>
+                                            <a *ngSwitchCase="'windows'" [href]="item.preview_url" target="_blank"
+                                                ngbPopover="{{item.app_id}}" triggers="mouseenter:mouseleave"
+                                                [placement]="['auto']">
+                                                <img src="../../../../assets/images/icon/windows.svg"
+                                                    style="width: 40px;" alt="Windows">
+                                            </a>
+                                            <a *ngSwitchCase="'all'" [href]="item.preview_url" target="_blank"
+                                                ngbPopover="{{item.app_id}}" triggers="mouseenter:mouseleave"
+                                                [placement]="['auto']">
+                                                <img src="../../../../assets/images/icon/all.png" style="width: 40px;"
+                                                    alt="All">
+                                            </a>
+                                        </ng-container>
+                                    </td>
+
+                                    <td *ngIf="obj.db_name =='revenue_type' ">
+                                        <span *ngIf="item['revenue_type']">
+                                            {{item['revenue_type'].enum_type}}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="obj.db_name=='preview_url'">
+                                        <a href="{{item.preview_url}}" target="_blank">
+                                            {{item.app_id}}
+                                        </a>
+                                    </td>
+                                    <td *ngIf="obj.db_name=='payout_type' ">
+                                        <span *ngIf="item['payout_type']">
+                                            {{ item['payout_type'].enum_type}}
+                                        </span>
+                                    </td>
+
+
+                                    <td *ngIf="obj.db_name=='country_allow' && item['geo_targeting'] ">
+                                        <ng-container *ngIf="item['geo_targeting'].country_allow">
+                                            <ng-container *ngFor="let country of item['geo_targeting'].country_allow">
+                                                {{ country['key']}}
+                                            </ng-container>
+                                        </ng-container>
+                                    </td>
+                                    <!-- <td *ngIf="obj.db_name=='country_allow' && item['geo_targeting'] ">
+                                        <ng-container *ngIf="item['geo_targeting'].country_allow">
+                                            <ng-container *ngFor="let country of item['geo_targeting'].country_allow"
+                                                ngbPopover="{{ country['key']}}" triggers="mouseenter:mouseleave"
+                                                [placement]="['auto']">
+                                                {{ country['key']}}
+                                            </ng-container>
+                                        </ng-container>
+                                    </td> -->
+
+
+                                    <td *ngIf="obj.db_name=='category' ">
+                                        {{ item['category']}}
+                                    </td>
+
+                                    <!-- <td *ngIf="obj.db_name=='jumps'" class="text-center">
+                                        <a href="https://fuseclick.c2a.in/testoffer#/fetch/{{item._id}}"
+                                            target="_blank">
+                                            {{item.jumps || 0 }}
+                                        </a>
+                                    </td> -->
+                                    <td *ngIf="obj.db_name=='wTime' ">
+                                        <p>{{item.wTime | date}}</p>
+                                        <p>{{item.wTime | date:"hh:mm:ss a"}}</p>
+                                    </td>
+                                </ng-container>
+                            </tr>
+
+                        </ng-container>
+
+                        <ng-template #elseBlock>
+                            <tr>
+                                <td [attr.colspan]="prevSelectedColumns.length + 2">
+                                    No Record Found
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end mt-5 p-1">
+                <ngb-pagination [collectionSize]="pageSize" [maxSize]="5" [rotate]="true" [(page)]="page"
+                    (pageChange)="getPage($event)" aria-label="Default pagination">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>

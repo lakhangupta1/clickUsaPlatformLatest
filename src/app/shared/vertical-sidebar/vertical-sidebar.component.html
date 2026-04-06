@@ -1,0 +1,159 @@
+<!-- ============================================================== -->
+<!-- Logo -->
+<!-- ============================================================== -->
+<!-- <div class="brand-logo d-none d-lg-flex align-items-center">
+    <a class="navbar-brand" [routerLink]="['/']">
+       
+        @if(themeOptions.theme === 'dark') {
+      
+        <img src="assets/images/logos/logo.svg" alt="homepage" />
+        } @else {
+
+        <img src="assets/images/logos/dark-logo.svg" alt="homepage" />
+        }
+    </a>
+</div> -->
+<div class="brand-logo d-none d-lg-flex align-items-center p-0">
+    <!-- <img src="../../../assets/images/logo-light-text.png" alt="homepage" /> -->
+    <ng-container *ngIf="data; else elseblock">
+        <ng-container *ngIf="themeOptions.theme === 'dark'; else lightTheme">
+            <a [routerLink]="'/dashboard'"><img src="{{appDomain}}{{data}}" alt="{{company_name}}"
+                    class="img-fluid pt-1" /></a>
+        </ng-container>
+        <ng-template #lightTheme>
+            <a [routerLink]="'/dashboard'"> <img src="{{appDomain}}{{data}}" alt="{{company_name}}"
+                    class="img-fluid pt-1" /></a>
+        </ng-template>
+    </ng-container>
+    <ng-template #elseblock>
+        <a [routerLink]="'/dashboard'"><span class="pt-1">{{company_name}}</span></a>
+    </ng-template>
+</div>
+
+<!-- ============================================================== -->
+<!-- End Logo -->
+<!-- ============================================================== -->
+<nav class="sidebar-nav" style="margin-bottom:55px;">
+    <ul id="sidebarnav">
+        <!-- User Profile-->
+        <!-- <li class="mt-4 pt-1">
+            <div class="user-profile">
+                
+                <div class="profile-img">
+                    <img src="assets/images/users/user1.jpg" alt="user" />
+                </div>
+                
+                <div class="profile-text" ngbDropdown display="static">
+                    <a href="javascript: void(0);" class="dropdown-toggle link u-dropdown" ngbDropdownToggle>Markarn Doe
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <a href="javascript: void(0);" class="dropdown-item d-flex align-items-center gap-1">
+                           <i-feather name="user" class="feather-sm d-flex text-primary"></i-feather> My Profile</a>
+                        <a href="javascript: void(0);" class="dropdown-item d-flex align-items-center gap-1">
+                            <i-feather name="dollar-sign" class="feather-sm d-flex text-primary"></i-feather>  My Balance</a>
+                        <a href="javascript: void(0);" class="dropdown-item d-flex align-items-center gap-1">
+                            <i-feather name="inbox" class="feather-sm d-flex text-primary"></i-feather> Inbox</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript: void(0);" class="dropdown-item d-flex align-items-center gap-1">
+                            <i-feather name="settings" class="feather-sm d-flex text-primary"></i-feather> Account Setting</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="javascript: void(0);" class="dropdown-item d-flex align-items-center gap-1">
+                            <i-feather name="log-out" class="feather-sm d-flex text-primary"></i-feather> Logout</a>
+                            <div class="dropdown-divider"></div>
+                            <div href="javascript: void(0);" class="dropdown-item">
+                                <a href="" class="btn btn-primary w-100">View Profile</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </li> -->
+        <!-- First level menu -->
+        @for(sidebarnavItem of sidebarnavItems; track sidebarnavItem) {
+        <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
+            (click)="sidebarnavItem.submenu.length != 0 ? '' : handleNotify()"
+            [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
+            @if(sidebarnavItem.extralink === true) {
+            <div class="nav-small-cap"><i [ngClass]="[sidebarnavItem.icon]"></i><span
+                    class="hide-menu">{{sidebarnavItem.title |
+                    translate}}</span></div>
+            }
+
+            @if(!sidebarnavItem.extralink) {
+            <a class="sidebar-link" [routerLink]="sidebarnavItem.class === '' ? [sidebarnavItem.path] : null"
+                [ngClass]="[sidebarnavItem.class]" (click)="addExpandClass(sidebarnavItem.title)"
+                [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
+                <!-- <i [ngClass]="[sidebarnavItem.icon]"></i> -->
+                <i-feather [name]="sidebarnavItem.icon" [ngClass]="[sidebarnavItem.icon]"></i-feather>
+                <span class="hide-menu">{{sidebarnavItem.title | translate}}</span>
+            </a>
+            }
+
+            <!-- Second level menu -->
+            @if(sidebarnavItem.submenu.length > 0) {
+            <ul aria-expanded="false" class="collapse first-level"
+                [ngClass]="{'in' : showMenu === sidebarnavItem.title }">
+                @for(sidebarnavSubItem of sidebarnavItem.submenu; track sidebarnavSubItem) {
+                <li class="sidebar-item" (click)="sidebarnavSubItem.submenu.length != 0 ? '' : handleNotify()"
+                    [class.active]="showSubMenu === sidebarnavSubItem.title"
+                    [routerLinkActive]="sidebarnavSubItem.submenu.length > 0 ? '' : 'active'">
+                    @if(!sidebarnavSubItem.extralink) {
+                    <a class="sidebar-link"
+                        [routerLink]="sidebarnavSubItem.submenu.length > 0 ? null : [sidebarnavSubItem.path]"
+                        [routerLinkActive]="sidebarnavSubItem.submenu.length > 0 ? '' : 'router-link-active'"
+                        [ngClass]="[sidebarnavSubItem.class]" (click)="addActiveClass(sidebarnavSubItem.title)">
+                        <i [ngClass]="[sidebarnavSubItem.icon]"></i>
+                        <span class="hide-menu">{{sidebarnavSubItem.title | translate}}</span>
+                    </a>
+                    }
+
+                    <!-- Third level menu -->
+                    @if(sidebarnavSubItem.submenu.length > 0) {
+                    <ul aria-expanded="false" class="collapse Second-level"
+                        [ngClass]="{'in' : showSubMenu === sidebarnavSubItem.title }">
+                        @for(sidebarnavSubsubItem of sidebarnavSubItem.submenu; track sidebarnavSubsubItem) {
+                        <li class="sidebar-item" routerLinkActive="active" [ngClass]="[sidebarnavSubsubItem.class]">
+                            @if(!sidebarnavSubsubItem.extralink) {
+                            <a class="sidebar-link" [routerLink]="[sidebarnavSubsubItem.path]"
+                                [routerLinkActive]="sidebarnavSubsubItem.submenu.length > 0 ? '' : 'router-link-active'">
+                                <i [ngClass]="[sidebarnavSubsubItem.icon]"></i>
+                                <span class="hide-menu">{{sidebarnavSubsubItem.title | translate}}</span>
+                            </a>
+                            }
+
+                        </li>
+                        }
+
+                    </ul>
+                    }
+
+                </li>
+                }
+
+            </ul>
+            }
+
+        </li>
+        }
+
+    </ul>
+</nav>
+<!-- <div *ngIf="publisherData && publisherData['account_manager']" class="bg-white">
+    <div
+        style="position: relative;display: flex;padding: 0px 0px 0px 0px;align-items: center;margin-top: -60px;z-index: 9999;background: #ffffff;">
+        <ng-container *ngIf="publisherData.company_logo; else elseBlock">
+            <img #logo class="logo-icon" style="height: 50px; width: 50px"
+                [src]="'../../../assets/images/' + publisherData.company_logo" [alt]="publisherData.company_logo">
+        </ng-container>
+        <ng-template #elseBlock>
+            <img style="height: 45px;" #logo class="logo-icon" src="../../../assets/images/icon/account_manager.png"
+                placeholder='account_manager'>
+        </ng-template>
+        <div style="font-size: 11px;font-weight: 500; color: black;" class="hide-menu p-1">
+            <p class="m-0 text-decoration-underline" style="font-size:13px;">Account Manager Details</p>
+            <p class="m-0"><strong>Name :</strong> {{publisherData['account_manager']['name'] || '' }}</p>
+            <p class="m-0"><strong>Email : </strong>{{publisherData['account_manager']['email'] || '' }}</p>
+            <p class="m-0"><strong>Teams Id : </strong>{{publisherData['account_manager']['skypeId'] || '' }}</p>
+        </div>
+    </div>
+</div> -->

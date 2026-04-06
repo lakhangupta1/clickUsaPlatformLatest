@@ -1,0 +1,179 @@
+ .pointer-cursor {
+    cursor: pointer;
+}
+.show-fields {
+    overflow: visible;
+}
+
+.hide-fields {
+    max-height: 0px;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+img {
+    width: 30px;
+}
+
+p {
+    margin: 0;
+}
+
+.ng-valid,
+.ng-touched.ng-valid {
+    border-color: none;
+}
+
+.label-no_link {
+    text-transform: capitalize;
+    background-color: #00c0ef !important;
+}
+
+.label-active {
+    text-transform: capitalize;
+    background-color: #00a65a !important;
+}
+
+.label-waitingForApproval {
+    text-transform: capitalize;
+    background-color: #f39c12 !important;
+}
+
+.label-deleted {
+    text-transform: capitalize;
+    background-color: #dd4b39 !important;
+}
+
+.label-unmanaged {
+    text-transform: capitalize;
+    background-color: #3c8dbc !important;
+}
+
+.label-apply {
+    text-transform: capitalize;
+    background-color: #f26727 !important;
+}
+
+.label-applied {
+    text-transform: capitalize;
+    background-color: #3e5569 !important;
+}
+
+.label-waiting_in_apply {
+    text-transform: capitalize;
+    background-color: salmon !important;
+}
+
+.label-rejected {
+    text-transform: capitalize;
+    background-color: orangered !important;
+}
+
+.label-paused {
+    text-transform: capitalize;
+    background-color: #daa520 !important;
+}
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+
+}
+
+.ellipsis {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+.caret.caret-up {
+    border-top-width: 0;
+    border-bottom: 4px solid #337ab7;
+}
+
+.form-check-input[type=checkbox] {
+    border-radius: 4px;
+    background-color: transparent;
+    z-index: 0;
+}
+
+.form-check-input:checked {
+    background-color: #2962ff;
+    border-color: #2962ff;
+}
+
+/* switch toggle */
+.switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #4CAF50;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+.checkmark {
+  height: 20px;
+  width: 20px;
+  border: 2px solid #0d6efd;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s ease;
+  color: #6c757d;
+  cursor: pointer;
+}

@@ -1,0 +1,37 @@
+.close {
+    font-size: 1.4rem;
+    opacity: 0.1;
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover>.close {
+    opacity: 0.8;
+}
+
+// .tab-content {
+//     border-top: 1px solid #363636;
+// }
+
+tr th {
+    font-weight: bold;
+    color: black;
+}
+
+.accordion-item {
+    color: black;
+}
+
+td {
+    white-space: break-spaces;
+}
+
+// .table-responsive {
+//     width: 85% !important;
+// }
+#offerstable{
+    width: 85% !important;
+}
+// .bg{
+//     background-color:var(--bs-secondary);
+// background-color: #e6e6fa;
+// }

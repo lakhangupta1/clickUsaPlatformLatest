@@ -1,0 +1,134 @@
+<!-- Row -->
+<div class="row">
+    <div class="col-12 mb-2 mt-2 d-flex justify-content-end">
+        <div class="mb-1">
+            <select class="form-select " [(ngModel)]="progressCardsDateRange" (change)="onChange('progressCards')">
+                <option value="7">Today/Yesterday</option>
+                <option value="8">Last 7 Days/7 Days Before Last 7 Days</option>
+                <option value="9">This Month/Last Month</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 rounded" *ngFor="let item of progressCardsData | keyvalue">
+        <div class="card bg-box ">
+            <div class="card-body" [ngStyle]="{'background-image':item['value']['bgcolor']}">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="text-white">{{ item['value']['currentValue'] }}</h3>
+                        <h6 class="card-subtitle text-white" [ngStyle]="{ 'colors': item['value']['color'] }">
+                            {{item['key'].toUpperCase()}}</h6>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2">
+                            <i [ngClass]="item['value']['previousValue'] <= item['value']['currentValue'] 
+      ? 'fas fs-5 fa-arrow-up text-success' 
+      : 'fas fs-5 fa-arrow-down text-danger'">
+                            </i>
+
+                            <span class="fs-4 fw-medium" [ngClass]="item['value']['previousValue'] <= item['value']['currentValue'] 
+          ? 'text-success' : 'text-danger'">
+                                {{ item['value']['percentValue'] | number:'1.1-1' }}% ({{ item['value']['previousValue']
+                                }})
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="col-12">
+                        <div class="progress">
+                            <div class="progress-bar" [ngClass]="item['value']['previousValue'] <= item['value']['currentValue'] 
+         ? 'bg-success' : 'bg-danger'" role="progressbar" [style.width.%]="item['value']['percentValue']"
+                                style="height: 6px;">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-md-flex align-items-center">
+                    <h4 class="card-title">Statistics</h4>
+                    <div class="ms-auto">
+                        <div class="">
+                            <select class="form-select" [(ngModel)]="statChartDateRange"
+                                (change)="onChange('statChart')">
+                                <option selected value="1">Today</option>
+                                <option value="2">Yesterday</option>
+                                <option value="3">This Week</option>
+                                <option value="4">Last Week</option>
+                                <option value="5">This Month</option>
+                                <option value="6">Last Month</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                    [dataLabels]="chartOptions.dataLabels" [markers]="chartOptions.markers"
+                    [colors]="chartOptions.colors" [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis"
+                    [stroke]="chartOptions.stroke" [title]="chartOptions.title" [legend]="chartOptions.legend"
+                    [fill]="chartOptions.fill"></apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title mb-0">Top app ids</h4>
+
+                    <div class="d-flex gap-3">
+                        <select class="form-select" [(ngModel)]="topAppIdsLimit" (change)="onChange('topAppIds')">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+
+                        <select class="form-select" [(ngModel)]="topAppIdsDateRange" (change)="onChange('topAppIds')">
+                            <option value="1">Today</option>
+                            <option value="2">Yesterday</option>
+                            <option value="3">This Week</option>
+                            <option value="4">Last Week</option>
+                            <option value="5">This Month</option>
+                            <option value="6">Last Month</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">App Id</th>
+                            <th scope="col">Offer Name</th>
+                            <th scope="col">Conversion</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="topAppIdsData.length">
+                        <tr *ngFor="let item of topAppIdsData; let i = index">
+                            <th scope="row">{{ i + 1 }}</th>
+                            <td>{{ item["app_id"] ? item["app_id"] : "" }}</td>
+                            <td>{{ item["offer_name"] ? item["offer_name"] : "" }}</td>
+                            <td>{{ item["conversion"] ? item["conversion"] : "" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

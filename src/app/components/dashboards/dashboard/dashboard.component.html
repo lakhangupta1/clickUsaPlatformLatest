@@ -1,0 +1,197 @@
+<!-- Row -->
+<div class="row">
+    <!-- <div class="card "> -->
+    <div class="col-12 mb-2 mt-2 d-flex justify-content-end">
+        <div class="mb-1">
+            <select class="form-select " [(ngModel)]="progressCardsDateRange" (change)="onChange('progressCards')">
+                <option value="7">Today/Yesterday</option>
+                <option value="8">Last 7 Days/7 Days Before Last 7 Days</option>
+                <option value="9">This Month/Last Month</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="row">
+            <div class="col-lg-4 col-md-6" *ngFor="let item of progressCardsData | keyvalue">
+                <div class="card bg-box position-relative">
+                    <div class="card-body rounded-2" [ngStyle]="{'background-color':item['value']['bgcolor']}">
+                        <h4 class="card-title fw-normal text-uppercase"
+                            [ngStyle]="{ 'colors': item['value']['color'] }">
+                            {{ item['key'].toUpperCase() }}
+                        </h4>
+                        <div class="text-end">
+                            <h4 class=" fs-9 fw-light" [ngStyle]="{ 'color': item['value']['color'] }">
+                                <!-- <i
+                                    [ngClass]="item['value']['previousValue'] <=
+                                     item['value']['currentValue'] ? 'fas fa-arrow-up text-success' : 'fas fa-arrow-down text-danger'"></i> -->
+                                {{ item['value']['currentValue'] }}
+                            </h4>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i
+                                [ngClass]="item['value']['previousValue'] <= item['value']['currentValue'] ? 'fas fs-5 fa-arrow-up text-success' : 'fas fs-5 fa-arrow-down text-danger' "></i>
+                            <!-- <i class="fas fa-caret-down text-warning fs-5"></i> -->
+                            <span class="fs-4 fw-medium" [ngClass]="item['value']['previousValue'] <= 
+                                    item['value']['currentValue'] ? 'text-success' : 'text-danger'">
+                                {{ item['value']['percentValue']|number: '1.1-1' }}% ({{
+                                item['value']['previousValue'] }})
+                            </span>
+                        </div>
+                        <div>
+                            <ngb-progressbar [animated]="true" [height]="'5px'" [max]="100" [showValue]="false"
+                                [striped]="false"
+                                [type]="item['value']['previousValue'] <= item['value']['currentValue'] ? 'success' : 'danger'"
+                                [value]="item['value']['percentValue']">
+
+                            </ngb-progressbar>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- </div> -->
+</div>
+
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div>
+                                <h4 class="card-title">Statistics</h4>
+                            </div>
+                            <div class="ms-auto">
+                                <div class="">
+                                    <select class="form-select" [(ngModel)]="statChartDateRange"
+                                        (change)="onChange('statChart')">
+                                        <option selected value="1">Today</option>
+                                        <option value="2">Yesterday</option>
+                                        <option value="3">This Week</option>
+                                        <option value="4">Last Week</option>
+                                        <option value="5">This Month</option>
+                                        <option value="6">Last Month</option>
+                                    </select>
+                                </div>
+                                <!-- <ul class="list-unstyled mb-0 hstack gap-3">
+                                    <li>
+                                        <h6 class="text-muted mb-0 hstack gap-2 fw-normal">
+                                            <span class="round-10 rounded-circle"
+                                                style="background-color: #abc0de;"></span>Click
+                                        </h6>
+                                    </li>
+                                    <li>
+                                        <h6 class="text-muted mb-0 hstack gap-2 fw-normal">
+                                            <span class="round-10 rounded-circle"
+                                                style="background-color: #3ee6a8;"></span>Conversion
+                                        </h6>
+                                    </li>
+                                    <li>
+                                        <h6 class="text-muted mb-0 hstack gap-2 fw-normal">
+                                            <span class="round-10 rounded-circle"
+                                                style="background-color: #575b5e;"></span>CR
+                                        </h6>
+                                    </li>
+                                </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div style="height:370px;" class="d-flex flex-column">
+                            <apx-chart [series]="statChartData.series" [chart]="statChartData.chart"
+                                [xaxis]="statChartData.xaxis" [yaxis]="statChartData.yaxis" [grid]="statChartData.grid"
+                                [stroke]="statChartData.stroke" [tooltip]="statChartData.tooltip"
+                                [fill]="statChartData.fill" [dataLabels]="statChartData.dataLabels"
+                                [legend]="statChartData.legend" [colors]="statChartData.colors"
+                                [markers]="statChartData.markers">
+                            </apx-chart>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row -->
+
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card w-100 overflow-hidden">
+            <div class="card-body pb-8">
+                <div class="d-md-flex no-block align-items-center">
+                    <h4 class="card-title mb-0 text-uppercase">Top app ids</h4>
+                    <div class="ms-auto">
+                        <select class="form-select" [(ngModel)]="topAppIdsLimit" (change)="onChange('topAppIds')">
+                            <option selected value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">10</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="mx-4">
+                        <select class="form-select" [(ngModel)]="topAppIdsDateRange" (change)="onChange('topAppIds')">
+                            <option selected value="1">Today</option>
+                            <option value="2">Yesterday</option>
+                            <option value="3">This Week</option>
+                            <option value="4">Last Week</option>
+                            <option value="5">This Month</option>
+                            <option value="6">Last Month</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table stylish-table align-middle">
+                    <thead class="table-primary border">
+                        <tr>
+                            <th class="border-bottom fs- ps-4">
+                                #
+                            </th>
+                            <th class="border-bottom fs-3">
+                                App Id
+                            </th>
+                            <th class="border-bottom ">
+                                Offer Name
+                            </th>
+                            <th class="border-bottom fs-3 ">
+                                Conversion
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="topAppIdsData.length; else noTopAppIdsData">
+                            <tr *ngFor="let item of topAppIdsData; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>
+                                    <span style="color: #2962ff; cursor: pointer;"
+                                        (click)="onClickAppId(item['app_id'])">
+                                        {{ item['app_id'] ? item['app_id'] : '' }}
+                                    </span>
+                                </td>
+                                <td>{{ item['offer_name'] ? (item['offer_name']) : '' }}</td>
+                                <!-- <td>{{ item['offer_name'] ? item['offer_name'] : ''}}</td> -->
+                                <td>{{ item['conversion'] ? item['conversion'] : '' }}</td>
+                            </tr>
+                        </ng-container>
+                        <ng-template #noTopAppIdsData>
+                            <tr>
+                                <td colspan="4">No record Found!</td>
+                            </tr>
+                        </ng-template>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Row -->

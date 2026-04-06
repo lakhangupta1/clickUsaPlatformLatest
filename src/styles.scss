@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+.popover {
+    // width: 65%;
+    max-width: none;
+    // text-align: center;
+}
+// .popover .popover-body {
+//     width: 100%;
+//     padding: 0%;
+// }
+
+.multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+    max-width: 200px !important;
+}
+ 
+.theme-loading {
+  visibility: hidden !important;
+}
