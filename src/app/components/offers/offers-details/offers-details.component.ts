@@ -45,34 +45,34 @@ export class OffersDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.offerid = this.activatedRoute.snapshot.paramMap.get('id');
-    this.getOfferData(this.offerid)
+    // this.getOfferData(this.offerid)
   }
-  getOfferData(offerId) {
-    this.offer_service.getOneOfferDetails(offerId).subscribe((apiResult) => {
-      if (!apiResult['err']) {
-        this.offerData = apiResult['payload'];
-        if (this.offerData.tracking_link) {
-          this.offer_service.showPlatform(this.offerData.advertiser_platform_id).subscribe(result => {
-            if (!result['err'] && result['payload'] && result['payload'][0] && result['payload'][0]['parameters']) {
-              this.offerData.tracking_link = this.offerData.tracking_link + "&" + result['payload'][0]['parameters'];
-            }
-          });
-        }
-        if (this.offerData.isBlacklist == 1) {
-          this.offerBlockedStatus = true;
-          this.toasterService.warning("This offer is blocked!!", 'Warning!');
-        }
-        if (!this.offerData.thumbnail && this.offerData.device_targeting.os.length) {
-          if (this.offerData.device_targeting.os[0].toLowerCase() == 'ios') {
-            this.offerData.thumbnail = "../../../../../../assets/images/icon/ios.svg"
-          }
-          else if (this.offerData.device_targeting.os[0].toLowerCase() == 'android') {
-            this.offerData.thumbnail = "../../../../../../assets/images/icon/android.svg"
-          }
-        }
-      }
-    })
-  }
+  // getOfferData(offerId) {
+  //   this.offer_service.getOneOfferDetails(offerId).subscribe((apiResult) => {
+  //     if (!apiResult['err']) {
+  //       this.offerData = apiResult['payload'];
+  //       if (this.offerData.tracking_link) {
+  //         this.offer_service.showPlatform(this.offerData.advertiser_platform_id).subscribe(result => {
+  //           if (!result['err'] && result['payload'] && result['payload'][0] && result['payload'][0]['parameters']) {
+  //             this.offerData.tracking_link = this.offerData.tracking_link + "&" + result['payload'][0]['parameters'];
+  //           }
+  //         });
+  //       }
+  //       if (this.offerData.isBlacklist == 1) {
+  //         this.offerBlockedStatus = true;
+  //         this.toasterService.warning("This offer is blocked!!", 'Warning!');
+  //       }
+  //       if (!this.offerData.thumbnail && this.offerData.device_targeting.os.length) {
+  //         if (this.offerData.device_targeting.os[0].toLowerCase() == 'ios') {
+  //           this.offerData.thumbnail = "../../../../../../assets/images/icon/ios.svg"
+  //         }
+  //         else if (this.offerData.device_targeting.os[0].toLowerCase() == 'android') {
+  //           this.offerData.thumbnail = "../../../../../../assets/images/icon/android.svg"
+  //         }
+  //       }
+  //     }
+  //   })
+  // }
   applyOfferByPublisher(offerId) {
 
     this.modal.title = "Apply Offer";
@@ -89,7 +89,7 @@ export class OffersDetailsComponent implements OnInit {
             this.toasterService.error(result['msg'], 'Error!');
           } else {
             this.toasterService.success(result['msg'], 'Success!');
-            this.getOfferData(this.offerid);
+            // this.getOfferData(this.offerid);
           }
         });
       }

@@ -1,0 +1,169 @@
+<div class="container mt-4">
+
+  <h3>{{ isEditMode ? 'Edit Campaign' : 'Create Campaign' }}</h3>
+
+  <form [formGroup]="campaignForm" novalidate (ngSubmit)="onSubmit($event)">
+
+    <!-- BASIC -->
+    <div class="card p-3 mb-3">
+      <h5>Basic Info</h5>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label for="camp_name">Campaign Name</label>
+          <input id="camp_name" class="form-control mb-2" placeholder="Campaign Name"
+                 formControlName="camp_name">
+        </div>
+
+        <div class="col-md-6">
+          <label for="destination_url">Destination URL</label>
+          <input id="destination_url" class="form-control mb-2" placeholder="Destination URL"
+                 formControlName="destination_url">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label for="schedule_start">Start Date</label>
+          <input id="schedule_start" type="date" class="form-control mb-2"
+                 formControlName="schedule_start">
+        </div>
+
+        <div class="col-md-6">
+          <label for="schedule_end">End Date</label>
+          <input id="schedule_end" type="date" class="form-control"
+                 formControlName="schedule_end">
+        </div>
+      </div>
+    </div>
+
+    <!-- ALLOW TRAFFIC -->
+    <div class="card p-3 mb-3" formGroupName="allow_traffic">
+      <h5>Allow Traffic</h5>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label for="allow_vertical">Vertical</label>
+          <input id="allow_vertical" class="form-control mb-2" placeholder="Vertical" formControlName="vartical">
+        </div>
+        <div class="col-md-6">
+          <label for="allow_provider">Provider</label>
+          <input id="allow_provider" class="form-control mb-2" placeholder="Provider" formControlName="provider">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>Country</label>
+          <input class="form-control mb-2" placeholder="Country" formControlName="country">
+        </div>
+        <div class="col-md-6">
+          <label>Device</label>
+          <input class="form-control mb-2" placeholder="Device" formControlName="device">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>OS</label>
+          <input class="form-control mb-2" placeholder="OS" formControlName="os">
+        </div>
+        <div class="col-md-6">
+          <label for="allow_tag">Tag</label>
+          <input class="form-control" placeholder="Tag" formControlName="tag">
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCKED TRAFFIC -->
+    <div class="card p-3 mb-3" formGroupName="blocked_traffic">
+      <h5>Blocked Traffic</h5>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label for="blocked_provider">Provider</label>
+          <input class="form-control mb-2" placeholder="Provider" formControlName="provider">
+        </div>
+        <div class="col-md-6">
+          <label for="blocked_country">Country</label>
+          <input class="form-control mb-2" placeholder="Country" formControlName="country">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label for="blocked_device">Device</label>
+          <input class="form-control mb-2" placeholder="Device" formControlName="device">
+        </div>
+        <div class="col-md-6">
+          <label for="blocked_os">OS</label>
+          <input class="form-control mb-2" placeholder="OS" formControlName="os">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label for="blocked_tag">Tag</label>
+          <input class="form-control" placeholder="Tag" formControlName="tag">
+        </div>
+      </div>
+    </div>
+
+    <!-- BUDGET -->
+    <div class="card p-3 mb-3" formGroupName="budget">
+      <h5>Budget</h5>
+
+      <div class="row">
+        <div class="col-md-4">
+          <label for="cpc">CPC</label>
+          <input class="form-control mb-2" placeholder="CPC" formControlName="cpc">
+        </div>
+        <div class="col-md-4">
+          <label for="total">Total Budget</label>
+          <input class="form-control mb-2" placeholder="Total Budget" formControlName="total">
+        </div>
+        <div class="col-md-4">
+          <label for="daily">Daily Budget</label>
+          <input class="form-control mb-2" placeholder="Daily Budget" formControlName="daily">
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <label>
+            <input type="checkbox" formControlName="smooth"> Smooth Distribution
+            Smooth Distribution
+          </label>
+        </div>
+
+        <div class="col-md-6">
+          <label>
+            <input type="checkbox" formControlName="acceleration"> Acceleration
+            Acceleration
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="card p-3 mb-3">
+      <h5>Status</h5>
+
+      <div class="row">
+        <div class="col-md-6">
+          <!-- <label for="status">Status</label> id="status" -->
+          <select class="form-control" formControlName="status">
+            <option value="active">Active</option>
+            <option value="paused">Paused</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <button class="btn btn-primary w-100">
+      {{ isEditMode ? 'Update Campaign' : 'Create Campaign' }}
+    </button>
+
+  </form>
+</div>

@@ -1,275 +1,173 @@
 <div class="auth-wrapper d-flex no-block justify-content-end align-items-center"
-    style="background:url(assets/images/background/sign-up.jpg); background-repeat: no-repeat; background-size:contain; background-attachment:fixed; position: relative;">
-    <div class="auth-box m-3 m-md-0" style="width: 65%; max-width: none;">
-        <div>
-            <!-- <div class="text-center">
-                <span class="db"><img [src]="'assets/images/logos/' + logo" alt="logo" style="height: 100px; width: 100px;" class="rounded-circle p-2"/></span>
-                <h5 class="font-medium mb-4">Sign Up to Admin</h5>
-            </div> -->
-            <div class="text-center">
-                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto"
-                    style="height:100px;width:100px;">
-                    <img [src]="'assets/images/logos/' + logo" alt="logo" class="img-fluid rounded-circle"
-                        style="max-height:90px; max-width:90px; object-fit:contain; border-radius: 50%;">
-                </div>
-                <h5 class="font-medium mb-4 mt-3">Sign Up to Admin</h5>
+     style="background:url(assets/images/background/sign-up.jpg); background-repeat:no-repeat; background-size:contain; background-attachment:fixed;">
+
+  <div class="auth-box m-3 m-md-0" style="width:65%;">
+    <div>
+
+      <!-- LOGO -->
+      <div class="text-center">
+        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto"
+             style="height:100px;width:100px;">
+          <img [src]="'assets/images/logos/' + logo"
+               class="img-fluid rounded-circle"
+               style="max-height:90px; max-width:90px;">
+        </div>
+        <h5 class="mt-3 mb-4">Sign Up</h5>
+      </div>
+
+      <!-- FORM -->
+      <form [formGroup]="publisherRegisterForm" (ngSubmit)="onSubmit()">
+        <div class="row g-3">
+
+          <!-- Company -->
+          <div class="col-md-6">
+            <label class="form-label">Company Name *</label>
+            <input type="text" class="form-control"
+                   formControlName="company"
+                   [class.is-invalid]="isInvalid('company')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('company')">
+              Company name is required
             </div>
-            <!-- Form -->
-            <div class="row">
-                <div class="col-md-12">
-                    <form class="form-horizontal mt-3" [formGroup]="publisherRegisterForm" (ngSubmit)="onSubmit()">
-                        <div class="container-fluid">
-                            <div class="row g-3">
-                                <!-- Company Name -->
-                                <div class="col-md-6">
-                                    <label for="company" class="form-label">
-                                        Company Name <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" placeholder="Enter Company Name"
-                                        formControlName="company" [class.is-invalid]="isInvalid('company')" />
+          </div>
 
-                                    <div class="invalid-feedback" *ngIf="isInvalid('company')">
-                                        <div *ngIf="f['company'].errors?.['required']">
-                                            Company name is required.
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-
-
-                                <!-- Name -->
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label">
-                                        Name <span class="text-danger">*</span>
-                                    </label>
-
-                                    <input id="name" type="text" class="form-control" placeholder="Enter Name"
-                                        formControlName="name" [class.is-invalid]="isInvalid('name')" />
-
-                                    <div class="invalid-feedback" *ngIf="isInvalid('name')">
-                                        Name is required.
-                                    </div>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label">
-                                        Email <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="email" class="form-control" formControlName="email"
-                                        [class.is-invalid]="isInvalid('email')" />
-
-                                    <div class="invalid-feedback" *ngIf="isInvalid('email')">
-                                        <div *ngIf="f['email'].errors?.['required']">
-                                            Email is required.
-                                        </div>
-                                        <div *ngIf="f['email'].errors?.['email']">
-                                            Enter a valid email address.
-                                        </div>
-                                        <div *ngIf="f['email'].errors?.['maxlength']">
-                                            Email is too long.
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Phone  -->
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        Phone <span class="text-danger">*</span>
-                                    </label>
-
-                                    <input type="text" class="form-control" placeholder="Enter your Phone No"
-                                        formControlName="phone" [class.is-invalid]="isInvalid('phone')" />
-
-                                    <div class="invalid-feedback" *ngIf="isInvalid('phone')">
-                                        <div *ngIf="f['phone'].errors?.['required']">
-                                            Phone number is required.
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <!-- Country -->
-                                <div class="col-md-6">
-                                    <label for="country" class="form-label">
-                                        Country <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="country" type="text" class="form-control"
-                                        placeholder="Enter Country Name" formControlName="country"
-                                        [class.is-invalid]="isInvalid('country')" />
-                                    <div class="invalid-feedback" *ngIf="isInvalid('country')">
-                                        Country is required.
-                                    </div>
-
-                                </div>
-
-                                <!-- State -->
-                                <div class="col-md-6">
-                                    <label for="state" class="form-label">
-                                        State <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="state" type="text" class="form-control" placeholder="Enter State Name"
-                                        formControlName="state" [class.is-invalid]="isInvalid('state')" />
-                                    <div class="invalid-feedback" *ngIf="isInvalid('state')">
-                                        State is required.
-                                    </div>
-
-                                </div>
-
-                                <!-- City -->
-                                <div class="col-md-6">
-                                    <label for="city" class="form-label">
-                                        City <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="city" type="text" class="form-control" placeholder="Enter City Name"
-                                        formControlName="city" [class.is-invalid]="isInvalid('city')" />
-                                    <div class="invalid-feedback" *ngIf="isInvalid('city')">
-                                        City is required.
-                                    </div>
-
-                                </div>
-
-                                <!-- Pincode -->
-                                <!-- <div class="col-md-6">
-                                    <label for="pincode" class="form-label">
-                                        Pincode <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="pincode" type="text" class="form-control" placeholder="Pincode"
-                                        formControlName="pincode" required />
-                                    <div class="text-danger small" *ngIf="
-                                                    publisherRegisterForm.controls['pincode'].touched &&
-                                                    publisherRegisterForm.controls['pincode'].invalid
-                                                ">
-                                        <span *ngIf="publisherRegisterForm.controls['pincode'].errors?.['required']">
-                                            Please enter pincode.
-                                        </span>
-                                        <span *ngIf="publisherRegisterForm.controls['pincode'].errors?.['pattern']">
-                                            Please enter a valid pincode.
-                                        </span>
-                                    </div>
-                                </div> -->
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        Pincode/ZipCode <span class="text-danger">*</span>
-                                    </label>
-
-                                    <input type="text" class="form-control" placeholder="Enter Pincode or ZipCode Name"
-                                        formControlName="pincode" [class.is-invalid]="isInvalid('pincode')" />
-
-                                    <div class="invalid-feedback" *ngIf="isInvalid('pincode')">
-                                        <div *ngIf="f['pincode'].errors?.['required']">
-                                            Postal code is required.
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Address -->
-                                <div class="col-md-6">
-                                    <label for="address" class="form-label">
-                                        Address <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="address" type="text" class="form-control" placeholder="Enter Address"
-                                        formControlName="address" [class.is-invalid]="isInvalid('address')" />
-                                    <div class="invalid-feedback" *ngIf="isInvalid('address')">
-                                        Address is required.
-                                    </div>
-
-                                </div>
-
-                                <!-- Locality -->
-                                <div class="col-md-6">
-                                    <label for="locality" class="form-label">Locality</label>
-                                    <input id="locality" type="text" class="form-control" placeholder="Locality"
-                                        formControlName="locality" />
-
-
-                                </div>
-
-                                <!-- Password -->
-
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        Password <span class="text-danger">*</span>
-                                    </label>
-
-                                    <input type="password" class="form-control" formControlName="password"
-                                        [class.is-invalid]="isInvalid('password')" />
-
-                                    <div class="invalid-feedback" *ngIf="isInvalid('password')">
-                                        <div *ngIf="f['password'].errors?.['required']">
-                                            Password is required.
-                                        </div>
-                                        <div *ngIf="f['password'].errors?.['minlength']">
-                                            Minimum 8 characters required.
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Teams/Skype ID -->
-                                <div class="col-md-6">
-                                    <label for="skypeId" class="form-label">
-                                        Teams/Skype ID <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="skypeId" type="text" class="form-control" placeholder="Enter Teams ID"
-                                        formControlName="skypeId" [class.is-invalid]="isInvalid('skypeId')" />
-                                    <div class="invalid-feedback" *ngIf="isInvalid('skypeId')">
-                                        skypeId is required.
-                                    </div>
-
-                                </div>
-
-                                <!-- Website -->
-                                <div class="col-md-6">
-                                    <label for="website" class="form-label">
-                                        Website <span class="text-danger">*</span>
-                                    </label>
-                                    <input id="website" type="text" class="form-control" placeholder="Enter Website"
-                                        formControlName="website" [class.is-invalid]="isInvalid('website')" />
-                                    <div class="invalid-feedback" *ngIf="isInvalid('website')">
-                                        Website is required.
-                                    </div>
-                                </div>
-
-
-                                <!-- <div class="col-md-12">
-                                <div class="form-check">
-                                    <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    formControlName="terms"
-                                    [class.is-invalid]="isInvalid('terms')"
-                                    />
-
-                                    <label class="form-check-label">
-                                    Accept Terms & Conditions
-                                    </label>
-
-                                    <div class="text-danger small" *ngIf="isInvalid('terms')">
-                                    You must accept Terms & Conditions.
-                                    </div>
-                                </div>
-                                </div> -->
-                                <!-- Submit Button -->
-                                <div class="col-md-12 text-center">
-                                    <button type="submit" class="btn btn-info w-100 mt-3">
-                                        SIGN UP
-                                    </button>
-                                </div>
-
-                                <!-- Sign In Link -->
-                                <div class="col-md-12 text-center mt-2">
-                                    Already have an account?
-                                    <a [routerLink]="['/login']" class="text-info ms-1">
-                                        <b>Sign In</b>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+          <!-- First Name -->
+          <div class="col-md-6">
+            <label class="form-label">First Name *</label>
+            <input type="text" class="form-control"
+                   formControlName="first_name"
+                   [class.is-invalid]="isInvalid('first_name')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('first_name')">
+              First name is required
             </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6">
+            <label class="form-label">Last Name *</label>
+            <input type="text" class="form-control"
+                   formControlName="last_name"
+                   [class.is-invalid]="isInvalid('last_name')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('last_name')">
+              Last name is required
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-control"
+                   formControlName="email"
+                   [class.is-invalid]="isInvalid('email')" />
+
+            <!-- ✅ ENABLE VALIDATION -->
+            <div class="invalid-feedback" *ngIf="isInvalid('email')">
+              <div *ngIf="publisherRegisterForm.get('email')?.errors?.['required']">
+                Email is required
+              </div>
+              <div *ngIf="publisherRegisterForm.get('email')?.errors?.['email']">
+                Invalid email format
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Country *</label>
+
+            <select class="form-control"
+                    formControlName="country"
+                    [class.is-invalid]="isInvalid('country')">
+
+              <option value="">Select Country</option>
+
+              <option *ngFor="let c of countryList" [value]="c.key">
+                {{ c.value }} ({{ c.key }})
+              </option>
+
+            </select>
+
+            <div class="invalid-feedback" *ngIf="isInvalid('country')">
+              Country is required
+            </div>
+          </div>
+          <!-- Phone -->
+          <div class="col-md-6">
+            <label class="form-label">Phone *</label>
+            <input type="text" class="form-control"
+                   maxlength="10"
+                   formControlName="phone"
+                   [class.is-invalid]="isInvalid('phone')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('phone')">
+              Enter valid 10-digit number
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="col-md-6">
+            <label class="form-label">Password *</label>
+            <input type="password" class="form-control"
+                   formControlName="password"
+                   [class.is-invalid]="isInvalid('password')" />
+
+            <!-- ✅ ENABLE VALIDATION -->
+            <div class="invalid-feedback" *ngIf="isInvalid('password')">
+              <div *ngIf="publisherRegisterForm.get('password')?.errors?.['required']">
+                Password required
+              </div>
+              <div *ngIf="publisherRegisterForm.get('password')?.errors?.['minlength']">
+                Minimum 8 characters required
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="col-md-12 text-center">
+            <button type="submit"
+                    class="btn btn-info w-100 mt-3"
+                    [disabled]="publisherRegisterForm.invalid || isSubmitting">
+              {{ isSubmitting ? 'Processing...' : 'SIGN UP' }}
+            </button>
+          </div>
+
+          <!-- Login -->
+          <div class="col-md-12 text-center mt-2">
+            Already have an account?
+            <a routerLink="/login" class="text-info ms-1"><b>Sign In</b></a>
+          </div>
 
         </div>
+      </form>
+
     </div>
+  </div>
 </div>
+
+
+
+<!-- ✅ OTP MODAL -->
+<ng-template #otpModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Verify OTP</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body text-center">
+    <p>Enter OTP sent to your email/phone</p>
+
+    <!-- ✅ IMPROVED INPUT -->
+    <input type="text"
+           class="form-control text-center"
+           maxlength="6"
+           [(ngModel)]="otp"
+           placeholder="Enter OTP"
+           style="font-size:18px; letter-spacing:5px;" />
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+
+    <button class="btn btn-success"
+          [disabled]="otp.length !== 6 || isVerifying"
+          (click)="verifyOtpHandler(modal)">
+    {{ isVerifying ? 'Verifying...' : 'Verify OTP' }}
+  </button>
+  </div>
+</ng-template>

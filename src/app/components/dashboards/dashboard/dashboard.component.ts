@@ -160,69 +160,69 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       getOverallStat: getStatChartData,
       getTopAppIdStat: getTopAppIdsData
     };
-    this.dashboardService.getPublisherDashboardData(filter).subscribe(data => {
-      // console.log("getPublisherDashboardData-->", data);
-      if (data['err']) {
-        this.toastrService.error(data['msg'], 'Error!');
-      } else {
-        if (data['payload']['allStatsForCurrentDateRange']) {
-          if (data['payload']['allStatsForCurrentDateRange']['click']) {
-            this.progressCardsData['click']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['click']);
-          }
-          if (data['payload']['allStatsForCurrentDateRange']['conversion']) {
-            this.progressCardsData['conversion']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['conversion']);
-          }
-          if (data['payload']['allStatsForCurrentDateRange']['payout']) {
-            this.progressCardsData['revenue']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['payout'].toFixed(2));
-          }
-        }
-        if (data['payload']['allStatsForPreviousDateRange']) {
-          if (data['payload']['allStatsForPreviousDateRange']['click']) {
-            this.progressCardsData['click']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['click']);
-          }
-          if (data['payload']['allStatsForPreviousDateRange']['conversion']) {
-            this.progressCardsData['conversion']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['conversion']);
-          }
-          if (data['payload']['allStatsForPreviousDateRange']['payout']) {
-            this.progressCardsData['revenue']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['payout'].toFixed(2));
-          }
-        }
-        this.progressCardsData['click']['percentValue'] = this.calculatePercentage(this.progressCardsData['click']['previousValue'], this.progressCardsData['click']['currentValue']);
-        this.progressCardsData['conversion']['percentValue'] = this.calculatePercentage(this.progressCardsData['conversion']['previousValue'], this.progressCardsData['conversion']['currentValue']);
-        this.progressCardsData['revenue']['percentValue'] = this.calculatePercentage(this.progressCardsData['revenue']['previousValue'], this.progressCardsData['revenue']['currentValue']);
+    // this.dashboardService.getPublisherDashboardData(filter).subscribe(data => {
+    //   // console.log("getPublisherDashboardData-->", data);
+    //   if (data['err']) {
+    //     this.toastrService.error(data['msg'], 'Error!');
+    //   } else {
+    //     if (data['payload']['allStatsForCurrentDateRange']) {
+    //       if (data['payload']['allStatsForCurrentDateRange']['click']) {
+    //         this.progressCardsData['click']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['click']);
+    //       }
+    //       if (data['payload']['allStatsForCurrentDateRange']['conversion']) {
+    //         this.progressCardsData['conversion']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['conversion']);
+    //       }
+    //       if (data['payload']['allStatsForCurrentDateRange']['payout']) {
+    //         this.progressCardsData['revenue']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['payout'].toFixed(2));
+    //       }
+    //     }
+    //     if (data['payload']['allStatsForPreviousDateRange']) {
+    //       if (data['payload']['allStatsForPreviousDateRange']['click']) {
+    //         this.progressCardsData['click']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['click']);
+    //       }
+    //       if (data['payload']['allStatsForPreviousDateRange']['conversion']) {
+    //         this.progressCardsData['conversion']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['conversion']);
+    //       }
+    //       if (data['payload']['allStatsForPreviousDateRange']['payout']) {
+    //         this.progressCardsData['revenue']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['payout'].toFixed(2));
+    //       }
+    //     }
+    //     this.progressCardsData['click']['percentValue'] = this.calculatePercentage(this.progressCardsData['click']['previousValue'], this.progressCardsData['click']['currentValue']);
+    //     this.progressCardsData['conversion']['percentValue'] = this.calculatePercentage(this.progressCardsData['conversion']['previousValue'], this.progressCardsData['conversion']['currentValue']);
+    //     this.progressCardsData['revenue']['percentValue'] = this.calculatePercentage(this.progressCardsData['revenue']['previousValue'], this.progressCardsData['revenue']['currentValue']);
 
-        if (data['payload']['overallStat']) {
-          let series = [{ name: 'Click', data: [] }, { name: 'Conversion', data: [] }, { name: 'CR', data: [] }];
-          let xaxis = { type: 'category', categories: [], labels: { show: false } };
-          for (let item of data['payload']['overallStat']) {
-            series[0]['data'].push(item['click']);
+    //     if (data['payload']['overallStat']) {
+    //       let series = [{ name: 'Click', data: [] }, { name: 'Conversion', data: [] }, { name: 'CR', data: [] }];
+    //       let xaxis = { type: 'category', categories: [], labels: { show: false } };
+    //       for (let item of data['payload']['overallStat']) {
+    //         series[0]['data'].push(item['click']);
 
-            series[1]['data'].push(item['conversion']);
+    //         series[1]['data'].push(item['conversion']);
 
-            let cr = 0;
-            if (item['click'] && item['conversion']) {
-              cr = Number(((item['conversion'] / item['click']) * 100).toFixed(2));
-            }
+    //         let cr = 0;
+    //         if (item['click'] && item['conversion']) {
+    //           cr = Number(((item['conversion'] / item['click']) * 100).toFixed(2));
+    //         }
 
-            series[2]['data'].push(cr);
+    //         series[2]['data'].push(cr);
 
-            if (item['_id'] && item['_id']['hour'] >= 0) {
-              xaxis['categories'].push('Time: ' + item['_id']['hour']);
-            } else if (item['_id'] && item['_id']['day'] && item['_id']['month'] && item['_id']['year']) {
-              xaxis['categories'].push('Date: ' + item['_id']['day'] + '/' + item['_id']['month'] + '/' + item['_id']['year']);
-            }
-          }
-          this.statChartData['xaxis'] = xaxis;
-          this.statChartData['series'] = series;
+    //         if (item['_id'] && item['_id']['hour'] >= 0) {
+    //           xaxis['categories'].push('Time: ' + item['_id']['hour']);
+    //         } else if (item['_id'] && item['_id']['day'] && item['_id']['month'] && item['_id']['year']) {
+    //           xaxis['categories'].push('Date: ' + item['_id']['day'] + '/' + item['_id']['month'] + '/' + item['_id']['year']);
+    //         }
+    //       }
+    //       this.statChartData['xaxis'] = xaxis;
+    //       this.statChartData['series'] = series;
 
-        }
-        if (data['payload']['appIds']) {
-          this.topAppIdsData = data['payload']['appIds'];
-        }
-      }
-    }, () => {
-      this.toastrService.error('Something went wrong, Try again.', 'Error!');
-    });
+    //     }
+    //     if (data['payload']['appIds']) {
+    //       this.topAppIdsData = data['payload']['appIds'];
+    //     }
+    //   }
+    // }, () => {
+    //   this.toastrService.error('Something went wrong, Try again.', 'Error!');
+    // });
   }
 
   calculatePercentage(dividend: number, divisor: number) {
@@ -307,13 +307,6 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   }
 
   onClickAppId(appId) {
-    // let dateRange = 1;
-    // if (this.topAppIdsDateRange > 0) {
-    //   dateRange = this.topAppIdsDateRange;
-    // }
-    // let dates = this.generateDateRange(dateRange);
-    // let link = "/publisher/conversionlog?start_date=" + dates['startDate'] + "&end_date=" + dates['endDate'] + "&app_id=" + appId + "&date_range=" + dateRange;
-    // this.router.navigate([]).then(result => { window.open(link, '_blank'); });
   }
 
 

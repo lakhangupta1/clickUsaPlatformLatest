@@ -8,8 +8,8 @@ export const routes: Routes = [
   {
     path: '',
     component: FullComponent,
-    canActivate: [AuthenticationGuard],
-    canActivateChild: [AuthenticationGuard],
+    canActivate: [],
+    canActivateChild: [],
     children: [
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
       {
@@ -81,6 +81,5 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'dashboard',
   },
-
 
 ];

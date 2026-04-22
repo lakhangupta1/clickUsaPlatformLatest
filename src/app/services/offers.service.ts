@@ -15,6 +15,7 @@ export class OffersService {
   ) {
     this.domain = authenticationService.getSubDomain();
     let userData = this.authenticationService.getUserDetails;
+    console.log(" userData -> ", userData );
     if (userData) {
       if (userData.permissions.includes('network')) {
         this.routeType = "network";
@@ -30,8 +31,8 @@ export class OffersService {
   }
 
 
-  getOffers(data) {
-    return this.http.post(this.domain + '/api/get/' + this.routeType + '/offers', data);
+  getOffers(data : any ) {
+    return this.http.post(this.domain + '/api/get/campaigns', data);
   }
 
   countOffers(data) {
@@ -57,6 +58,15 @@ export class OffersService {
 
   getWorkingOffers(filterData: any) {
     return this.http.post(this.domain + '/api/' + this.routeType + '/offer/allOffers', filterData);
+  }
+  getCampaignById(id : any ){
+    return this.http.get( this.domain + '/api/get/campaign/'+id );
+  }
+  createCampaign( campaignData : any ){
+    return this.http.post( this.domain + '/api/create/campaign', campaignData );
+  }
+  updateCampaign( id : any , campaignData : any ){
+    return this.http.put(this.domain + '/api/update/campaign/' + id, campaignData );
   }
 
 }

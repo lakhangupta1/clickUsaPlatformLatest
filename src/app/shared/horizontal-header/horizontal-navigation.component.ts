@@ -282,7 +282,7 @@ export class HorizontalNavigationComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.appDomain = this.networkService.domain
     this.userData = this.authenticationService.getUserDetails;
-    this.getUserCompanyName();
+    // this.getUserCompanyName();
     this.getPublisherAccManagerDetails(this.userData.userDetail.parentId[0]);
     let currentUser = this.authenticationService.getUserDetails;
     if (currentUser && currentUser['userDetail']) {
@@ -312,30 +312,30 @@ export class HorizontalNavigationComponent implements AfterViewInit, OnInit {
   }
 
   // logo
-  getUserCompanyName() {
-    if (this.userData['userDetail']['company_name']) {
-      this.company_name = this.userData['userDetail']['company_name']
-    }
+  // getUserCompanyName() {
+  //   if (this.userData['userDetail']['company_name']) {
+  //     this.company_name = this.userData['userDetail']['company_name']
+  //   }
 
-    this.networkService.getNetworkDataSearch(this.userData['userDetail']['network']).subscribe(
-      res => {
-        if (res[0]) {
-          this.data = res[0].networklogo_Url;
-          let tempLogo = res[0].networklogo_Url.split(".");
-          for (let i in tempLogo) {
-            if (i + 1 >= (tempLogo.length)) {
-              this.medLogo = this.medLogo + "medium." + tempLogo[i];
-              this.smallLogo = this.smallLogo + "small." + tempLogo[i];
-            } else {
-              this.medLogo = this.medLogo + tempLogo[i];
-              this.smallLogo = this.smallLogo + tempLogo[i];
-            }
-          }
-          // this.favIcon.href = this.appDomain + this.smallLogo;
-        }
-      }
-    );
-  }
+  //   this.networkService.getNetworkDataSearch(this.userData['userDetail']['network']).subscribe(
+  //     res => {
+  //       if (res[0]) {
+  //         this.data = res[0].networklogo_Url;
+  //         let tempLogo = res[0].networklogo_Url.split(".");
+  //         for (let i in tempLogo) {
+  //           if (i + 1 >= (tempLogo.length)) {
+  //             this.medLogo = this.medLogo + "medium." + tempLogo[i];
+  //             this.smallLogo = this.smallLogo + "small." + tempLogo[i];
+  //           } else {
+  //             this.medLogo = this.medLogo + tempLogo[i];
+  //             this.smallLogo = this.smallLogo + tempLogo[i];
+  //           }
+  //         }
+  //         // this.favIcon.href = this.appDomain + this.smallLogo;
+  //       }
+  //     }
+  //   );
+  // }
 
   getInitials(name: string): string {
     if (!name) return '';

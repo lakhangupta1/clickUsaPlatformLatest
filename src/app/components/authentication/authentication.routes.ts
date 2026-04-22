@@ -17,19 +17,19 @@ export const AuthenticationRoutes: Routes = [
         path: 'login',
         component: LoginComponent
       },
-      {
-        path: 'external/login',
-        component: ExternalLoginComponent
-      },
+      // {
+      //   path: 'external/login',
+      //   component: ExternalLoginComponent
+      // },
 
       {
         path: 'signup',
         component: SignupComponent
       },
-      {
-        path: 'advertiser/signup',
-        component: AdvertiserSignupComponent
-      }
+      // {
+      //   path: 'advertiser/signup',
+      //   component: AdvertiserSignupComponent
+      // }
     ]
   }
 ];

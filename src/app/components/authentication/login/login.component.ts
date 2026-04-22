@@ -49,31 +49,75 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  // onSubmit(): void {
+  //   this.isLoginFormSubmitted = true;
+  //   if (this.loginForm.invalid) {
+  //     this.toastrService.error('Please fill out the form correctly.', 'Login Failed');
+  //     return;
+  //   }
+
+  //   const userDetails = {
+  //     email: this.loginForm.value.email,
+  //     password: this.loginForm.value.password,
+  //     user_type: 'publisher'
+  //   };
+
+  //   this.authenticationService.login(userDetails).subscribe({
+  //     next: (data) => {
+  //       console.log(" data ", data );
+  //       if ((data as any)?.err) {
+  //         this.toastrService.error('Invalid email or password!', 'Error!');
+  //       } else {
+  //         let preVisitedPath = sessionStorage.getItem("preVisitedPath") || "/dashboard";
+  //         this.router.navigateByUrl(preVisitedPath);
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.toastrService.error('Invalid email or password!', 'Error!');
+  //     },
+  //   });
+  // }
+
   onSubmit(): void {
     this.isLoginFormSubmitted = true;
+
     if (this.loginForm.invalid) {
       this.toastrService.error('Please fill out the form correctly.', 'Login Failed');
       return;
     }
 
-    const userDetails = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password,
-      user_type: 'publisher'
+    const payload = {
+      userDetails: {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password,
+        // user_type: 'publisher'
+      }
     };
 
-    this.authenticationService.login(userDetails).subscribe({
-      next: (data) => {
-        if ((data as any)?.err) {
+    this.authenticationService.login(payload.userDetails).subscribe({
+      next: (data: any) => {
+        console.log("response:", data);
+
+        if ((data as any )?.err) {
           this.toastrService.error('Invalid email or password!', 'Error!');
-        } else {
-          let preVisitedPath = sessionStorage.getItem("preVisitedPath") || "/dashboard";
-          this.router.navigateByUrl(preVisitedPath);
+          // return;
         }
+
+        //  Save token (IMPORTANT)
+        // const token = data?.payload?.[0]?.token;
+        // const refreshToken = data?.payload?.[0]?.refreshtoken;
+
+        // if (token) {
+        //   localStorage.setItem('token', token);
+        //   localStorage.setItem('refreshToken', refreshToken);
+        //   localStorage.setItem("user", JSON.stringify([{ refreshToken, token }]))
+        // }
+        let preVisitedPath =  "/dashboard"; // sessionStorage.getItem("preVisitedPath") ||
+        this.router.navigateByUrl(preVisitedPath);
       },
-      error: (error) => {
+      error: () => {
         this.toastrService.error('Invalid email or password!', 'Error!');
-      },
+      }
     });
   }
 
