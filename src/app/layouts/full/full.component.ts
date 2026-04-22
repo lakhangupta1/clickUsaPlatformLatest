@@ -147,7 +147,7 @@ export class FullComponent implements OnInit {
     this.appDomain = this.networkService.domain
     this.userData = this.authService.getUserDetails;
     // console.log("appDomain",this.appDomain);
-    // console.log("userData--",this.userData);
+    console.log("userData--",this.userData);
     // console.log("themeOptions--",this.themeOptions)
     if (this.userData && this.userData['userDetail'] && this.userData['userDetail']['network'] && this.userData['userDetail']['network'][0]) {
       this.networkService.getThemeData(this.userData['userDetail']['network'][0]).subscribe(res => {
@@ -171,7 +171,7 @@ export class FullComponent implements OnInit {
       this.isThemeData = true;
     }
 
-    this.getUserCompanyName();
+    // this.getUserCompanyName();
     this.getPublisherAccManagerDetails(this.userData.userDetail.parentId[0]);
     this.defaultSidebar = options.sidebartype;
     this.handleSidebar();
@@ -186,29 +186,29 @@ export class FullComponent implements OnInit {
 
   }
 
-  getUserCompanyName() {
-    if (this.userData['userDetail']['company_name']) {
-      this.company_name = this.userData['userDetail']['company_name']
-    }
-    this.networkService.getNetworkDataSearch(this.userData['userDetail']['network']).subscribe(
-      res => {
-        if (res[0]) {
-          this.data = res[0].networklogo_Url;
-          let tempLogo = res[0].networklogo_Url.split(".");
-          for (let i in tempLogo) {
-            if (i + 1 >= (tempLogo.length)) {
-              this.medLogo = this.medLogo + "medium." + tempLogo[i];
-              this.smallLogo = this.smallLogo + "small." + tempLogo[i];
-            } else {
-              this.medLogo = this.medLogo + tempLogo[i];
-              this.smallLogo = this.smallLogo + tempLogo[i];
-            }
-          }
-          this.favIcon.href = this.appDomain + this.smallLogo;
-        }
-      }
-    );
-  }
+  // getUserCompanyName() {
+  //   if (this.userData['userDetail']['company_name']) {
+  //     this.company_name = this.userData['userDetail']['company_name']
+  //   }
+  //   this.networkService.getNetworkDataSearch(this.userData['userDetail']['network']).subscribe(
+  //   //   res => {
+  //   //     if (res[0]) {
+  //   //       this.data = res[0].networklogo_Url;
+  //   //       let tempLogo = res[0].networklogo_Url.split(".");
+  //   //       for (let i in tempLogo) {
+  //   //         if (i + 1 >= (tempLogo.length)) {
+  //   //           this.medLogo = this.medLogo + "medium." + tempLogo[i];
+  //   //           this.smallLogo = this.smallLogo + "small." + tempLogo[i];
+  //   //         } else {
+  //   //           this.medLogo = this.medLogo + tempLogo[i];
+  //   //           this.smallLogo = this.smallLogo + tempLogo[i];
+  //   //         }
+  //   //       }
+  //   //       this.favIcon.href = this.appDomain + this.smallLogo;
+  //   //     }
+  //   //   }
+  //   // );
+  // }
 
   getPublisherAccManagerDetails(parentId) {
     if (parentId) {

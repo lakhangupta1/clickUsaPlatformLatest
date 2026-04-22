@@ -16,7 +16,7 @@ export class PublisherService {
   }
 
   getPublisher(id) {
-    return this.http.get<any>(this.domain + '/api/get/publisher/' + id);
+    return this.http.get<any>(this.domain + '/api/get/user/' + id);
   }
 
   addPublisher(formData) {

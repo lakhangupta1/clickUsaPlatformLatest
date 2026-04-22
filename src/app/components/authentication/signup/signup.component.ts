@@ -1,98 +1,59 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild, viewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ExternalService } from 'src/app/services/external.service';
-import { Country, State, City } from 'country-state-city';
+import { Globalconstant } from 'src/app/const/global';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgbModule   // VERY IMPORTANT
+  ],
   templateUrl: './signup.component.html'
 })
 export class SignupComponent implements OnInit {
 
-  @ViewChild('country', { static: false }) country!: ElementRef;
-  @ViewChild('state', { static: false }) state!: ElementRef;
-  @ViewChild('city', { static: false }) city!: ElementRef;
+  @ViewChild('otpModal') otpModal!: TemplateRef<any>;
 
-  countries = Country.getAllCountries();
-  states = [];
-  cities = [];
+  otp: string = '';
+  publisherRegisterForm!: FormGroup;
   logo: string = 'user1.jpg';
-  selectedCountry: any = null;
-  selectedState: any = null;
-  selectedCity: any = null;
-
-  publisherformdata: string = '';
-  publisherRegisterForm: FormGroup;
-  domain: string = '';
-  user_type: string = 'publisher';
+  isVerifying = false;
+  isSubmitting: boolean = false;
+  userEmail: string = '';
+  private _signupRetried = false;
+  countryList: any[] = [];
 
   constructor(
     private router: Router,
-    public route: ActivatedRoute,
-    private externalService: ExternalService,
     private formBuilder: FormBuilder,
     private toasterService: ToastrService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private modalService: NgbModal
   ) {
-    this.domain = window.location.hostname;
-    // console.log('Domain:', this.domain);
+    this.countryList = Globalconstant.config.country;
   }
 
   ngOnInit(): void {
-    this.companylogo();
-
+    console.log(" countryList -> ", this.countryList ); 
     this.publisherRegisterForm = this.formBuilder.group({
-      company: ['', [
-        Validators.required,
-      ]],
-
-      name: ['', [
-        Validators.required,
-      ]],
-
-      email: ['', [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(254)
-      ]],
-
-      phone: ['', [
-        Validators.required,
-        Validators.pattern("^[6-9][0-9]{9}$")
-      ]],
-
-      address: ['', Validators.required],
-      locality: ['',],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      country: ['', Validators.required],
-
-      pincode: ['', [
-        Validators.required
-      ]],
-
-      password: ['', [
-        Validators.required,
-        Validators.minLength(8)
-      ]],
-
-      skypeId: ['', Validators.required],
-
-      website: ['', [
-        Validators.required
-      ]],
-
-      // terms: [false, Validators.requiredTrue]
+      company: ['', Validators.required],
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      phone: ['', [Validators.required, Validators.pattern("^[6-9][0-9]{9}$")]],
+      country: ['', Validators.required]
     });
-  }
-  get f() {
-    return this.publisherRegisterForm.controls;
   }
 
   isInvalid(controlName: string): boolean {
@@ -101,86 +62,183 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
+    // prevent multiple clicks
+    if (this.isSubmitting) return;
+    // form validation
     if (this.publisherRegisterForm.invalid) {
-      this.publisherRegisterForm.markAllAsTouched();
-      this.toasterService.error("Please fill in all required fields correctly.");
+      this.toasterService.error('Please fill all fields correctly');
       return;
     }
     const formData = this.publisherRegisterForm.value;
-    // console.log("form data",formData);
-    const submitData = {
-      ...formData,
-      // domain: this.domain,
-      // user_type: this.user_type
+
+    const payload = {
+      company: formData.company?.trim(),
+      first_name: formData.first_name?.trim(),
+      last_name: formData.last_name?.trim(),
+      name: `${formData.first_name?.trim()} ${formData.last_name?.trim()}`,
+      email: formData.email?.trim(),
+      phone: formData.phone,
+      password: formData.password,
+      country: formData.country
     };
 
-    this.publisherformdata = JSON.stringify(submitData, null, 2);
+    // store email for OTP verification step
+    this.userEmail = payload.email;
 
-    this.authenticationService.signup(submitData).subscribe({
+    // log payload to help debugging backend validation errors
+    // console.log('Signup Payload:', payload);
 
+    this._signupRetried = false;
+    this._doSignupRequest(payload, false);
+  }
 
-      next: (response) => {
-        // console.log('Signup successful', response);
-        // this.toasterService.success('Signup successful! Waiting for approval.');
-        this.toasterService.success('Sussecc', response['msg']);
-        // this.router.navigate(['/login']);
+  private _doSignupRequest(payload: any, wrapped: boolean) {
+    this.isSubmitting = true;
+    const body = wrapped ? { userDetails: payload } : payload;
+
+    this.authenticationService
+      .signup(body)
+      .pipe(finalize(() => (this.isSubmitting = false)))
+      .subscribe({
+        next: (response: any) => {
+          console.log('Signup Response:', response);
+
+          if (response && response.err) {
+            const msg = response.msg || response.message || 'Signup failed';
+            this.toasterService.error(msg);
+            return;
+          }
+
+          this.toasterService.success(response?.msg || 'OTP sent to email');
+
+          if (!this.otpModal) {
+            console.error('otpModal not found!');
+            return;
+          }
+
+          this.modalService.open(this.otpModal, {
+            size: 'sm',
+            backdrop: 'static',
+            centered: true,
+          });
+        },
+        error: (err: any) => {
+          console.log('FULL ERROR:', err);
+          console.log('BACKEND RESPONSE:', err?.error);
+
+          const backendMsg =
+            err?.error?.msg || err?.error?.message || err?.message || err?.statusText || 'Something went wrong';
+
+          // if 400 and we haven't retried yet, try wrapped payload shape
+          if (err?.status === 400 && !this._signupRetried && !wrapped) {
+            this._signupRetried = true;
+            console.log('Retrying signup with wrapped payload { userDetails: ... }');
+            this._doSignupRequest(payload, true);
+            return;
+          }
+
+          if (err?.status === 400) {
+            this.toasterService.error(backendMsg);
+          } else if (err?.status === 0) {
+            this.toasterService.error('Network error. Check your connection');
+          } else if (err instanceof Error) {
+            this.toasterService.error(err.message);
+          } else if (backendMsg === 'User already exist') {
+            this.toasterService.info(backendMsg);
+          } else {
+            this.toasterService.error(backendMsg);
+          }
+        },
+      });
+  }
+
+  // login(userDetails) {
+  //     return this.http.post(this.getSubDomain() + '/user/login', { userDetails }).pipe(map(user => {
+  //       if (user['payload']) {
+  //         localStorage.setItem('currentUser', JSON.stringify(user['payload'][0]));
+  //         this.currentUserSubject.next(user['payload'][0]);
+  //         const decoded = jwtDecode(user['payload'][0].token);
+  //         this.details.next(decoded);
+  //         const perm = decoded['permissions'];
+  //         this.permissionsService.loadPermissions(perm);
+  //       }
+  //       return  user;
+  //     }));
+  //   }
+
+  verifyOtpHandler(modal: any) {
+    // Prevent multiple clicks
+    if (this.isVerifying) return;
+    // Validate OTP
+    if (!this.otp || this.otp.length !== 6) {
+      this.toasterService.error('Enter valid 6-digit OTP');
+      return;
+    }
+    // ALWAYS prefer stored email (form may reset)
+    const email = this.userEmail || this.publisherRegisterForm.value.email;
+    if (!email) {
+      this.toasterService.error('Session expired. Please signup again.');
+      return;
+    }
+    const payload = {
+      email: email,
+      otp: String(this.otp).trim() // safe format
+    };
+    this.isVerifying = true;
+    this.authenticationService.verifyOtp(payload).subscribe({
+      next: (response: any) => {
+        // console.log(" response -> ", response );
+        this.isVerifying = false;
+        // console.log("Verify OTP Response:", response);
+        // SUCCESS
+        if (response && !response.err) {
+          this.toasterService.success(response.msg || 'OTP Verified');
+          this.otp = ''; // reset input
+          modal.close();
+          //  Save token (IMPORTANT)
+          const token = response.payload?.[0]?.token;
+          const refreshToken = response?.payload?.[0]?.refreshtoken;
+          // console.log(" token -> ", token );
+          // console.log(" response ", response );
+          if (token) {
+            localStorage.setItem('currentUser', JSON.stringify(response['payload'][0]));
+            localStorage.setItem('token', token);
+            localStorage.setItem('refreshToken', refreshToken);
+          }
+
+          // let preVisitedPath = sessionStorage.getItem("preVisitedPath") || "/dashboard";
+          let preVisitedPath = "/dashboard";
+          this.router.navigateByUrl(preVisitedPath);
+        }else {
+          // INVALID OTP
+          this.toasterService.error(response?.msg || 'Invalid OTP');
+        }
       },
-      error: (error) => {
-        console.error('Error occurred during signup', error);
-        this.toasterService.error("Error", error['msg']);
+
+      error: (error: any) => {
+        this.isVerifying = false;
+
+        console.log("FULL ERROR:", error);
+
+        //Extract real backend message safely
+        const backendMsg =
+          error?.error?.msg ||
+          error?.error?.message ||
+          error?.message ||
+          'OTP verification failed';
+
+        // Handle status codes
+        if (error?.status === 400) {
+          this.toasterService.error(backendMsg);
+        } else if (error?.status === 500) {
+          this.toasterService.error('Server error. Please try again later');
+        } else if (error?.status === 0) {
+          this.toasterService.error('Network error. Check your connection');
+        } else {
+          this.toasterService.error(backendMsg);
+        }
       }
+
     });
   }
-  onCountryChange($event): void {
-    const countryData = JSON.parse(this.country.nativeElement.value);
-    this.states = State.getStatesOfCountry(countryData.isoCode) || [];
-    this.selectedCountry = countryData;
-
-    this.selectedState = null;
-    this.selectedCity = null;
-    this.cities = [];
-  }
-
-  onStateChange($event): void {
-    const stateData = JSON.parse(this.state.nativeElement.value);
-    this.cities = City.getCitiesOfState(this.selectedCountry.isoCode, stateData.isoCode) || [];
-    this.selectedState = stateData;
-
-    this.selectedCity = null;
-  }
-
-  onCityChange($event): void {
-    this.selectedCity = JSON.parse(this.city.nativeElement.value);
-  }
-
-  companylogo() {
-    if (this.domain.includes('cost2action')) { // localhost
-      this.logo = 'cost2action.png'
-    }
-    if (this.domain.includes('crossway')) {
-      this.logo = 'crossway.jpg'
-    }
-    if (this.domain.includes('andromobi')) {
-      this.logo = 'andromobi.png'
-    }
-    if (this.domain.includes('offerrobo')) {
-      this.logo = 'offerrobo.png'
-    }
-    if (this.domain.includes('adsever')) {
-      this.logo = 'adsever.png'
-    }
-    if (this.domain.includes('adsdolfin')) {
-      this.logo = 'icon2.png'
-    }
-    if (this.domain.includes('grootmobi')) {
-      this.logo = 'grootmobi.png'
-    }
-    if (this.domain.includes('pantherads')) {
-      this.logo = 'pantherads.png'
-    }
-    if(this.domain.includes("leadworld")){
-      this.logo = 'leadworld.jpg'
-    }
-  }
-
 }

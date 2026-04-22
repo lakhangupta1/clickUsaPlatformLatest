@@ -29,8 +29,8 @@ export class AuthenticationService {
   public get currentUserValue() {
     return this.currentUserSubject.value;
   }
-
   public get getUserDetails() {
+    console.log(" details -> ", this.details);
     try {
       if (this.details.value.token) {
         return jwtDecode(this.details.value.token);
@@ -73,46 +73,47 @@ export class AuthenticationService {
     return window.location.host;
   }
 
-  login(userDetails) {
+  login(userDetails : any ) {
     return this.http.post(this.getSubDomain() + '/user/login', { userDetails }).pipe(map(user => {
+      console.log(" user -> ", user );
       if (user['payload']) {
         localStorage.setItem('currentUser', JSON.stringify(user['payload'][0]));
         this.currentUserSubject.next(user['payload'][0]);
         const decoded = jwtDecode(user['payload'][0].token);
         this.details.next(decoded);
-        const perm = decoded['permissions'];
+        const perm = [] //  decoded['permissions'];
         this.permissionsService.loadPermissions(perm);
       }
       return user;
     }));
   }
 
-  externalLogin(userDetails) {
-    localStorage.setItem('currentUser', JSON.stringify(userDetails));
-    this.currentUserSubject.next(userDetails);
-    const decoded = jwtDecode(userDetails['token']);
-    // console.log("Decode - ",decoded);
-    this.details.next(decoded);
-    const perm = decoded['permissions'];
-    // console.log("Perm-- ",perm);
-    this.permissionsService.loadPermissions(perm);
-  }
+  // externalLogin(userDetails) {
+  //   localStorage.setItem('currentUser', JSON.stringify(userDetails));
+  //   this.currentUserSubject.next(userDetails);
+  //   const decoded = jwtDecode(userDetails['token']);
+  //   // console.log("Decode - ",decoded);
+  //   this.details.next(decoded);
+  //   const perm = decoded['permissions'];
+  //   // console.log("Perm-- ",perm);
+  //   this.permissionsService.loadPermissions(perm);
+  // }
 
-  forgetPassword(userDetails) {
-    return this.http.post(this.getSubDomain() + '/auth/forgetpassword', userDetails);
-  }
+  // forgetPassword(userDetails) {
+  //   return this.http.post(this.getSubDomain() + '/auth/forgetpassword', userDetails);
+  // }
 
-  resetPassword(text) {
-    return this.http.post(this.getSubDomain() + '/auth/checkurl', { link: text });
-  }
+  // resetPassword(text) {
+  //   return this.http.post(this.getSubDomain() + '/auth/checkurl', { link: text });
+  // }
 
-  setPassword(data) {
-    return this.http.post(this.getSubDomain() + '/auth/resetpassword', data);
-  }
+  // setPassword(data) {
+  //   return this.http.post(this.getSubDomain() + '/auth/resetpassword', data);
+  // }
 
-  removevalue() {
-    return this.http.post(this.getSubDomain() + '/api/logout', { email: this.getUserDetails.userDetails.email });
-  }
+  // removevalue() {
+  //   return this.http.post(this.getSubDomain() + '/api/logout', { email: this.getUserDetails.userDetails.email });
+  // }
 
   logout() {
     localStorage.removeItem('AccountToken');
@@ -121,17 +122,21 @@ export class AuthenticationService {
     this.router.navigate(['/login']);
   }
 
-  networkLogin(userDetails) {
-    return this.http.post(this.getSubDomain() + '/user/network/login', userDetails);
-  }
+  // networkLogin(userDetails) {
+  //   return this.http.post(this.getSubDomain() + '/user/network/login', userDetails);
+  // }
 
   signup(formData: any) {
     // console.log("formdata--",formData)
-    return this.http.post(this.getSubDomain() + '/registerPublisher/save', formData)
+    return this.http.post(this.getSubDomain() + '/user/register', formData)
+  }
+  verifyOtp(otpData : any ){
+    console.log(" otpData -> " , otpData );
+    return this.http.post(this.getSubDomain() + '/user/verifyOtp', otpData);
   }
   
-  Adv_Register(userDetails: FormData, domain: string) {
-    return this.http.post(this.getSubDomain() + '/registerAdvertiser/add/' + domain, userDetails);
-  }
+  // Adv_Register(userDetails: FormData, domain: string) {
+  //   return this.http.post(this.getSubDomain() + '/registerAdvertiser/add/' + domain, userDetails);
+  // }
 
 }

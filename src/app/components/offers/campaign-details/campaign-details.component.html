@@ -1,0 +1,147 @@
+<div class="container-fluid p-2" *ngIf="campaign">
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">{{ campaign.camp_name }}</h5>
+
+    <a [routerLink]="['/offers/create', campaign._id]"
+       class="btn btn-sm btn-primary d-flex align-items-center gap-1">
+      <i class="mdi mdi-pencil"></i>
+      Edit
+    </a>
+  </div>
+
+  <div class="row g-2">
+
+    <!-- ================= LEFT ================= -->
+    <div class="col-md-8">
+
+      <!-- MAIN CARD -->
+      <div class="card p-2 mb-2">
+
+        <div class="d-flex align-items-center gap-2">
+
+          <!-- LOGO -->
+          <div style="width:50px;height:50px;background:#000;border-radius:6px;"></div>
+
+          <div>
+            <h6 class="mb-1">{{ campaign.camp_name }}</h6>
+            <small class="text-muted">{{ campaign._id }}</small>
+
+            <div>
+              <span class="badge"
+                    [ngClass]="campaign.status === 'active' ? 'bg-success' : 'bg-secondary'">
+                {{ campaign.status }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="my-2">
+
+        <!-- DESTINATION + META -->
+        <div class="row g-2">
+
+          <!-- LEFT -->
+          <div class="col-md-6">
+            <small class="text-muted">Destination</small>
+
+            <div>
+              <a [href]="campaign.destination_url" target="_blank">
+                {{ campaign.destination_url }}
+              </a>
+            </div>
+
+            <small>Start: {{ campaign.schedule_start | date:'shortDate' }}</small><br>
+            <small>End: {{ campaign.schedule_end | date:'shortDate' }}</small>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="col-md-6">
+            <small class="text-muted">Meta</small>
+
+            <div><small>Created: {{ campaign.createdAt | date:'short' }}</small></div>
+            <div><small>Updated: {{ campaign.updatedAt | date:'short' }}</small></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- LINK COPY -->
+      <div class="card p-2 mb-2">
+        <div class="d-flex gap-2">
+          <input class="form-control form-control-sm"
+                 [value]="campaign.destination_url"
+                 readonly>
+
+          <button class="btn btn-sm btn-outline-secondary"
+                  (click)="copyLink()">
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="card p-2 mb-2">
+        <small class="text-muted">Description</small>
+        <p class="mb-0 small">No description available</p>
+      </div>
+
+      <!-- KPI -->
+      <div class="card p-2 mb-2">
+        <small class="text-muted">KPI</small>
+        <p class="mb-0 small">Not defined</p>
+      </div>
+
+    </div>
+
+    <!-- ================= RIGHT ================= -->
+    <div class="col-md-4">
+
+      <!-- BUDGET -->
+      <div class="card p-2 mb-2">
+        <!-- <small class="text-muted">Budget</small> -->
+        <h5 class="card-title">Budget</h5>
+        <div><small class="">CPC: {{ campaign.budget?.cpc || '-' }}</small></div>
+        <div><small class="">Total: {{ campaign.budget?.total || '-' }}</small></div>
+        <div><small>Daily: {{ campaign.budget?.daily || '-' }}</small></div>
+        <div><small>Smooth: {{ campaign.budget?.smooth ? 'Yes' : 'No' }}</small></div>
+        <div><small>Acceleration: {{ campaign.budget?.acceleration ? 'Yes' : 'No' }}</small></div>
+      </div>
+
+      <!-- ALLOW TRAFFIC -->
+      <div class="card p-2 mb-2">
+        <!-- <small class="text-muted">Allow Traffic</small> -->
+        <h5 class="card-title">Allow Traffic</h5>
+        <div><small>Vertical: {{ campaign.allow_traffic?.vartical || '-' }}</small></div>
+        <div><small>Provider: {{ campaign.allow_traffic?.provider || '-' }}</small></div>
+        <div><small>Country: {{ campaign.allow_traffic?.country || '-' }}</small></div>
+        <div><small>Device: {{ campaign.allow_traffic?.device || '-' }}</small></div>
+        <div><small>OS: {{ campaign.allow_traffic?.os || '-' }}</small></div>
+        <div><small>Tag: {{ campaign.allow_traffic?.tag || '-' }}</small></div>
+      </div>
+
+      <!-- BLOCKED TRAFFIC -->
+      <div class="card p-2 mb-2">
+        <!-- <small class="text-muted">Blocked Traffic</small> -->
+        <h5 class="card-title">Blocked Traffic</h5>
+        <div><small>Provider: {{ campaign.blocked_traffic?.provider || '-' }}</small></div>
+        <div><small>Country: {{ campaign.blocked_traffic?.country || '-' }}</small></div>
+        <div><small>Device: {{ campaign.blocked_traffic?.device || '-' }}</small></div>
+        <div><small>OS: {{ campaign.blocked_traffic?.os || '-' }}</small></div>
+        <div><small>Tag: {{ campaign.blocked_traffic?.tag || '-' }}</small></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- LOADING -->
+<div *ngIf="!campaign" class="text-center mt-3">
+  <div class="spinner-border spinner-border-sm text-primary"></div>
+  <p class="mt-1 small">Loading campaign...</p>
+</div>

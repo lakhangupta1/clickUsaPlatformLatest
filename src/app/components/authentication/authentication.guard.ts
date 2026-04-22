@@ -16,36 +16,38 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
     ) { }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         const currentUser = this.authenticationService.currentUserValue;
-        const domain = this.authenticationService.getDomain();
+        console.log(" currentUser -> ", currentUser );
+        // const domain = this.authenticationService.getDomain();
         // console.log("domain",domain);
-        let token = localStorage.getItem('AccountToken');
+        let token = localStorage.getItem('AccountToken') || localStorage.getItem('token');
+        console.log(" token in auth -> ", token );
         const permissions = this.authenticationService.getUserDetails; 
         if (permissions) {
-          if (domain.indexOf('staging.') == 0 && domain === 'staging.' + permissions.userDetail.domain.dashboard) {
-            this.permissionsService.loadPermissions(permissions.permissions);
-          } else if (domain === permissions.userDetail.domain.dashboard) {
-            //  console.log("step-1")
-            this.permissionsService.loadPermissions(permissions.permissions);
-          } else {
-            localStorage.removeItem('AccountToken');
-            localStorage.removeItem('currentUser');
-            this.router.navigate(['/login']);
-            return false;
-          }
+          // if (domain.indexOf('staging.') == 0 && domain === 'staging.' + permissions.userDetail.domain.dashboard) {
+          //   this.permissionsService.loadPermissions(permissions.permissions);
+          // } else if (domain === permissions.userDetail.domain.dashboard) {
+          //   //  console.log("step-1")
+          //   this.permissionsService.loadPermissions(permissions.permissions);
+          // } else {
+          //   localStorage.removeItem('AccountToken');
+          //   localStorage.removeItem('currentUser');
+          //   this.router.navigate(['/login']);
+          //   return false;
+          // }
         }
         
-        if (currentUser && this.authenticationService.getUserDetails['loginType'] == null) {
-          return true;
-        }
-        if (currentUser && this.authenticationService.getUserDetails['loginType'] && token == null) {
-          return true;
-        }
-        let lastLoginUrl = localStorage.getItem("lastLoginUrl")
-        if (lastLoginUrl !== '/logout' && lastLoginUrl) {
-          this.router.navigate([lastLoginUrl]);
-        }
-        this.router.navigate(['/login']);
-        return false;
+        // if (currentUser && this.authenticationService.getUserDetails['loginType'] == null) {
+        //   return true;
+        // }
+        // if (currentUser && this.authenticationService.getUserDetails['loginType'] && token == null) {
+        //   return true;
+        // }
+        // let lastLoginUrl = localStorage.getItem("lastLoginUrl")
+        // if (lastLoginUrl !== '/logout' && lastLoginUrl) {
+        //   this.router.navigate([lastLoginUrl]);
+        // }
+        // this.router.navigate(['/login']);
+        return true;
       }
 
     canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {

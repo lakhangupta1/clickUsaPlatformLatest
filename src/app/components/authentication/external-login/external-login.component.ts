@@ -30,10 +30,10 @@ export class ExternalLoginComponent implements OnInit {
         // }
 
         if (token && refreshToken) {
-          this.authService.externalLogin({
-            token,
-            refreshtoken: refreshToken
-          })
+          // this.authService.externalLogin({
+          //   token,
+          //   refreshtoken: refreshToken
+          // })
           // console.log("Token -- ",token)
           // console.log("step-1");
           this.toastr.success("Login Successful");

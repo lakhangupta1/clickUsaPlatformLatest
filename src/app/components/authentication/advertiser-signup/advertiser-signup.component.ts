@@ -75,18 +75,18 @@ this.companylogo();
     const userDetails = this.signupForm.value;
     let token = window.location.hostname;
 
-    this.authenticationService.Adv_Register(userDetails, token).subscribe((data: any) => {
+    // this.authenticationService.Adv_Register(userDetails, token).subscribe((data: any) => {
 
-      if (data.err) {
-        this.toaster.error(data.msg);
-        // console.log("data", data);
-      } else {
-        this.toaster.success(data.msg);
-        this.signupForm.reset();
-        this.submitted = false;
-      }
+    //   if (data.err) {
+    //     this.toaster.error(data.msg);
+    //     // console.log("data", data);
+    //   } else {
+    //     this.toaster.success(data.msg);
+    //     this.signupForm.reset();
+    //     this.submitted = false;
+    //   }
 
-    });
+    // });
   }
 
 

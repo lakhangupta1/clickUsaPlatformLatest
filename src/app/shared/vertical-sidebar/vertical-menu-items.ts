@@ -32,38 +32,54 @@ export const ROUTES: RouteInfo[] = [
     class: 'has-arrow',
     extralink: false,
     submenu: [
+      // {
+      //   path: '/offers/all',
+      //   title: 'All Campaigns',
+      //   icon: 'mdi mdi-format-list-bulleted',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
-        path: '/offers/all',
-        title: 'All Offers',
+        path : '/offers/create',
+        title: 'create-campaign',
         icon: 'mdi mdi-format-list-bulleted',
         class: '',
         extralink: false,
         submenu: []
       },
       {
-        path: '/offers/active',
-        title: 'Active Offers',
-        icon: 'mdi mdi-rocket',
-        class: '',
+        path : '/offers/campaign-list',
+        title : 'All Campaigns',
+        icon : 'mdi mdi-bullhorn',
+        class : '',
         extralink: false,
         submenu: []
-      },
-      {
-        path: '/offers/public',
-        title: 'Public Offers',
-        icon: 'mdi mdi-earth',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/offers/private',
-        title: 'Private Offers',
-        icon: 'mdi mdi-lock',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      }
+      // {
+      //   path: '/offers/active',
+      //   title: 'Active Offers',
+      //   icon: 'mdi mdi-rocket',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      // {
+      //   path: '/offers/public',
+      //   title: 'Public Offers',
+      //   icon: 'mdi mdi-earth',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      // {
+      //   path: '/offers/private',
+      //   title: 'Private Offers',
+      //   icon: 'mdi mdi-lock',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       // {
       //   path: '/offers/working',
       //   title: 'Working Offers',
@@ -97,22 +113,22 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      {
-        path: "/statistics/conversions",
-        title: "Conversion",
-        icon: "mdi mdi-message-bulleted",
-        class: "",
-        extralink: false,
-        submenu: [],
-      },
-      {
-        path: "/statistics/geo-reports",
-        title: "Geo Reports",
-        icon: "mdi mdi-map-marker",
-        class: "",
-        extralink: false,
-        submenu: [],
-      },
+      // {
+      //   path: "/statistics/conversions",
+      //   title: "Conversion",
+      //   icon: "mdi mdi-message-bulleted",
+      //   class: "",
+      //   extralink: false,
+      //   submenu: [],
+      // },
+      // {
+      //   path: "/statistics/geo-reports",
+      //   title: "Geo Reports",
+      //   icon: "mdi mdi-map-marker",
+      //   class: "",
+      //   extralink: false,
+      //   submenu: [],
+      // },
 
 
     ],

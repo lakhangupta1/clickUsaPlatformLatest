@@ -12,10 +12,18 @@
 
 
 // local data
+// export const environment = {
+//     production: false,
+//     scheme : 'http://',
+//     apiUrl: 'api.proffcus.tes',
+//     filename: 'offers.csv',
+//     statsFileName:'stats.csv'
+// };
+
 export const environment = {
     production: false,
     scheme : 'http://',
-    apiUrl: 'api.proffcus.tes',
+    apiUrl: 'localhost:3000',
     filename: 'offers.csv',
     statsFileName:'stats.csv'
 };
