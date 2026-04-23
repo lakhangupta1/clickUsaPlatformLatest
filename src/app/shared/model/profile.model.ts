@@ -30,6 +30,36 @@ export interface PublisherData {
     updatedAt?: string;
 }
 
+export interface UserData {
+    id?: string;
+    // pid: number;
+    first_name: string;
+    last_name: string;
+    company: string;
+    email: string;
+    phone: string;
+    country : string,
+    currency : string,
+    // skype_id?: string;
+    status: string;
+    state : string;
+    address : string,
+
+    pay_type?: string,
+    is_primary?: boolean,
+    account_holder_name?: string,
+    account_number?: Number,
+    ifsc_code?: string,
+    bank_name?: string,
+    is_verified?: boolean,
+
+    upi? : string,
+    paypal?: string,
+    paytm?: string,
+    pincode : string;
+    
+}
+
 export interface PublisherFinanceDetails {
     aN?: string,
     aNumber?: number,

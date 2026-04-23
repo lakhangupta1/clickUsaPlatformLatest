@@ -213,9 +213,10 @@ export class FullComponent implements OnInit {
   getPublisherAccManagerDetails(parentId) {
     if (parentId) {
       this.publisherService.getPublisher(parentId).subscribe(result => {
-        if (!result['err']) {
-          this.publisherData = result['payload'];
-          // console.log("publisherData -ff",this.publisherData);
+        console.log("  result -> ", result );
+        if (!result?.['err']) {
+          this.publisherData = result?.['payload'];
+          console.log("publisherData -ff",this.publisherData);
         }
       })
     }

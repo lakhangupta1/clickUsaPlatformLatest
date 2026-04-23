@@ -30,10 +30,9 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
   public get getUserDetails() {
-    console.log(" details -> ", this.details);
     try {
-      if (this.details.value.token) {
-        return jwtDecode(this.details.value.token);
+      if (this.details?.value?.token) {
+        return jwtDecode(this.details?.value?.token);
       } else {
         return this.details.value;
       }

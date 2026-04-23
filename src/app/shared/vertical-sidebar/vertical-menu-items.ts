@@ -165,5 +165,54 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [],
   },
+  {
+    path: "network-setting",
+    title: "Network Setting",
+    icon: "mdi mdi-access-point-network",
+    class: "has-arrow",
+    extralink: false,
+    submenu: [
+      {
+        path: "setting",
+        title: "setting",
+        icon: "mdi mdi-access-point-network",
+        class: "",
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '',
+        title: 'Manage User',
+        icon: 'mdi mdi-account-settings-variant',
+        class: 'has-arrow',
+        extralink: false,
+        // permissions: [ 'admin.user.view'],  // 'user.list'
+        // permissionexcept: [],
+        submenu: [
+          {
+            path: 'user/details',
+            title: 'Add User',
+            icon: 'mdi mdi-account-plus',
+            class: '',
+            extralink: false,
+            // permissions: ['admin.user.edit'],
+            // permissionexcept: ['system'],
+            submenu: []
+          },         
+          {
+            path: '/list/user',
+            title: 'List User',
+            icon: 'mdi mdi-account-multiple',
+            class: '',
+            // permissions: ['admin.user.view'],
+            // permissionexcept: [],
+            extralink: false,
+            submenu: []
+          },
+
+        ]
+      },
+    ]
+  }
 
 ];

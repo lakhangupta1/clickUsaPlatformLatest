@@ -1,1 +1,265 @@
-<div> Hello Users </div>
+<div class="card p-3">
+    <div class="container-fluid">
+        <h6 class="fw-bold mb-3">User Details</h6>
+        <div class="row align-items-center">
+            <div class="text-end">
+                <button class="btn btn-sm btn-outline-info" (click)="openEditModal(editPublisherModal)"
+                    ngbTooltip="Edit">
+                    <i class="fa fa-edit"></i>
+                </button>
+            </div>
+            <div class="col-md-3 text-center">
+                <img *ngIf="UserData?.currency; else defaultLogo"
+                    [src]="appDomain + '/' + (UserData.currency?.replace('public/', ''))"
+                    class="rounded-circle border img-fluid p-1 bg-primary"
+                    style="width:125px;height:125px;object-fit:cover;">
+                    <ng-template #defaultLogo>
+                        <img src="../../../assets/images/users/user10.jpg"
+                            class="rounded-circle border img-fluid p-1 bg-primary"
+                            style="width:125px;height:125px;object-fit:cover;">
+                    </ng-template>
+
+                    <div class="mt-2">
+                        <div class="mt-2">
+
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">User Id</span>
+                        <div>{{UserData?.id}}</div>                        
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Company Name</span>
+                        <div>{{UserData?.company}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Email</span>
+                        <div>{{UserData?.email}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Phone</span>
+                        <div>{{UserData?.phone}}</div>
+                    </div>
+
+                    <!-- <div class="col-md-4 mb-2">
+                        <span class="text-muted">Teams Id</span>
+                        <div>{{UserData?.skype_id}}</div>
+                    </div> -->
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Status</span>
+                        <div>
+                            <span class="badge"
+                                [ngClass]="UserData?.status === 'active' ? 'bg-success' : 'bg-danger'">
+                                {{ UserData?.status }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Address</span>
+                        <div>{{UserData?.address}}</div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Pincode</span>
+                        <div>{{UserData?.pincode}}</div>
+                    </div>
+                    
+                    <hr>
+
+                    <h6 class="fw-bold mb-3">Financial Details</h6>
+                    <!-- add Financial details in future -->
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Bank Account Holder Name </span>
+                        <div>{{UserData?.account_holder_name}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Bank Account Number </span>
+                        <div>{{UserData?.account_number}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Bank IFSC CODE </span>
+                        <div>{{UserData?.ifsc_code}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted">Bank IFSC CODE </span>
+                        <div>{{UserData?.bank_name}}</div>
+                    </div>
+
+                    <div class="col-md-4 mb-2">
+                        <span class="text-muted"> currency </span>
+                        <div>{{UserData?.currency}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #editPublisherModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Edit User</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+        <form #editForm="ngForm">
+
+        <div class="row">
+
+            <!-- NAME -->
+            <div class="col-md-6 mb-3">
+            <label>Name</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.first_name"
+                    name="first_name" required>
+            </div>
+
+            <!-- COMPANY -->
+            <div class="col-md-6 mb-3">
+            <label>Company Name</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.company"
+                    name="company">
+            </div>
+
+            <!-- PHONE -->
+            <div class="col-md-6 mb-3">
+            <label>Phone</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.phone"
+                    name="phone">
+            </div>
+
+            <!-- ADDRESS -->
+            <div class="col-md-6 mb-3">
+            <label>Address</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.address"
+                    name="address">
+            </div>
+
+            <!-- PINCODE -->
+            <div class="col-md-6 mb-3">
+            <label>Pincode</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.pincode"
+                    name="pincode">
+            </div>
+
+            <!-- STATE -->
+            <div class="col-md-6 mb-3">
+            <label>State</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.state"
+                    name="state">
+            </div>
+
+            <!-- CURRENCY -->
+            <div class="col-md-6 mb-3">
+            <label>Currency</label>
+            <select class="form-control"
+                    [(ngModel)]="editPublisher.currency"
+                    name="currency" required>
+                <option value="">Select Currency</option>
+                <option value="INR">INR - Indian Rupee</option>
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="AED">AED - UAE Dirham</option>
+            </select>
+            </div>
+
+            <!-- PAYMENT TYPE -->
+            <div class="col-md-6 mb-3">
+            <label>Payment Type</label>
+            <select class="form-control"
+                    [(ngModel)]="editPublisher.pay_type"
+                    name="pay_type" required>
+                <option value="">Select Payment Type</option>
+                <option value="BANK">BANK</option>
+                <option value="UPI">UPI</option>
+                <option value="PAYPAL">PAYPAL</option>
+                <option value="PAYTM">PAYTM</option>
+            </select>
+            </div>
+
+            <!-- BANK -->
+            <ng-container>
+            <div class="col-md-6 mb-3">
+                <label>Account Holder Name</label>
+                <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.account_holder_name"
+                    name="account_holder_name">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Account Number</label>
+                <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.account_number"
+                    name="account_number">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>IFSC Code</label>
+                <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.ifsc_code"
+                    name="ifsc_code">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Bank Name</label>
+                <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.bank_name"
+                    name="bank_name">
+            </div>
+            </ng-container>
+
+            <!-- UPI -->
+            <div class="col-md-6 mb-3">
+            <label>UPI</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.upi"
+                    name="upi">
+            </div>
+
+            <!-- PAYPAL -->
+            <div class="col-md-6 mb-3">
+            <label>Paypal</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.paypal"
+                    name="paypal">
+            </div>
+
+            <!-- PAYTM -->
+            <div class="col-md-6 mb-3">
+            <label>Paytm</label>
+            <input type="text" class="form-control"
+                    [(ngModel)]="editPublisher.paytm"
+                    name="paytm">
+            </div>
+
+        </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cancelEdit(modal)">
+        Cancel
+        </button>
+
+        <button class="btn btn-primary"
+                [disabled]="editForm.invalid"
+                (click)="updatePublisher(modal)">
+        Update
+        </button>
+    </div>
+</ng-template>

@@ -53,6 +53,13 @@ export const routes: Routes = [
           import('./components/other-components/other-componets.routes').then(
             (m) => m.OtherComponets
           )
+      },
+      {
+        path : '',
+        loadChildren : () =>
+          import('./components/users/users.routes').then(
+            (m) => m.UserRoutes 
+          )
       }
 
     ],
