@@ -1,0 +1,48 @@
+/* Make rows act like flex */
+.row.card-body {
+  display: flex;
+  align-items: center;
+  gap: 15px;              /* space between fields */
+  flex-wrap: wrap;        /* responsive */
+}
+
+/* Each field equal width */
+.row.card-body .col-md-4 {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Style ng-select same height as input */
+ng-select {
+  width: 100%;
+}
+
+ng-select .ng-select-container {
+  min-height: 38px;
+  border-radius: 6px;
+}
+
+/* Input styling */
+input.user-id-input {
+  width: 100%;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  padding: 6px 10px;
+}
+
+/* Button alignment */
+.px-3.pb-3 {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+
+.label-active {
+    background-color: #00a65a !important;
+}
+
+.label-Inactive {
+    background-color: #dd4b39 !important;
+}

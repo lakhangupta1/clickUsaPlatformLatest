@@ -15,8 +15,12 @@ export class PublisherService {
     this.domain = this.authenticationService.getSubDomain();
   }
 
-  getPublisher(id) {
+  getPublisher(id : any ) {
     return this.http.get<any>(this.domain + '/api/get/user/' + id);
+  }
+
+  updateUserProfile( id : any, userData : any ){
+    return this.http.post<any>(this.domain + '/api/update/user/profile/'+id, userData );
   }
 
   addPublisher(formData) {

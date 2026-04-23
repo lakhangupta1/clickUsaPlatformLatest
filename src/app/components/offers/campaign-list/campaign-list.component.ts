@@ -95,6 +95,7 @@ export class CampaignListComponent implements OnInit {
       });
   }
 
+  
   // ✅ APPLY FILTER
   applyFilter() {
     this.page = 1;
