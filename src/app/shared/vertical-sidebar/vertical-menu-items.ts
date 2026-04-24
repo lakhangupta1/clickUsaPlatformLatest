@@ -8,6 +8,8 @@ export const ROUTES: RouteInfo[] = [
     class: "nav-small-cap",
     extralink: true,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "/dashboard",
@@ -16,6 +18,8 @@ export const ROUTES: RouteInfo[] = [
     class: "",
     extralink: false,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "",
@@ -24,6 +28,8 @@ export const ROUTES: RouteInfo[] = [
     class: "nav-small-cap",
     extralink: true,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: '',
@@ -31,6 +37,8 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-tag',
     class: 'has-arrow',
     extralink: false,
+    permissions : [],
+    permissionexcept : [],
     submenu: [
       // {
       //   path: '/offers/all',
@@ -46,7 +54,9 @@ export const ROUTES: RouteInfo[] = [
         icon: 'mdi mdi-format-list-bulleted',
         class: '',
         extralink: false,
-        submenu: []
+        submenu: [],
+        permissions : [],
+        permissionexcept : [],
       },
       {
         path : '/offers/campaign-list',
@@ -54,7 +64,9 @@ export const ROUTES: RouteInfo[] = [
         icon : 'mdi mdi-bullhorn',
         class : '',
         extralink: false,
-        submenu: []
+        submenu: [],
+        permissions : [],
+        permissionexcept : [],
       }
       // {
       //   path: '/offers/active',
@@ -97,6 +109,8 @@ export const ROUTES: RouteInfo[] = [
     class: "nav-small-cap",
     extralink: true,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "Statistics",
@@ -104,6 +118,8 @@ export const ROUTES: RouteInfo[] = [
     icon: "cpu",
     class: "has-arrow",
     extralink: false,
+    permissions : [],
+    permissionexcept : [],
     submenu: [
       {
         path: "/statistics/reports",
@@ -112,6 +128,8 @@ export const ROUTES: RouteInfo[] = [
         class: "",
         extralink: false,
         submenu: [],
+        permissions : [],
+        permissionexcept : [],
       },
       // {
       //   path: "/statistics/conversions",
@@ -140,6 +158,8 @@ export const ROUTES: RouteInfo[] = [
     class: "nav-small-cap",
     extralink: true,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "api-details",
@@ -148,6 +168,8 @@ export const ROUTES: RouteInfo[] = [
     class: "",
     extralink: false,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "",
@@ -156,6 +178,8 @@ export const ROUTES: RouteInfo[] = [
     class: "nav-small-cap",
     extralink: true,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "postback/list",
@@ -164,6 +188,8 @@ export const ROUTES: RouteInfo[] = [
     class: "",
     extralink: false,
     submenu: [],
+    permissions : [],
+    permissionexcept : [],
   },
   {
     path: "network-setting",
@@ -171,6 +197,8 @@ export const ROUTES: RouteInfo[] = [
     icon: "mdi mdi-access-point-network",
     class: "has-arrow",
     extralink: false,
+    permissions : ['Admin'],
+    permissionexcept : [],
     submenu: [
       {
         path: "setting",
@@ -178,7 +206,9 @@ export const ROUTES: RouteInfo[] = [
         icon: "mdi mdi-access-point-network",
         class: "",
         extralink: false,
-        submenu: []
+        submenu: [],
+        permissions : ['Admin'],
+        permissionexcept : [],
       },
       {
         path: '',
@@ -186,17 +216,17 @@ export const ROUTES: RouteInfo[] = [
         icon: 'mdi mdi-account-settings-variant',
         class: 'has-arrow',
         extralink: false,
-        // permissions: [ 'admin.user.view'],  // 'user.list'
-        // permissionexcept: [],
+        permissions: ['Admin'],  // 'user.list'
+        permissionexcept: [],
         submenu: [
           {
-            path: 'user/details',
+            path: 'user/edit',
             title: 'Add User',
             icon: 'mdi mdi-account-plus',
             class: '',
             extralink: false,
-            // permissions: ['admin.user.edit'],
-            // permissionexcept: ['system'],
+            permissions : ['Admin'],
+            permissionexcept : [],
             submenu: []
           },         
           {
@@ -204,8 +234,8 @@ export const ROUTES: RouteInfo[] = [
             title: 'List User',
             icon: 'mdi mdi-account-multiple',
             class: '',
-            // permissions: ['admin.user.view'],
-            // permissionexcept: [],
+            permissions : ['Admin'],
+            permissionexcept : [],
             extralink: false,
             submenu: []
           },

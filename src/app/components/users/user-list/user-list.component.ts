@@ -4,11 +4,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgbPagination, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
+// import { IModal, ModalType, Size } from 'src/app/shared/model/model/model.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, NgSelectModule, FormsModule, NgbPagination, NgbTooltip],
+  imports: [CommonModule, NgSelectModule, FormsModule, NgbPagination, NgbTooltip, RouterModule ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
@@ -24,8 +27,11 @@ export class UserListComponent implements OnInit {
   userCount : number = 0;
   status: string = '';
   limit: number = 10;
+  selectedRecord: any;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, 
+    private toastr : ToastrService
+  ) {}
 
   ngOnInit(): void {
 
@@ -58,8 +64,11 @@ export class UserListComponent implements OnInit {
     let filter = {
       // skip: (this.page - 1) * this.limit,
       limit: this.limit,
-      page : this.page,
-      status : this.status
+      page : 1, // this.page,
+      // status : this.status
+    }
+    if(this.status){
+      filter['status'] = this.status
     }
     if(this.companyUserId || this.emailUserId || this.manualUserId ){
         filter['user_id'] = this.companyUserId || this.emailUserId || this.manualUserId;

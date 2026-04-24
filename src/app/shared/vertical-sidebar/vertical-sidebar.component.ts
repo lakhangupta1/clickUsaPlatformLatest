@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NetworkService } from 'src/app/services/network.service';
 import { PublisherService } from 'src/app/services/publisher.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
 interface PublisherData {
   _id: string;
   network_id: string;
@@ -22,7 +23,7 @@ interface PublisherData {
 @Component({
   selector: 'app-vertical-sidebar',
   standalone: true,
-  imports: [TranslateModule, RouterModule, CommonModule, FeatherModule, NgbDropdownModule],
+  imports: [TranslateModule, RouterModule, CommonModule, FeatherModule, NgbDropdownModule, NgxPermissionsModule],
   templateUrl: './vertical-sidebar.component.html',
 })
 
@@ -80,7 +81,7 @@ export class VerticalSidebarComponent implements OnInit {
     this.appDomain = this.networkService.domain
     this.userData = this.authService.getUserDetails;
     // this.getUserCompanyName();
-    this.getPublisherAccManagerDetails(this.userData.userDetail.parentId[0]);
+    this.getPublisherAccManagerDetails(this.userData?.userDetail?.parentId?.[0]);
 
   }
 

@@ -1,0 +1,201 @@
+<div class="container mt-4" *ngIf="userEditForm">
+
+  <form [formGroup]="userEditForm" (ngSubmit)="onSubmit()">
+
+    <!-- 🔹 BASIC INFO -->
+    <div class="card mb-3 shadow-sm">
+      <div class="card-header fw-bold">Basic Information</div>
+
+      <div class="card-body row">
+
+        <div class="col-md-6 mb-3">
+          <label>Company</label>
+          <input type="text" class="form-control" formControlName="company">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>First Name *</label>
+          <input type="text" class="form-control" formControlName="first_name">
+          <small class="text-danger" *ngIf="userEditForm.get('first_name')?.touched && userEditForm.get('first_name')?.invalid">
+            First name is required
+          </small>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Last Name</label>
+          <input type="text" class="form-control" formControlName="last_name">
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label>Status *</label>
+            <select class="form-control" formControlName="status">
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label>Email *</label>
+          <input type="email" class="form-control" formControlName="email">
+          <small class="text-danger" *ngIf="userEditForm.get('email')?.touched && userEditForm.get('email')?.invalid">
+            Valid email required
+          </small>
+          <small class="text-danger"
+            *ngIf="userEditForm.get('email')?.touched && userEditForm.get('email')?.invalid">
+            {{ getError('email') }}
+          </small>
+        </div>
+
+        <div class="col-md-6 mb-3" *ngIf="!userId">
+        <label>Password *</label>
+
+        <div class="input-group">
+            <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            formControlName="password"
+            placeholder="Enter password">
+
+            <span class="input-group-text cursor-pointer"
+                (click)="togglePassword()">
+            <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </span>
+        </div>
+
+        <small class="text-danger"
+            *ngIf="userEditForm.get('password')?.touched && userEditForm.get('password')?.invalid">
+            Min 8 characters required
+        </small>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Phone</label>
+          <input type="text" class="form-control" formControlName="phone">
+          <small class="text-danger" *ngIf="userEditForm.get('phone')?.touched && userEditForm.get('phone')?.invalid">
+            Enter valid Indian number
+          </small>
+          <small class="text-danger"
+            *ngIf="userEditForm.get('phone')?.touched && userEditForm.get('phone')?.invalid">
+            {{ getError('phone') }}
+          </small>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Country *</label>
+          <select class="form-control" formControlName="country">
+            <option value="">Select</option>
+            <option *ngFor="let c of countryList" [value]="c.key">{{c.value}} ({{c.key}})</option>
+          </select>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label>Currency</label>
+          <select class="form-control" formControlName="currency">
+            <option value="">Select currency</option>
+            <option *ngFor="let c of currency" [value]="c">{{c}}</option>
+          </select>
+          <small class="text-danger"
+            *ngIf="userEditForm.get('currency')?.touched && userEditForm.get('currency')?.invalid">
+            {{ getError('currency') }}
+          </small>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 🔹 PROFILE -->
+    <div class="card mb-3 shadow-sm" formGroupName="profile">
+      <div class="card-header fw-bold">Profile Details</div>
+
+      <div class="card-body row">
+
+        <div class="col-md-6 mb-3">
+          <label>Address</label>
+          <input type="text" class="form-control" formControlName="address">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>State</label>
+          <input type="text" class="form-control" formControlName="state">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Pincode</label>
+          <input type="text" class="form-control" formControlName="pincode">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Payment Type</label>
+          <select class="form-control" formControlName="pay_type">
+            <option value="">Select</option>
+            <option value="BANK">Bank</option>
+            <option value="UPI">UPI</option>
+            <option value="PAYPAL">PayPal</option>
+            <option value="PAYTM">Paytm</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- DYNAMIC PAYMENT FIELDS -->
+      <div class="card-body row">
+
+        <!-- UPI -->
+        <div class="col-md-6 mb-3">
+          <label>UPI ID</label>
+          <input type="text" class="form-control" formControlName="upi">
+        </div>
+
+        <!-- PAYPAL -->
+        <div class="col-md-6 mb-3">
+          <label>Paypal Email</label>
+          <input type="email" class="form-control" formControlName="paypal">
+        </div>
+
+        <!-- PAYTM -->
+        <div class="col-md-6 mb-3">
+          <label>Paytm</label>
+          <input type="text" class="form-control" formControlName="paytm">
+        </div>
+
+      </div>
+
+      <!-- BANK -->
+      <div formGroupName="bank">
+        <div class="card-header fw-bold">Bank Details</div>
+        <div class="card-body row">
+          <div class="col-md-6 mb-3">
+            <label>Account Holder Name</label>
+            <input type="text" class="form-control" formControlName="account_holder_name">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label>Account Number</label>
+            <input type="text" class="form-control" formControlName="account_number">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label>IFSC Code</label>
+            <input type="text" class="form-control" formControlName="ifsc_code">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label>Bank Name</label>
+            <input type="text" class="form-control" formControlName="bank_name">
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 🔹 SUBMIT -->
+    <div class="text-end">
+      <button class="btn btn-success px-4" type="submit">
+        {{ userId ? 'Update User' : 'Create User' }}
+      </button>
+    </div>
+
+  </form>
+</div>

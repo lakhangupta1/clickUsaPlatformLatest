@@ -115,7 +115,7 @@ export class VerticalNavigationComponent implements OnInit {
   ngOnInit(): void {
     this.appDomain = this.networkService.domain
     let currentUser = this.authenticationService.getUserDetails;
-    console.log("currentUser --lakhan ", currentUser['userDetail']);
+    // console.log("currentUser ", currentUser['userDetail']);
     // if (currentUser && currentUser['userDetail']) {
       // if (currentUser['userDetail']['name']) {
       //   this.name = currentUser['userDetail']['name'];
@@ -124,7 +124,8 @@ export class VerticalNavigationComponent implements OnInit {
       //   this.email = currentUser['userDetail']['email'];
       // }
     // }
-    const publisherId = currentUser.userDetail.id;
+    console.log(" currentUser -> ", currentUser );
+    const publisherId = currentUser?.userDetail?.id;
     console.log("publisherId", publisherId );
     if (publisherId) {
       this.getPublisher(publisherId);
@@ -136,7 +137,7 @@ export class VerticalNavigationComponent implements OnInit {
       next: (result) => {
         if (!result.err) {
           this.publisherData = result['payload'];
-          console.log("Publisher Data:", this.publisherData);
+          // console.log("Publisher Data:", this.publisherData);
           this.email = this.publisherData['email'];
           this.name = this.publisherData['name'];
           this.company_logo = this.publisherData['company_logo'];

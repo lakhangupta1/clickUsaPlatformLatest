@@ -172,7 +172,7 @@ export class FullComponent implements OnInit {
     }
 
     // this.getUserCompanyName();
-    this.getPublisherAccManagerDetails(this.userData.userDetail.parentId[0]);
+    this.getPublisherAccManagerDetails(this.userData?.userDetail?.parentId?.[0]);
     this.defaultSidebar = options.sidebartype;
     this.handleSidebar();
     // if (this.router.url === '/dashboard') {
