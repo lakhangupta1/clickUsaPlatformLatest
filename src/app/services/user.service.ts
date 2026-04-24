@@ -18,4 +18,13 @@ export class UserService {
   getAllUserDetails(filter : any ){
     return this.http.post<any>(this.domain + '/api/get/users', filter);
   }
+  getUserById(id : any){
+    return this.http.get<any>(this.domain + '/api/get/user/' + id);
+  }
+  createUser(userData : any ){
+    return this.http.post<any>(this.domain + '/api/create/user/byadmin', userData);
+  }
+  updateUser( id :any, userData : any ){
+    return this.http.post<any>(this.domain + '/api/update/user/byadmin/' + id, userData );
+  }
 }

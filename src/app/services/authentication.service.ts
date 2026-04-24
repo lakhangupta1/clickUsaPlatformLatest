@@ -74,13 +74,14 @@ export class AuthenticationService {
 
   login(userDetails : any ) {
     return this.http.post(this.getSubDomain() + '/user/login', { userDetails }).pipe(map(user => {
-      console.log(" user -> ", user );
+      console.log(" user on login -> ", user );
       if (user['payload']) {
         localStorage.setItem('currentUser', JSON.stringify(user['payload'][0]));
         this.currentUserSubject.next(user['payload'][0]);
         const decoded = jwtDecode(user['payload'][0].token);
         this.details.next(decoded);
-        const perm = [] //  decoded['permissions'];
+        console.log(" decoded login token -> ", decoded );
+        const perm = decoded?.['userDetail']?.permissions;
         this.permissionsService.loadPermissions(perm);
       }
       return user;

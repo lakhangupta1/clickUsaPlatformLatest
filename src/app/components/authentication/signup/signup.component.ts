@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Globalconstant } from 'src/app/const/global';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-signup',
@@ -38,7 +39,8 @@ export class SignupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toasterService: ToastrService,
     private authenticationService: AuthenticationService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private permissionsService : NgxPermissionsService
   ) {
     this.countryList = Globalconstant.config.country;
   }
@@ -205,7 +207,7 @@ export class SignupComponent implements OnInit {
             localStorage.setItem('token', token);
             localStorage.setItem('refreshToken', refreshToken);
           }
-
+          this.permissionsService.loadPermissions(['User']);
           // let preVisitedPath = sessionStorage.getItem("preVisitedPath") || "/dashboard";
           let preVisitedPath = "/dashboard";
           this.router.navigateByUrl(preVisitedPath);

@@ -22,6 +22,7 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
         let token = localStorage.getItem('AccountToken') || localStorage.getItem('token');
         console.log(" token in auth -> ", token );
         const permissions = this.authenticationService.getUserDetails; 
+        console.log(" permissions -> ", permissions );
         if (permissions) {
           // if (domain.indexOf('staging.') == 0 && domain === 'staging.' + permissions.userDetail.domain.dashboard) {
           //   this.permissionsService.loadPermissions(permissions.permissions);

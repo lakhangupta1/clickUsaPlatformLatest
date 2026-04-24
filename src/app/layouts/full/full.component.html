@@ -28,7 +28,7 @@
     </ng-scrollbar>
 
     <!-- End Sidebar scroll-->
-    <div *ngIf="publisherData && publisherData['account_manager']" class="bg-white">
+    <div *ngIf="publisherData && publisherData?.['account_manager']" class="bg-white">
       <div
         style="position: relative;display: flex;padding: 0px 0px 0px 15px;align-items: center;margin-top: -60px;z-index: 9999;background: #ffffff;">
         <ng-container *ngIf="publisherData?.account_manager?.profile_image; else elseBlock">

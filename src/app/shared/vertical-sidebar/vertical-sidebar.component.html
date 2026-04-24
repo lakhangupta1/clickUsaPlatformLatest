@@ -72,6 +72,7 @@
         @for(sidebarnavItem of sidebarnavItems; track sidebarnavItem) {
         <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
             (click)="sidebarnavItem.submenu.length != 0 ? '' : handleNotify()"
+            *ngxPermissionsOnly="sidebarnavItem.permissions"
             [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
             @if(sidebarnavItem.extralink === true) {
             <div class="nav-small-cap"><i [ngClass]="[sidebarnavItem.icon]"></i><span
@@ -96,6 +97,7 @@
                 @for(sidebarnavSubItem of sidebarnavItem.submenu; track sidebarnavSubItem) {
                 <li class="sidebar-item" (click)="sidebarnavSubItem.submenu.length != 0 ? '' : handleNotify()"
                     [class.active]="showSubMenu === sidebarnavSubItem.title"
+                    *ngxPermissionsOnly="sidebarnavItem.permissions"
                     [routerLinkActive]="sidebarnavSubItem.submenu.length > 0 ? '' : 'active'">
                     @if(!sidebarnavSubItem.extralink) {
                     <a class="sidebar-link"
