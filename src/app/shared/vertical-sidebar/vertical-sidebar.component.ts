@@ -25,6 +25,7 @@ interface PublisherData {
   standalone: true,
   imports: [TranslateModule, RouterModule, CommonModule, FeatherModule, NgbDropdownModule, NgxPermissionsModule],
   templateUrl: './vertical-sidebar.component.html',
+  // styleUrl: './vertical-sidebar.component.scss'
 })
 
 export class VerticalSidebarComponent implements OnInit {

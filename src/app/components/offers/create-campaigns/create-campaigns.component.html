@@ -110,40 +110,77 @@
     </div>
 
     <!-- BUDGET -->
-    <div class="card p-3 mb-3" formGroupName="budget">
-      <h5>Budget</h5>
-
-      <div class="row">
-        <div class="col-md-4">
-          <label for="cpc">CPC</label>
-          <input class="form-control mb-2" placeholder="CPC" formControlName="cpc">
-        </div>
-        <div class="col-md-4">
-          <label for="total">Total Budget</label>
-          <input class="form-control mb-2" placeholder="Total Budget" formControlName="total">
-        </div>
-        <div class="col-md-4">
-          <label for="daily">Daily Budget</label>
-          <input class="form-control mb-2" placeholder="Daily Budget" formControlName="daily">
-        </div>
+    <!-- BUDGET -->
+<div class="card p-3 mb-3" formGroupName="budget">
+    <h5>Budget</h5>
+    <!-- Budget Inputs -->
+    <div class="row">
+      <div class="col-md-4">
+        <label>CPC</label>
+        <input type="number" class="form-control mb-2" placeholder="CPC" formControlName="cpc">
       </div>
 
-      <div class="row mt-2">
-        <div class="col-md-6">
-          <label>
-            <input type="checkbox" formControlName="smooth"> Smooth Distribution
-            Smooth Distribution
-          </label>
-        </div>
+      <div class="col-md-4">
+        <label>Total Budget</label>
+        <input type="number" class="form-control mb-2" placeholder="Total Budget" formControlName="total">
+      </div>
 
-        <div class="col-md-6">
-          <label>
-            <input type="checkbox" formControlName="acceleration"> Acceleration
-            Acceleration
-          </label>
-        </div>
+      <div class="col-md-4">
+        <label>Daily Budget</label>
+        <input type="number" class="form-control mb-2" placeholder="Daily Budget" formControlName="daily">
       </div>
     </div>
+
+    <!-- Clicks + Target -->
+    <div class="row mt-2 align-items-center">
+
+      <!-- Left: Dropdown -->
+      <div class="col-md-6">
+        <label>Select Clicks</label>
+        <select class="form-control" (change)="onSelect($event)">
+          <option value="">Select</option>
+          <option *ngFor="let item of clickListItems"
+            [value]="item.clicks + '-' + item.target"
+            [selected]="item.clicks === campaignForm.value.clicks && item.target === campaignForm.value.target">
+            
+            {{ item.clicks }} clicks
+          </option>
+        </select>
+      </div>
+
+      <!-- Right: Target Display ₹ -->
+      <div class="col-md-6 text-end mt-4">
+        <span class="badge bg-success fs-6">
+          Total Funds:  {{ campaignForm.get('target')?.value || 0 }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Options -->
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <label class="custom-check">
+          <input type="checkbox" formControlName="smooth">
+          <span class="checkmark"></span>
+          <span class="label-text">
+            Smooth Distribution
+            <small>Distribute budget evenly</small>
+          </span>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label class="custom-check">
+          <input type="checkbox" formControlName="acceleration">
+          <span class="checkmark"></span>
+          <span class="label-text">
+            Acceleration
+            <small>Spend budget faster</small>
+          </span>
+        </label>
+      </div>
+    </div>
+</div>
 
     <!-- STATUS -->
     <div class="card p-3 mb-3">

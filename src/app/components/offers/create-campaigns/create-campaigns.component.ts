@@ -9,14 +9,20 @@ import { OffersService } from 'src/app/services/offers.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-campaigns.component.html',
-  styleUrl: './create-campaigns.component.scss'
+  styleUrls: ['./create-campaigns.component.scss']
 })
 export class CreateCampaignsComponent implements OnInit {
 
   campaignForm!: FormGroup;
   campaignId: string | null = null;
   isEditMode = false;
-
+  clickListItems = [ 
+    { clicks : 0, target : 0 },
+    { clicks : 50, target : 100 },
+    { clicks : 100, target : 200 },
+    { clicks : 150, target : 300 } 
+  ]
+  selectedItem: any = null;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -57,7 +63,8 @@ export class CreateCampaignsComponent implements OnInit {
         smooth: [false],
         acceleration: [false]
       }),
-
+      clicks : [0],
+      target : [0],
       status: ['active']
     });
 
@@ -88,9 +95,23 @@ export class CreateCampaignsComponent implements OnInit {
     });
   }
 
+  onSelect(event: any) {
+    const value = event.target.value;
+
+    if (!value) return;
+
+    const [clicks, target] = value.split('-').map(Number);
+
+    this.campaignForm.patchValue({
+      clicks,
+      target
+    });
+  }
+  
   // Submit
   onSubmit(event?: Event) {
     if (event) event.preventDefault();
+    console.log(this.selectedItem);
 
     let formData = this.campaignForm.value;
     console.log(" formData ", formData );

@@ -1,0 +1,105 @@
+/* Sidebar Container */
+.sidebar-nav {
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(180deg, #0ea5a4, #22c55e);
+  color: #fff;
+  overflow-y: auto;
+  padding-top: 10px;
+}
+
+/* Logo / Header */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Menu List */
+#sidebarnav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar Item */
+.sidebar-item {
+  margin: 4px 10px;
+}
+
+/* Link */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #eafff7;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* Icons */
+.sidebar-link i,
+.sidebar-link i-feather {
+  font-size: 18px;
+}
+
+/* Hover */
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Active */
+.sidebar-link.active,
+.sidebar-item.active > .sidebar-link {
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Submenu */
+.first-level,
+.Second-level {
+  padding-left: 20px;
+}
+
+/* Submenu link */
+.first-level .sidebar-link,
+.Second-level .sidebar-link {
+  font-size: 13px;
+  padding: 8px 12px;
+}
+
+/* Section Title */
+.nav-small-cap {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  padding: 10px 16px;
+  text-transform: uppercase;
+}
+
+/* Collapse animation */
+.collapse {
+  display: none;
+}
+.collapse.in {
+  display: block;
+}
+
+/* Scrollbar */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+}

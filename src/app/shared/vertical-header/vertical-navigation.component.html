@@ -3,11 +3,18 @@
   <!-- toggle and nav items -->
   <!-- ============================================================== -->
   <ul class="navbar-nav me-auto">
-    <li class="nav-item nav-icon-hover-bg dark rounded-circle d-none d-lg-flex">
-      <a (click)="toggleSidebar.emit()" class="nav-link sidebartoggler position-relative" href="javascript:void(0)">
-        <i-feather class="feather-sm" name="menu"></i-feather>
-      </a>
-    </li>
+      <li class="nav-item d-none d-lg-flex align-items-center">
+    <!-- <a (click)="toggleSidebarState()"
+      class="nav-link sidebar-toggle-btn d-flex align-items-center justify-content-center"
+      href="javascript:void(0)"> -->
+      <button 
+        type="button"
+        class="sidebar-toggle-btn d-flex align-items-center justify-content-center"
+        (click)="toggleSidebarState()">
+        <i-feather name="menu" class="feather-sm"></i-feather>
+      </button>
+    <!-- </a> -->
+  </li>
     <!-- ============================================================== -->
     <!-- Comment -->
     <!-- ============================================================== -->
@@ -305,67 +312,76 @@
     <!-- ============================================================== -->
     <!-- User profile and search -->
     <!-- ============================================================== -->
-    <li class="nav-item nav-icon-hover-bg dark rounded-circle d-flex" ngbDropdown placement="bottom-end">
-      <a class="nav-link" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <!-- <img src="assets/images/users/user1.jpg" alt="user" class="rounded-circle" width="31" /> -->
-        <!-- <img [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))" alt="user"
-          class="rounded-circle" width="31" /> -->njjn
-        @if (company_logo) {
-        <img [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))" alt="user"
-          class="rounded-circle" width="31" />
-        } @else {
-        <div  class="rounded-circle  text-white fw-semibold" width="31">
-          {{ getInitials(name) }}knn
-        </div>
-        }
-      </a>
-      <div class="dropdown-menu-end user-dd dropdown-menu-animate-up" ngbDropdownMenu>
-        <div class="profile-dropdown position-relative">
-          <div class="py-3 px-7 pb-0">
-            <h5 class="mb-0 fs-5">User Profile</h5>
-          </div>
-          <div class="d-flex align-items-center py-7 mx-7 border-bottom">
-            <!-- <img src="assets/images/users/user1.jpg" class="rounded-circle" width="80" height="80" alt="" /> -->
-            <!-- <img [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))"
-              class="rounded-circle" width="80" height="80" alt="user" /> -->
-            <div class="company-logo">
-              @if (company_logo) {
-              <img [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))"
-                class="rounded-circle" width="80" height="80" alt="user" />
-              } @else {
-              <div
-                class="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold"
-                style="height:125px; width:125px; font-size:50px; cursor:pointer;">
-                {{ getInitials(name) }}
-              </div>
-              }
+    <li class="nav-item dropdown d-flex align-items-center"
+    ngbDropdown
+    placement="bottom-end">
 
-            </div>
-            <div class="ms-3">
-              <h5 class="mb-1 fs-4">{{name}}</h5>
-              <p class="mb-0 d-flex align-items-center gap-2">
-                <i-feather name="mail" class="feather-xs d-flex"></i-feather> {{ email }}
-              </p>
-            </div>
-          </div>
-          <div class="message-body">
-            <a [routerLink]="['/profile']" class="py-8 px-7 mt-8 d-flex align-items-center">
-              <span class="d-flex align-items-center justify-content-center bg-info-subtle rounded p-6 fs-7 text-info">
-                <i-feather name="user" class="feather-sm d-flex"></i-feather>
-              </span>
-              <div class="w-75 d-inline-block v-middle ps-3">
-                <h6 class="mb-1 fs-3 lh-base">My Profile</h6>
-                <span class="fs-2 d-block text-body-secondary">Account Settings</span>
-              </div>
-            </a>
+  <!-- Avatar Trigger -->
+  <a class="nav-link p-0 d-flex align-items-center"
+     ngbDropdownToggle
+     href="javascript:void(0)">
 
-          </div>
-          <div class="d-grid py-2 px-4">
-            <a (click)="logout()" class="btn btn-info">Log Out</a>
-          </div>
-        </div>
+    @if (company_logo) {
+      <img 
+        [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))"
+        class="rounded-circle avatar-sm"
+        alt="user" />
+    } @else {
+      <div class="avatar-sm bg-success text-white d-flex align-items-center justify-content-center fw-semibold">
+        {{ getInitials(name) }}
       </div>
-    </li>
+    }
+
+  </a>
+
+  <!-- Dropdown -->
+  <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 user-dd"
+       ngbDropdownMenu>
+
+    <!-- Header -->
+    <div class="px-3 py-2 border-bottom">
+      <h6 class="mb-0">User Profile</h6>
+    </div>
+
+    <!-- Profile Info -->
+    <div class="d-flex align-items-center p-3 border-bottom gap-3">
+
+      @if (company_logo) {
+        <img 
+          [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))"
+          class="rounded-circle avatar-lg"
+          alt="user" />
+      } @else {
+        <div class="avatar-lg bg-primary text-white d-flex align-items-center justify-content-center fw-bold">
+          {{ getInitials(name) }}
+        </div>
+      }
+
+      <div>
+        <h6 class="mb-1">{{ name }}</h6>
+        <small class="text-muted d-flex align-items-center gap-1">
+          <i-feather name="mail" class="feather-xs"></i-feather>
+          {{ email }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <a [routerLink]="['/profile']"
+       class="dropdown-item d-flex align-items-center gap-2">
+      <i-feather name="user" class="feather-sm"></i-feather>
+      My Profile
+    </a>
+
+    <!-- Logout -->
+    <div class="p-2">
+      <button (click)="logout()" class="btn btn-danger w-100">
+        Logout
+      </button>
+    </div>
+
+  </div>
+</li>
     <!-- ============================================================== -->
     <!-- User profile and search -->
     <!-- ============================================================== -->
