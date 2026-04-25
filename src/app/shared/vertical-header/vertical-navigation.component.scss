@@ -1,0 +1,67 @@
+/* Shared avatar styles */
+.avatar-sm,
+.avatar-lg {
+  border-radius: 50%;
+}
+
+/* Small avatar */
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+
+/* Large avatar */
+.avatar-lg {
+  width: 60px;
+  height: 60px;
+  font-size: 22px;
+}
+
+/* Dropdown */
+.user-dd {
+  width: 260px;
+  border-radius: 10px;
+}
+
+/* Hover effect (common style) */
+.dropdown-item:hover {
+  background: #f1f5f9;
+}
+
+/* Danger button */
+.btn-danger {
+  background: #ef4444;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Icon inside toggle */
+.sidebar-toggle-btn i-feather {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hover + active combined clean */
+.sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.sidebar-toggle-btn:active {
+  transform: scale(0.9);
+}

@@ -85,6 +85,7 @@ export class ProfileComponent implements OnInit {
         this.UserData['upi'] = result?.['payload']?.['profile']?.['upi'] || '';
         this.UserData['paypal'] = result?.['payload']?.['profile']?.['paypal'] || '';
         this.UserData['paytm'] = result?.['payload']?.['profile']?.['paytm'] || '';
+        this.UserData['pay_type'] = result?.['payload']?.['profile']?.['pay_type'] || '';
         // currency
         this.publisherData['id'] = result['payload']['_id'];
         delete this.publisherData['_id']

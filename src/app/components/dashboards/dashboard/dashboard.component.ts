@@ -93,7 +93,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   constructor(private router: Router, private toastrService: ToastrService, private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-    this.getLocalStorageDropdownOptions();
+    // this.getLocalStorageDropdownOptions();
     this.getDashboardData();
   }
 
@@ -105,26 +105,26 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       "topAppIdsDateRange": +this.topAppIdsDateRange
     });
 
-    localStorage.setItem("publisher_dashboard_dropdown_options", dropdownOptions);
+    // localStorage.setItem("publisher_dashboard_dropdown_options", dropdownOptions);
   }
 
-  getLocalStorageDropdownOptions() {
-    let dropdownOptions = JSON.parse(localStorage.getItem("publisher_dashboard_dropdown_options"));
-    if (dropdownOptions) {
-      if (dropdownOptions['progressCardsDateRange']) {
-        this.progressCardsDateRange = +dropdownOptions['progressCardsDateRange'];
-      }
-      if (dropdownOptions['statChartDateRange']) {
-        this.statChartDateRange = +dropdownOptions['statChartDateRange'];
-      }
-      if (dropdownOptions['topAppIdsLimit']) {
-        this.topAppIdsLimit = +dropdownOptions['topAppIdsLimit'];
-      }
-      if (dropdownOptions['topAppIdsDateRange']) {
-        this.topAppIdsDateRange = +dropdownOptions['topAppIdsDateRange'];
-      }
-    }
-  }
+  // getLocalStorageDropdownOptions() {
+  //   let dropdownOptions = JSON.parse(localStorage.getItem("publisher_dashboard_dropdown_options"));
+  //   if (dropdownOptions) {
+  //     if (dropdownOptions['progressCardsDateRange']) {
+  //       this.progressCardsDateRange = +dropdownOptions['progressCardsDateRange'];
+  //     }
+  //     if (dropdownOptions['statChartDateRange']) {
+  //       this.statChartDateRange = +dropdownOptions['statChartDateRange'];
+  //     }
+  //     if (dropdownOptions['topAppIdsLimit']) {
+  //       this.topAppIdsLimit = +dropdownOptions['topAppIdsLimit'];
+  //     }
+  //     if (dropdownOptions['topAppIdsDateRange']) {
+  //       this.topAppIdsDateRange = +dropdownOptions['topAppIdsDateRange'];
+  //     }
+  //   }
+  // }
 
   getDateRange(option) {
     if (option == '1') {

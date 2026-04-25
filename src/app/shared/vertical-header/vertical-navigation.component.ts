@@ -1,13 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit, EventEmitter, Output, inject, TemplateRef, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import {
   NgbModal,
   NgbDropdownModule,
   NgbAccordionModule,
   NgbCarouselModule,
-  NgbDatepickerModule,
-  NgbOffcanvas,
-  OffcanvasDismissReasons
+  NgbDatepickerModule
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -20,49 +18,35 @@ import { PublisherService } from 'src/app/services/publisher.service';
 import { NetworkService } from 'src/app/services/network.service';
 import { PublisherData } from '../model/profile.model';
 
-declare var $: any;
-
 @Component({
   selector: 'app-vertical-navigation',
   standalone: true,
   imports: [
-    NgbDropdownModule,
     CommonModule,
-    FeatherModule,
+    NgbDropdownModule,
     NgbAccordionModule,
     NgbCarouselModule,
     NgbDatepickerModule,
-    NgScrollbarModule, RouterModule
+    FeatherModule,
+    NgScrollbarModule,
+    RouterModule
   ],
   templateUrl: './vertical-navigation.component.html',
+  styleUrls: ['./vertical-navigation.component.scss'] // ✅ FIXED
 })
 export class VerticalNavigationComponent implements OnInit {
+
   @Output() toggleSidebar = new EventEmitter<void>();
 
   themeOptions = options;
+  isSidebarOpen = true;
 
-  setBodyAttribute(attribute: string, value: string): void {
-    document.body.setAttribute(attribute, value);
-  }
-
-
-
-
-  public showSearch = false;
   name = '';
-  email = 'lakhangupta@gmail.com';
-  image = 'assets/images/users/user1.jpg';
+  email = '';
+  company_logo = '';
+  appDomain: string = '';
 
-  data: any;
-  userData: any;
-  appDomain: any
-  company_name: any
-  company_logo: any
-  medLogo = "";
-  smallLogo = "";
-  // publisherData = {}
-  publisherData: PublisherData;
-
+  publisherData?: PublisherData; // ✅ optional
 
   public selectedLanguage: any = {
     language: 'English',
@@ -72,87 +56,77 @@ export class VerticalNavigationComponent implements OnInit {
   };
 
   public languages: any[] = [
-    {
-      language: 'English',
-      code: 'en',
-      type: 'US',
-      icon: 'us',
-    },
-    {
-      language: 'Español',
-      code: 'es',
-      icon: 'es',
-    },
-    {
-      language: 'Français',
-      code: 'fr',
-      icon: 'fr',
-    },
-    {
-      language: 'German',
-      code: 'de',
-      icon: 'de',
-    },
+    { language: 'English', code: 'en', type: 'US', icon: 'us' },
+    { language: 'Español', code: 'es', icon: 'es' },
+    { language: 'Français', code: 'fr', icon: 'fr' },
+    { language: 'German', code: 'de', icon: 'de' },
   ];
 
   constructor(
     private modalService: NgbModal,
     private translate: TranslateService,
-    private authenticationService: AuthenticationService,
+    private authService: AuthenticationService,
     private publisherService: PublisherService,
     private networkService: NetworkService
   ) {
-    translate.setDefaultLang('en');
+    this.translate.setDefaultLang('en');
   }
 
-  ngAfterViewInit() { }
+  ngOnInit(): void {
+    this.appDomain = this.networkService.domain;
+
+    //  FIX: call method properly
+    const currentUser = this.authService.getUserDetails;
+
+    console.log('currentUser -> ', currentUser);
+
+    const publisherId = currentUser?.userDetail?.id;
+
+    if (publisherId) {
+      this.getPublisher(publisherId);
+    }
+    this.email = currentUser?.email ;
+    this.name = currentUser?.first_name;
+    console.log(" email -> ", this.email );
+    console.log(" name -> ", this.name );
+  }
+
+  toggleSidebarState() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.toggleSidebar.emit();
+  }
 
   changeLanguage(lang: any) {
     this.translate.use(lang.code);
     this.selectedLanguage = lang;
   }
 
-  ngOnInit(): void {
-    this.appDomain = this.networkService.domain
-    let currentUser = this.authenticationService.getUserDetails;
-    // console.log("currentUser ", currentUser['userDetail']);
-    // if (currentUser && currentUser['userDetail']) {
-      // if (currentUser['userDetail']['name']) {
-      //   this.name = currentUser['userDetail']['name'];
-      // }
-      // if (currentUser['userDetail']['email']) {
-      //   this.email = currentUser['userDetail']['email'];
-      // }
-    // }
-    console.log(" currentUser -> ", currentUser );
-    const publisherId = currentUser?.userDetail?.id;
-    console.log("publisherId", publisherId );
-    if (publisherId) {
-      this.getPublisher(publisherId);
-    }
-  }
-
   getPublisher(id: string) {
     this.publisherService.getPublisher(id).subscribe({
-      next: (result) => {
-        if (!result.err) {
-          this.publisherData = result['payload'];
-          // console.log("Publisher Data:", this.publisherData);
-          this.email = this.publisherData['email'];
-          this.name = this.publisherData['name'];
-          this.company_logo = this.publisherData['company_logo'];
-          // console.log("this.company_logo",this.company_logo); 
+      next: (result: any) => {
+        if (!result?.err && result?.payload) {
+          const { email = '', first_name = '', company_logo = '' } = result.payload;
+
+          this.publisherData = result.payload;
+          this.email = email;
+          this.name = first_name;
+          this.company_logo = company_logo;
+
+          console.log('publisherData ->', this.publisherData);
+          console.log('email ->', this.email);
+          console.log('name ->', this.name);
         }
       },
       error: (err) => {
-        console.error("Publisher API Error:", err);
+        console.error('Publisher API Error:', err);
       }
     });
   }
 
   logout() {
-    this.authenticationService.logout();
+    this.authService.logout();
     sessionStorage.removeItem('preVisitedPath');
+
   }
 
   getInitials(name: string): string {

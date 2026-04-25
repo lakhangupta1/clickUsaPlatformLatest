@@ -118,6 +118,7 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem('AccountToken');
     localStorage.removeItem('currentUser');
+    // this.permissionsService.flushPermissions();
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }
