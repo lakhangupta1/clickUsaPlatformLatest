@@ -11,6 +11,147 @@
         </div>
     </div>
 
+<div class="row g-3 mb-3">
+    <!-- User Data Card -->
+    <div *ngxPermissionsOnly="['Admin']" class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body rounded-3 user-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="card-label mb-1">
+                            User Data
+                        </p>
+                        <h2 class="card-value mb-0">
+                            {{ dashboardData?.totalUsers }}
+                        </h2>
+                    </div>
+                    <div class="text-end">
+                        <div class="card-icon bg-primary-subtle">
+                              <i [ngClass]="dashboardData?.userdata1 >= dashboardData?.userdata2 ? 'fas fs-5 fa-arrow-up text-success' : 'fas fs-5 fa-arrow-down text-danger' "></i>
+                        </div>
+                        <small class="card-percent d-block">
+                             (
+                                {{ calculatePercentage1(
+                                    dashboardData?.userdata1,
+                                    dashboardData?.userdata2
+                                ) | number:'1.1-1' }}%
+                            )
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer-text">
+                    {{ dashboardData?.userdata1 }}
+                    /
+                    {{ dashboardData?.userdata2 }}
+                </div>
+                <div class="progress mt-2 progress-custom">
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        [ngClass]="
+                            calculatePercentage1(
+                                dashboardData?.userdata1,
+                                dashboardData?.userdata2
+                            ) >= 0
+                            ? 'bg-success'
+                            : 'bg-danger'
+                        "
+                        [style.width.%]="
+                            getProgressWidth(
+                                dashboardData?.userdata1,
+                                dashboardData?.userdata2
+                            )
+                        "
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Campaign Data Card -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body rounded-3 campaign-card">
+                <div class="d-flex justify-content-between ">
+                    <div>
+                        <p class="card-label mb-1">
+                            Campaign Data
+                        </p>
+                        <h2 class="card-value">
+                            {{ dashboardData?.totalCampaigns }}
+                        </h2>
+                    </div>
+                    <div class="text-end">
+                        <div class="card-icon bg-primary-subtle">
+                            <!-- <i class="bi bi-megaphone-fill"></i> -->
+                            <i [ngClass]="dashboardData?.campaigndata1 >= dashboardData?.campaigndata2 ? 'fas fs-5 fa-arrow-up text-success' : 'fas fs-5 fa-arrow-down text-danger' "></i>
+                        </div>                    
+                        <small class="card-percent d-block">
+                            (
+                                {{ calculatePercentage1(
+                                    dashboardData?.campaigndata1,
+                                    dashboardData?.campaigndata2
+                                ) | number:'1.1-1' }}%
+                            )
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer-text">
+                    {{ dashboardData?.campaigndata1 }}
+                    /
+                    {{ dashboardData?.campaigndata2 }}
+                </div>
+                <div class="progress mt-2 progress-custom">
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        [ngClass]="
+                            calculatePercentage1(
+                                dashboardData?.campaigndata1,
+                                dashboardData?.campaigndata2
+                            ) >= 0
+                            ? 'bg-success'
+                            : 'bg-danger'
+                        "
+                        [style.width.%]="
+                            getProgressWidth(
+                                dashboardData?.campaigndata1,
+                                dashboardData?.campaigndata2
+                            )
+                        "
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Revenue / Wallet Card -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body rounded-3 revenue-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="card-label mb-1">
+                            Wallet Balance
+                        </p>
+                        <h2 class="card-value">
+                            $ {{ dashboardData?.walletBalance }} 139.00
+                        </h2>
+                    </div>
+                    <div class="text-end">
+                        <div class="card-icon bg-primary-subtle">
+                            <i [ngClass]="dashboardData?.campaigndata1 >= dashboardData?.campaigndata2 ? 'fas fs-5 fa-arrow-up text-success' : 'fas fs-5 fa-arrow-down text-danger' "></i>
+                        </div>
+                        <small class="card-percent d-block">
+                            (50%)
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer-text">
+                    Updated Today
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="col-12">
         <div class="row">
             <div class="col-lg-4 col-md-6" *ngFor="let item of progressCardsData | keyvalue">

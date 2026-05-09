@@ -3,3 +3,87 @@
   width: 280px;
   margin: 0 auto;
 }
+
+/* Card Backgrounds */
+.user-card {
+  background: linear-gradient(135deg, #84afec, #dbeafe);
+}
+
+.campaign-card {
+  background: linear-gradient(135deg, #e4a9a9, #fee2e2);
+}
+
+.revenue-card {
+  background: linear-gradient(135deg, #4be69e, #d1fae5);
+}
+
+/* Main Card */
+.card {
+  border-radius: 18px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Label */
+.card-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+/* Value */
+.card-value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Icon Box */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+}
+
+/* Footer Text */
+.card-footer-text {
+  /* margin-top: 16px; */
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Percentage */
+.card-percent {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 6px;
+  color: #111827;
+}
+
+.progress-custom {
+  height: 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.4);
+  overflow: hidden;
+}
+
+.progress-bar {
+  transition: width 0.6s ease;
+}

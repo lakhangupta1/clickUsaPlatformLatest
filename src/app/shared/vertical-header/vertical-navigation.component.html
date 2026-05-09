@@ -321,16 +321,32 @@
      ngbDropdownToggle
      href="javascript:void(0)">
 
-    @if (company_logo) {
-      <img 
-        [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))"
-        class="rounded-circle avatar-sm"
-        alt="user" />
-    } @else {
-      <div class="avatar-sm bg-success text-white d-flex align-items-center justify-content-center fw-semibold">
-        {{ getInitials(name) }}
+    <div class="wallet-user-card">
+      <div class="user-info">
+
+        @if (company_logo) {
+          <img 
+            [src]="appDomain + '/' + (publisherData?.company_logo?.replace('public/', ''))"
+            class="user-avatar"
+            alt="user" />
+        } @else {
+          <div class="initials-avatar">
+            {{ getInitials(name) }}
+          </div>
+        }
+
+        <div class="user-details">
+          <div class="user-name">
+            {{ name }}
+          </div>
+
+          <div class="wallet-balance">
+            {{ wallet_balance | currency:'USD' }}
+          </div>
+        </div>
+
       </div>
-    }
+    </div>
 
   </a>
 
@@ -371,6 +387,12 @@
        class="dropdown-item d-flex align-items-center gap-2">
       <i-feather name="user" class="feather-sm"></i-feather>
       My Profile
+    </a>
+    
+    <a [routerLink]="['/add-payment']"
+      class="dropdown-item d-flex align-items-center gap-2">
+      <i-feather name="credit-card" class="feather-sm"></i-feather>       
+      Add Funds
     </a>
 
     <!-- Logout -->

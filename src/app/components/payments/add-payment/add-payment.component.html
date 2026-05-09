@@ -1,0 +1,135 @@
+<!-- add-payment.component.html -->
+
+<div class="container mt-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-5">
+
+      <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-body p-4">
+
+          <h3 class="text-center mb-4">
+            Add Wallet Balance
+          </h3>
+
+          <form [formGroup]="paymentForm">
+
+            <!-- Amount -->
+
+            <div class="mb-3">
+
+              <label class="form-label">
+                Amount
+              </label>
+
+              <input
+                type="number"
+                class="form-control form-control-lg"
+                placeholder="Enter amount"
+                formControlName="amount">
+
+              <div
+                class="text-danger mt-1"
+                *ngIf="f['amount'].touched && f['amount'].invalid">
+
+                Valid amount required
+
+              </div>
+
+            </div>
+
+            <!-- Currency -->
+
+            <div class="mb-4">
+
+              <label class="form-label">
+                Currency
+              </label>
+
+              <select
+                class="form-select form-select-lg"
+                formControlName="currency">
+
+                <option value="INR">
+                  INR
+                </option>
+
+                <option value="USD">
+                  USD
+                </option>
+
+              </select>
+
+            </div>
+
+            <!-- Payment Methods -->
+
+            <div class="mb-4">
+
+              <label class="form-label">
+                Supported Payment Methods
+              </label>
+
+              <div class="payment-methods">
+
+                <span class="badge bg-primary">
+                  UPI
+                </span>
+
+                <span class="badge bg-success">
+                  QR Code
+                </span>
+
+                <span class="badge bg-dark">
+                  Debit Card
+                </span>
+
+                <span class="badge bg-warning text-dark">
+                  Credit Card
+                </span>
+
+                <span class="badge bg-info text-dark">
+                  Net Banking
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- Pay Button -->
+
+            <button
+              type="button"
+              class="btn btn-primary w-100 btn-lg"
+              [disabled]="loading"
+              (click)="payNow()">
+
+              <span *ngIf="!loading">
+                Proceed To Pay
+              </span>
+
+              <span *ngIf="loading">
+
+                <span
+                  class="spinner-border spinner-border-sm me-2">
+                </span>
+
+                Processing...
+
+              </span>
+
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -24,6 +24,40 @@ export class AuthenticationService {
     this.currentUser = this.currentUserSubject.asObservable();
     this.testDetails = this.details.asObservable();
     this.apiSubDomain = this.subDomain.asObservable();
+    // Initialize permissions from stored user on service startup (handles hard reload)
+    this._initPermissionsFromStorage();
+  }
+
+  private _initPermissionsFromStorage() {
+    try {
+      const saved = this.currentUserSubject.value;
+      if (!saved) return;
+
+      // If saved entry contains a token, decode it to extract permissions
+      let perms: any = null;
+      if (saved.token) {
+        try {
+          const decoded: any = jwtDecode(saved.token);
+          // prefer decoded structure but fall back to any top-level permissions
+          perms = decoded?.['userDetail']?.permissions || decoded?.permissions || null;
+          // store decoded details for convenience
+          this.details.next(decoded);
+        } catch (e) {
+          // ignore decode errors
+        }
+      }
+
+      // If no token or decoded perms, check if stored user already has permissions
+      if (!perms && saved.permissions) {
+        perms = saved.permissions;
+      }
+
+      if (perms && Array.isArray(perms) && perms.length) {
+        this.permissionsService.loadPermissions(perms);
+      }
+    } catch (e) {
+      // noop
+    }
   }
 
   public get currentUserValue() {
@@ -118,7 +152,8 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem('AccountToken');
     localStorage.removeItem('currentUser');
-    // this.permissionsService.flushPermissions();
+    // clear permissions on logout
+    try { this.permissionsService.flushPermissions(); } catch (e) {}
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }

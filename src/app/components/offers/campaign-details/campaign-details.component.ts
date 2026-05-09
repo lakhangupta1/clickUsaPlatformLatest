@@ -14,6 +14,7 @@ import { OffersService } from 'src/app/services/offers.service';
 export class CampaignDetailsComponent implements OnInit {
   campaignId: string | null = null;
   campaign: any = null;
+  copied: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -40,7 +41,13 @@ export class CampaignDetailsComponent implements OnInit {
   }
 
   copyLink() {
-    navigator.clipboard.writeText(this.campaign.destination_url);
+    if (!this.campaign?.destination_url) return;
+    navigator.clipboard.writeText(this.campaign.destination_url).then(() => {
+      this.copied = true;
+      setTimeout(() => this.copied = false, 2000);
+    }).catch((err) => {
+      console.error('copy failed', err);
+    });
   }
 
 }
