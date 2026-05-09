@@ -8,6 +8,8 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +22,7 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     CommonModule,
     NgbProgressbarModule,
+    NgxPermissionsModule
   ],
   styleUrls: ['./dashboard.component.css'],
 })
@@ -37,7 +40,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   topAppIdsLimit = 5;
   topAppIdsDateRange = 1;
   topAppIdsData = [];
-
+  dashboardData : any;
 
   subtitle: string;
   ngAfterViewInit() { }
@@ -92,8 +95,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
 
   constructor(private router: Router, private toastrService: ToastrService, private dashboardService: DashboardService) { }
 
-  ngOnInit(): void {
-    // this.getLocalStorageDropdownOptions();
+  ngOnInit(): void {    
     this.getDashboardData();
   }
 
@@ -104,29 +106,9 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       "topAppIdsLimit": +this.topAppIdsLimit,
       "topAppIdsDateRange": +this.topAppIdsDateRange
     });
-
-    // localStorage.setItem("publisher_dashboard_dropdown_options", dropdownOptions);
   }
 
-  // getLocalStorageDropdownOptions() {
-  //   let dropdownOptions = JSON.parse(localStorage.getItem("publisher_dashboard_dropdown_options"));
-  //   if (dropdownOptions) {
-  //     if (dropdownOptions['progressCardsDateRange']) {
-  //       this.progressCardsDateRange = +dropdownOptions['progressCardsDateRange'];
-  //     }
-  //     if (dropdownOptions['statChartDateRange']) {
-  //       this.statChartDateRange = +dropdownOptions['statChartDateRange'];
-  //     }
-  //     if (dropdownOptions['topAppIdsLimit']) {
-  //       this.topAppIdsLimit = +dropdownOptions['topAppIdsLimit'];
-  //     }
-  //     if (dropdownOptions['topAppIdsDateRange']) {
-  //       this.topAppIdsDateRange = +dropdownOptions['topAppIdsDateRange'];
-  //     }
-  //   }
-  // }
-
-  getDateRange(option) {
+  getDateRange( option : any ) {
     if (option == '1') {
       return "today";
     } else if (option == '2') {
@@ -160,69 +142,39 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       getOverallStat: getStatChartData,
       getTopAppIdStat: getTopAppIdsData
     };
-    // this.dashboardService.getPublisherDashboardData(filter).subscribe(data => {
-    //   // console.log("getPublisherDashboardData-->", data);
-    //   if (data['err']) {
-    //     this.toastrService.error(data['msg'], 'Error!');
-    //   } else {
-    //     if (data['payload']['allStatsForCurrentDateRange']) {
-    //       if (data['payload']['allStatsForCurrentDateRange']['click']) {
-    //         this.progressCardsData['click']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['click']);
-    //       }
-    //       if (data['payload']['allStatsForCurrentDateRange']['conversion']) {
-    //         this.progressCardsData['conversion']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['conversion']);
-    //       }
-    //       if (data['payload']['allStatsForCurrentDateRange']['payout']) {
-    //         this.progressCardsData['revenue']['currentValue'] = Number(data['payload']['allStatsForCurrentDateRange']['payout'].toFixed(2));
-    //       }
-    //     }
-    //     if (data['payload']['allStatsForPreviousDateRange']) {
-    //       if (data['payload']['allStatsForPreviousDateRange']['click']) {
-    //         this.progressCardsData['click']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['click']);
-    //       }
-    //       if (data['payload']['allStatsForPreviousDateRange']['conversion']) {
-    //         this.progressCardsData['conversion']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['conversion']);
-    //       }
-    //       if (data['payload']['allStatsForPreviousDateRange']['payout']) {
-    //         this.progressCardsData['revenue']['previousValue'] = Number(data['payload']['allStatsForPreviousDateRange']['payout'].toFixed(2));
-    //       }
-    //     }
-    //     this.progressCardsData['click']['percentValue'] = this.calculatePercentage(this.progressCardsData['click']['previousValue'], this.progressCardsData['click']['currentValue']);
-    //     this.progressCardsData['conversion']['percentValue'] = this.calculatePercentage(this.progressCardsData['conversion']['previousValue'], this.progressCardsData['conversion']['currentValue']);
-    //     this.progressCardsData['revenue']['percentValue'] = this.calculatePercentage(this.progressCardsData['revenue']['previousValue'], this.progressCardsData['revenue']['currentValue']);
+    console.log(" filter -> ", filter);
+    this.dashboardService.getDashboardData(filter).subscribe({
+      next: (res: any) => {
+        console.log(" dashboard api response -> ", res);
+        if (!res?.err && res?.payload) {
+          this.dashboardData = res.payload; 
+          // const { progressCards = {}, statChart = {}, topAppIds = [] } = res.payload;
+          // this.progressCards = progressCards;
+          // this.statChartData.series = statChart.series || [];
+          // this.statChartData.xaxis.categories = statChart.categories || [];
+          // this.topAppIdsData = topAppIds;
+        }
+        else {
+          this.toastrService.error('Unable to fetch dashboard data');
+        }
+      },
+      error: (err) => {
+        console.error('Dashboard API Error:', err);
+        this.toastrService.error('Unable to fetch dashboard data');
+      }
+    });
+  }
 
-    //     if (data['payload']['overallStat']) {
-    //       let series = [{ name: 'Click', data: [] }, { name: 'Conversion', data: [] }, { name: 'CR', data: [] }];
-    //       let xaxis = { type: 'category', categories: [], labels: { show: false } };
-    //       for (let item of data['payload']['overallStat']) {
-    //         series[0]['data'].push(item['click']);
-
-    //         series[1]['data'].push(item['conversion']);
-
-    //         let cr = 0;
-    //         if (item['click'] && item['conversion']) {
-    //           cr = Number(((item['conversion'] / item['click']) * 100).toFixed(2));
-    //         }
-
-    //         series[2]['data'].push(cr);
-
-    //         if (item['_id'] && item['_id']['hour'] >= 0) {
-    //           xaxis['categories'].push('Time: ' + item['_id']['hour']);
-    //         } else if (item['_id'] && item['_id']['day'] && item['_id']['month'] && item['_id']['year']) {
-    //           xaxis['categories'].push('Date: ' + item['_id']['day'] + '/' + item['_id']['month'] + '/' + item['_id']['year']);
-    //         }
-    //       }
-    //       this.statChartData['xaxis'] = xaxis;
-    //       this.statChartData['series'] = series;
-
-    //     }
-    //     if (data['payload']['appIds']) {
-    //       this.topAppIdsData = data['payload']['appIds'];
-    //     }
-    //   }
-    // }, () => {
-    //   this.toastrService.error('Something went wrong, Try again.', 'Error!');
-    // });
+  calculatePercentage1(current: any, previous: any): number {
+    const currentValue = parseFloat(current) || 0;
+    const previousValue = parseFloat(previous) || 0;
+    // Avoid divide by zero
+    if (previousValue === 0) {
+      return currentValue > 0 ? 100.0 : 0.0;
+    }
+    const percentage = ((currentValue - previousValue) / previousValue) * 100;
+    // return as number rounded to 1 decimal
+    return Math.round(percentage * 10) / 10;
   }
 
   calculatePercentage(dividend: number, divisor: number) {
@@ -241,7 +193,11 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     }
   }
 
-  onChange(value) {
+  getProgressWidth(current: any, previous: any): number {
+    const percentage = Math.abs(this.calculatePercentage1(current, previous));
+    return percentage > 100 ? 100 : percentage;
+  }
+  onChange( value : any ) {
     let getProgressCardsData = false;
     let getStatChartData = false;
     let getTopAppIdsData = false;
@@ -270,11 +226,16 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       getTopAppIdsData = true;
     }
 
+    console.log(" onChange dashboard time ");
+    console.log("getProgressCardsData -> ", getProgressCardsData);
+    console.log("getStatChartData -> ", getStatChartData);
+    console.log("getTopAppIdsData -> ", getTopAppIdsData);
+
     this.getDashboardData(getProgressCardsData, getStatChartData, getTopAppIdsData);
     this.setLocalStorageDropdownOptions();
   }
 
-  generateDateRange(n) {
+  generateDateRange( n : any ) {
     let now = new Date();
     let startDate = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-" + ("0" + now.getDate()).slice(-2) + "T00:00";
     let endDate = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-" + ("0" + now.getDate()).slice(-2) + "T23:59";
@@ -306,8 +267,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     return { "startDate": startDate, "endDate": endDate };
   }
 
-  onClickAppId(appId) {
+  onClickAppId( appId : string ) {
+
   }
-
-
 }

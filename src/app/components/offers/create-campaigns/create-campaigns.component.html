@@ -44,33 +44,66 @@
       <div class="row">
         <div class="col-md-6">
           <label for="allow_vertical">Vertical</label>
-          <input id="allow_vertical" class="form-control mb-2" placeholder="Vertical" formControlName="vartical">
+          <select id="allow_vertical" class="form-control mb-2" formControlName="vartical">
+            <option value="">Select Vertical</option>
+            <option *ngFor="let v of verticalList" [value]="v">{{ v }}</option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="allow_provider">Provider</label>
-          <input id="allow_provider" class="form-control mb-2" placeholder="Provider" formControlName="provider">
+          <app-multiselected
+            [dropdownData]="providerList"
+            [selectedData]="campaignForm.get('allow_traffic.provider')?.value"
+            [dropdownPlaceholder]="'Select Provider'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onAllowProviderChange($event)">
+          </app-multiselected>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <label>Country</label>
-          <input class="form-control mb-2" placeholder="Country" formControlName="country">
+          <app-multiselected
+            [dropdownData]="displayCountryList"
+            [selectedData]="campaignForm.get('allow_traffic.country')?.value"
+            [dropdownPlaceholder]="'Select Country'"
+            [dropdownSettings]="countryDropdownSettings"
+            (getSelectedItems)="onAllowCountryChange($event)">
+          </app-multiselected>
         </div>
         <div class="col-md-6">
           <label>Device</label>
-          <input class="form-control mb-2" placeholder="Device" formControlName="device">
+          <app-multiselected
+            [dropdownData]="allow_deviceList"
+            [selectedData]="campaignForm.get('allow_traffic.device')?.value"
+            [dropdownPlaceholder]="'Select Device'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onAllowDeviceChange($event)">
+          </app-multiselected>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <label>OS</label>
-          <input class="form-control mb-2" placeholder="OS" formControlName="os">
+          <app-multiselected
+            [dropdownData]="Allow_osList"
+            [selectedData]="campaignForm.get('allow_traffic.os')?.value"
+            [dropdownPlaceholder]="'Select OS'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onAllowOsChange($event)">
+          </app-multiselected>
         </div>
-        <div class="col-md-6">
-          <label for="allow_tag">Tag</label>
-          <input class="form-control" placeholder="Tag" formControlName="tag">
+        <div class="col-md-6 mt-2">
+          <label for="allow_tag">Tag (keep empty for all tags)</label>
+          <app-multiselected
+            [dropdownData]="tagList"
+            [selectedData]="campaignForm.get('allow_traffic.tag')?.value"
+            [dropdownPlaceholder]="'Select Tag'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onAllowTagChange($event)">
+          </app-multiselected>
         </div>
       </div>
     </div>
@@ -82,29 +115,59 @@
       <div class="row">
         <div class="col-md-6">
           <label for="blocked_provider">Provider</label>
-          <input class="form-control mb-2" placeholder="Provider" formControlName="provider">
+          <app-multiselected
+            [dropdownData]="providerList"
+            [selectedData]="campaignForm.get('blocked_traffic.provider')?.value"
+            [dropdownPlaceholder]="'Select Provider'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onBlockedProviderChange($event)">
+          </app-multiselected>
         </div>
         <div class="col-md-6">
           <label for="blocked_country">Country</label>
-          <input class="form-control mb-2" placeholder="Country" formControlName="country">
+          <app-multiselected
+            [dropdownData]="displayCountryList"
+            [selectedData]="campaignForm.get('blocked_traffic.country')?.value"
+            [dropdownPlaceholder]="'Select Country'"
+            [dropdownSettings]="countryDropdownSettings"
+            (getSelectedItems)="onBlockedCountryChange($event)">
+          </app-multiselected>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <label for="blocked_device">Device</label>
-          <input class="form-control mb-2" placeholder="Device" formControlName="device">
+          <app-multiselected
+            [dropdownData]="Block_deviceList"
+            [selectedData]="campaignForm.get('blocked_traffic.device')?.value"
+            [dropdownPlaceholder]="'Select Device'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onBlockedDeviceChange($event)">
+          </app-multiselected>
         </div>
         <div class="col-md-6">
           <label for="blocked_os">OS</label>
-          <input class="form-control mb-2" placeholder="OS" formControlName="os">
+          <app-multiselected
+            [dropdownData]="Block_osList"
+            [selectedData]="campaignForm.get('blocked_traffic.os')?.value"
+            [dropdownPlaceholder]="'Select OS'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onBlockedOsChange($event)">
+          </app-multiselected>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <label for="blocked_tag">Tag</label>
-          <input class="form-control" placeholder="Tag" formControlName="tag">
+        <div class="col-md-6 mt-2">
+          <label for="blocked_tag">Tag (keep empty for all tags)</label>
+          <app-multiselected
+            [dropdownData]="tagList"
+            [selectedData]="campaignForm.get('blocked_traffic.tag')?.value"
+            [dropdownPlaceholder]="'Select Tag'"
+            [dropdownSettings]="dropdownSettings"
+            (getSelectedItems)="onBlockedTagChange($event)">
+          </app-multiselected>
         </div>
       </div>
     </div>

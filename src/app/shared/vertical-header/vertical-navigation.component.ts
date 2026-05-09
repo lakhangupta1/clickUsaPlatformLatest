@@ -45,8 +45,9 @@ export class VerticalNavigationComponent implements OnInit {
   email = '';
   company_logo = '';
   appDomain: string = '';
+  wallet_balance : number = 0;
 
-  publisherData?: PublisherData; // ✅ optional
+  publisherData?: PublisherData; // optional
 
   public selectedLanguage: any = {
     language: 'English',
@@ -74,21 +75,17 @@ export class VerticalNavigationComponent implements OnInit {
 
   ngOnInit(): void {
     this.appDomain = this.networkService.domain;
-
     //  FIX: call method properly
     const currentUser = this.authService.getUserDetails;
-
-    console.log('currentUser -> ', currentUser);
-
+    // console.log('currentUser -> ', currentUser);
     const publisherId = currentUser?.userDetail?.id;
-
     if (publisherId) {
       this.getPublisher(publisherId);
     }
     this.email = currentUser?.email ;
     this.name = currentUser?.first_name;
-    console.log(" email -> ", this.email );
-    console.log(" name -> ", this.name );
+    // console.log(" email -> ", this.email );
+    // console.log(" name -> ", this.name );
   }
 
   toggleSidebarState() {
@@ -105,20 +102,21 @@ export class VerticalNavigationComponent implements OnInit {
     this.publisherService.getPublisher(id).subscribe({
       next: (result: any) => {
         if (!result?.err && result?.payload) {
-          const { email = '', first_name = '', company_logo = '' } = result.payload;
-
+          const { email = '', first_name = '', company_logo = '', wallet_balance = 0 } = result.payload;
           this.publisherData = result.payload;
           this.email = email;
           this.name = first_name;
           this.company_logo = company_logo;
+          this.wallet_balance = wallet_balance;
 
-          console.log('publisherData ->', this.publisherData);
-          console.log('email ->', this.email);
-          console.log('name ->', this.name);
+          // console.log('publisherData ->', this.publisherData);
+          // console.log('email ->', this.email);
+          // console.log('name ->', this.name);
+          // console.log('wallet_balance ->', this.wallet_balance);
         }
       },
       error: (err) => {
-        console.error('Publisher API Error:', err);
+        // console.error('Publisher API Error:', err);
       }
     });
   }

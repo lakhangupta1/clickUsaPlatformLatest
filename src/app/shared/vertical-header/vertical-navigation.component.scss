@@ -65,3 +65,54 @@
 .sidebar-toggle-btn:active {
   transform: scale(0.9);
 }
+.wallet-user-card {
+  padding: 10px 14px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar,
+.initials-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-avatar {
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+}
+
+.initials-avatar {
+  background: #198754;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.wallet-balance {
+  font-size: 13px;
+  color: #f7faf9;
+  font-weight: 600;
+  margin-top: 2px;
+}

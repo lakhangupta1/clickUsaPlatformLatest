@@ -9,6 +9,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { options } from 'src/app/config';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { NetworkService } from 'src/app/services/network.service';
 import { PublisherService } from 'src/app/services/publisher.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -60,6 +61,7 @@ export class VerticalSidebarComponent implements OnInit {
     private menuServise: VerticalSidebarService,
     private router: Router,
     private toasterService: ToastrService,
+    private permissionsService: NgxPermissionsService,
     private authService: AuthenticationService,
     private networkService: NetworkService,
     private publisherService: PublisherService
@@ -77,6 +79,18 @@ export class VerticalSidebarComponent implements OnInit {
       );
       this.addExpandClass(this.path);
     });
+  }
+
+  // Return true when item has no permissions restriction, or when user has the required permissions
+  showMenuItem(perms: any[] | undefined | null): boolean {
+    if (!perms || (Array.isArray(perms) && perms.length === 0)) return true;
+    try {
+      const store = this.permissionsService.getPermissions();
+      if (!store) return false;
+      return (perms as string[]).every(p => !!store[p]);
+    } catch (e) {
+      return false;
+    }
   }
   ngOnInit() {
     this.appDomain = this.networkService.domain

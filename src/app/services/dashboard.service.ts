@@ -12,8 +12,11 @@ export class DashboardService {
   constructor(private http: HttpClient, authenticationService: AuthenticationService) { this.domain = authenticationService.getSubDomain(); }
 
 
-  getPublisherDashboardData(filter) {
+  getPublisherDashboardData(filter : any ) {
     return this.http.post<any>(this.domain + '/api/get/publisher/dashboard/data', filter);
+  }
+  getDashboardData(filter : any) {
+    return this.http.post<any>(this.domain + '/api/get/dashboard/data', filter);
   }
 
 }

@@ -1,0 +1,23 @@
+/* add-payment.component.scss */
+
+.card {
+  border-radius: 20px;
+}
+
+.payment-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.badge {
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+button {
+  height: 55px;
+  font-size: 18px;
+  font-weight: 600;
+}

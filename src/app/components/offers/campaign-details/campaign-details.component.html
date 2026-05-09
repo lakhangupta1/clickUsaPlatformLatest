@@ -76,9 +76,11 @@
                  [value]="campaign.destination_url"
                  readonly>
 
-          <button class="btn btn-sm btn-outline-secondary"
-                  (click)="copyLink()">
-            Copy
+          <button class="btn btn-sm"
+                  [ngClass]="copied ? 'btn-outline-success' : 'btn-outline-secondary'"
+                  (click)="copyLink()"
+                  [disabled]="copied">
+            {{ copied ? 'Copied' : 'Copy' }}
           </button>
         </div>
       </div>
