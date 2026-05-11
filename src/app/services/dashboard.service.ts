@@ -19,4 +19,7 @@ export class DashboardService {
     return this.http.post<any>(this.domain + '/api/get/dashboard/data', filter);
   }
 
+  getDashboardDataForUser(filter : any){
+    return this.http.post<any>(this.domain + '/api/get/dashboard/data/for/user', filter);
+  }
 }

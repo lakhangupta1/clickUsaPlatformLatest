@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
-
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +41,8 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   topAppIdsDateRange = 1;
   topAppIdsData = [];
   dashboardData : any;
-
+  userDashboardData : any;
+  permissions : any;
   subtitle: string;
   ngAfterViewInit() { }
 
@@ -93,12 +94,47 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     tooltip: { theme: 'dark', x: { show: false } }
   };
 
-  constructor(private router: Router, private toastrService: ToastrService, private dashboardService: DashboardService) { }
+  constructor(private router: Router, private toastrService: ToastrService, private dashboardService: DashboardService,
+    private permissionsService: NgxPermissionsService
+  ) { }
 
   ngOnInit(): void {    
-    this.getDashboardData();
+    // this.getDashboardData();
+    this.permissions = this.permissionsService.getPermissions();
+    this.permissionsService.permissions$.subscribe(perms => {
+      this.permissions = perms;
+      console.log(" permissions lakhan subscribe -> ", this.permissions);
+      if(this.permissions?.['Admin']){
+        console.log(" Admin user -> getDashboardData subscribe ");
+        this.getDashboardData();
+      }else{
+        console.log(" Non Admin user -> getDashboardData subscribe ");
+        this.getDashboardDataForUser();
+      }
+    });
   }
 
+  getDashboardDataForUser(){
+    let filter = {
+      dateRangeForAllStats: this.getDateRange(this.progressCardsDateRange),
+      dateRangeForStatistics: this.getDateRange(this.statChartDateRange),
+    }
+    this.dashboardService.getDashboardDataForUser(filter).subscribe({
+      next: (res: any) => {
+        console.log(" dashboard api response for user -> ", res);
+        if (!res?.err && res?.payload) {
+          this.userDashboardData = res.payload; 
+        }
+        else {
+          this.toastrService.error('Unable to fetch dashboard data');
+        }
+      },
+      error: (err : any ) => {
+        console.error('Dashboard API Error:', err);
+        this.toastrService.error('Unable to fetch dashboard data');
+      }
+    });
+  }
   setLocalStorageDropdownOptions() {
     let dropdownOptions = JSON.stringify({
       "progressCardsDateRange": +this.progressCardsDateRange,
@@ -131,6 +167,35 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     return null;
   }
 
+  getDashboardDataForUserFilter(getProgressCardsData = true, getStatChartData = true, getTopAppIdsData = true) {
+
+    let filter = {
+      dateRangeForAllStats: this.getDateRange(this.progressCardsDateRange),
+      dateRangeForStatistics: this.getDateRange(this.statChartDateRange),
+      dateRangeForAppIds: this.getDateRange(this.topAppIdsDateRange),
+      limitForAppIds: this.topAppIdsLimit,
+      getAllStats: getProgressCardsData,
+      getOverallStat: getStatChartData,
+      getTopAppIdStat: getTopAppIdsData
+    };
+    console.log(" filter -> ", filter);
+    this.dashboardService.getDashboardDataForUser(filter).subscribe({
+      next: (res: any) => {
+        console.log(" dashboard api response -> ", res);
+        if (!res?.err && res?.payload) {
+          this.userDashboardData = res.payload;       
+        }
+        else {
+          this.toastrService.error('Unable to fetch dashboard data');
+        }
+      },
+      error: (err) => {
+        console.error('Dashboard API Error:', err);
+        this.toastrService.error('Unable to fetch dashboard data');
+      }
+    });     
+  }
+
   getDashboardData(getProgressCardsData = true, getStatChartData = true, getTopAppIdsData = true) {
 
     let filter = {
@@ -147,12 +212,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       next: (res: any) => {
         console.log(" dashboard api response -> ", res);
         if (!res?.err && res?.payload) {
-          this.dashboardData = res.payload; 
-          // const { progressCards = {}, statChart = {}, topAppIds = [] } = res.payload;
-          // this.progressCards = progressCards;
-          // this.statChartData.series = statChart.series || [];
-          // this.statChartData.xaxis.categories = statChart.categories || [];
-          // this.topAppIdsData = topAppIds;
+          this.dashboardData = res.payload;           
         }
         else {
           this.toastrService.error('Unable to fetch dashboard data');
@@ -162,7 +222,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
         console.error('Dashboard API Error:', err);
         this.toastrService.error('Unable to fetch dashboard data');
       }
-    });
+    });     
   }
 
   calculatePercentage1(current: any, previous: any): number {
@@ -226,12 +286,19 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       getTopAppIdsData = true;
     }
 
-    console.log(" onChange dashboard time ");
-    console.log("getProgressCardsData -> ", getProgressCardsData);
-    console.log("getStatChartData -> ", getStatChartData);
-    console.log("getTopAppIdsData -> ", getTopAppIdsData);
+    // console.log(" onChange dashboard time ");
+    // console.log("getProgressCardsData -> ", getProgressCardsData);
+    // console.log("getStatChartData -> ", getStatChartData);
+    // console.log("getTopAppIdsData -> ", getTopAppIdsData);
 
-    this.getDashboardData(getProgressCardsData, getStatChartData, getTopAppIdsData);
+    if(this.permissions?.['Admin']){
+      console.log(" Admin user -> onChange getDashboardData ");
+      this.getDashboardData(getProgressCardsData, getStatChartData, getTopAppIdsData);
+    }else{
+      console.log(" Non Admin user -> onChange getDashboardDataForUser ");
+      this.getDashboardDataForUserFilter(getProgressCardsData, getStatChartData, getTopAppIdsData);
+    }
+    // this.getDashboardData(getProgressCardsData, getStatChartData, getTopAppIdsData);
     this.setLocalStorageDropdownOptions();
   }
 

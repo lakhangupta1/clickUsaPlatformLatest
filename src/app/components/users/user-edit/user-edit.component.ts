@@ -58,6 +58,7 @@ export class UserEditComponent implements OnInit {
       country: ['', Validators.required],
       currency: ['INR'],
       status : ['active'],
+      wallet_balance : 0,
       // PROFILE (nested)
       profile: this.fb.group({
         address: [''],
@@ -104,6 +105,7 @@ export class UserEditComponent implements OnInit {
             country: data?.country,
             currency: data?.currency,
             phone: data.profile?.phone,
+            wallet_balance: data?.wallet_balance || 0,
 
             profile: {
               address: data?.profile?.address,
