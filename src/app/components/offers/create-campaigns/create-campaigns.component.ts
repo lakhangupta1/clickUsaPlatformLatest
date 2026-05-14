@@ -14,7 +14,7 @@ import { Globalconstant } from 'src/app/const/global';
   styleUrls: ['./create-campaigns.component.scss']
 })
 export class CreateCampaignsComponent implements OnInit {
-
+  payout : number = 0;
   campaignForm!: FormGroup;
   campaignId: string | null = null;
   isEditMode = false;
@@ -35,10 +35,19 @@ export class CreateCampaignsComponent implements OnInit {
   }
   
   clickListItems = [ 
-    { clicks : 0, target : 0 },
-    { clicks : 50, target : 100 },
-    { clicks : 100, target : 200 },
-    { clicks : 150, target : 300 } 
+    { clicks : 150, target : 0 },
+    { clicks : 200, target : 100 },
+    { clicks : 250, target : 200 },
+    { clicks : 300, target : 300 },
+    { clicks : 350, target : 300 },
+    { clicks : 400, target : 300 },
+    { clicks : 450, target : 300 },
+    { clicks : 500, target : 300 },
+    { clicks : 600, target : 300 },
+    { clicks : 700, target : 300 },
+    { clicks : 800, target : 300 },
+    { clicks : 900, target : 300 },
+    { clicks : 1000, target : 300 },
   ]
   selectedItem: any = null;
   dropdownSettings: any = {
@@ -107,24 +116,24 @@ export class CreateCampaignsComponent implements OnInit {
     { id: 'Unix', text: 'Unix' }
   ];
   providerList = [
-    { id: 1, text: 'Brandon Sean' },
-    { id: 2, text: 'Chris Harter' },
-    { id: 3, text: 'Corey Lewis' },
-    { id: 4, text: 'Domantas Vagonis' },
-    { id: 5, text: 'Will Tseng' },
-    { id: 6, text: 'Wilfred Bakker' },
-    { id: 7, text: 'AJ Simon' },
-    { id: 8, text: 'Brad Kellard' },
-    { id: 9, text: 'Gabe Salome' },
-    { id: 10, text: 'Edgars Skujins' },
-    { id: 11, text: 'Glenn Fedoruk (LeadHero)' },
-    { id: 12, text: 'Greg Prouse' },
-    { id: 13, text: 'Hamsa Hassan' },
-    { id: 14, text: 'Igor Varoscic' },
-    { id: 15, text: 'Indulis Staskevics' },
-    { id: 16, text: 'Ivo Polic' },
-    { id: 17, text: 'Jason Giusto' },
-    { id: 18, text: 'Jasdeep Singh Jandu' }
+    { id: 1, text: 'Brandon Sean ($0.58)'},
+    { id: 2, text: 'Chris Harter ($0.60)'},
+    { id: 3, text: 'Corey Lewis ($0.62)'},
+    { id: 4, text: 'Domantas Vagonis ($0.64)'},
+    { id: 5, text: 'Will Tseng ($0.66)'},
+    { id: 6, text: 'Wilfred Bakker ($0.68)'},
+    { id: 7, text: 'AJ Simon ($0.70)'},
+    { id: 8, text: 'Brad Kellard ($0.72)'},
+    { id: 9, text: 'Gabe Salome ($0.74)'},
+    { id: 10, text: 'Edgars Skujins ($0.76)'},
+    { id: 11, text: 'Glenn Fedoruk (LeadHero) ($0.78)'},
+    { id: 12, text: 'Greg Prouse ($0.63)'},
+    { id: 13, text: 'Hamsa Hassan ($0.59)'},
+    { id: 14, text: 'Igor Varoscic ($0.75)'},
+    { id: 15, text: 'Indulis Staskevics ($0.71)'},
+    { id: 16, text: 'Ivo Polic ($0.69)'},
+    { id: 17, text: 'Jason Giusto ($0.63)'},
+    { id: 18, text: 'Jasdeep Singh Jandu ($0.69)'}
   ];
   constructor(
     private fb: FormBuilder,
@@ -204,7 +213,7 @@ export class CreateCampaignsComponent implements OnInit {
   getCampaignById() {
     this.campaignService.getCampaignById(this.campaignId).subscribe((res: any) => {
       if (!res.err) {
-        console.log(" res caretsf ssg ->............... ", res.payload );
+        console.log(" getCampaignById ->............... ", res.payload );
         const data = res.payload;
         data.schedule_start = this.formatDate(data.schedule_start);
         data.schedule_end = this.formatDate(data.schedule_end);
@@ -262,13 +271,103 @@ export class CreateCampaignsComponent implements OnInit {
           return item;
         }).filter(Boolean);
 
-        data.blocked_traffic.provider = normalizeToArray(data.blocked_traffic.provider).map((item: any) => {
-          if (item == null) return null;
-          if (typeof item === 'string') return this.providerList.find(p => p.text === item) || { id: null, text: item };
-          if (typeof item === 'number') return this.providerList.find(p => p.id === item) || { id: item, text: String(item) };
-          if (item && item.text) return item;
-          return item;
-        }).filter(Boolean);
+       let vanders = normalizeToArray(data.blocked_traffic.provider);
+
+        // console.log("vanders -> ", vanders);
+
+        // calculate grand total first
+        let grandTotal = 0;
+
+        vanders.forEach((item: any) => {
+          if (!item) return;
+
+          const match = item.match(/\$([\d.]+)/);
+
+          if (match) {
+            grandTotal += parseFloat(match[1]);
+          }
+        });
+
+        // console.log("grandTotal -> ", grandTotal);
+
+        // set average payout
+        if (vanders.length > 0) {
+          this.payout = +(grandTotal / vanders.length).toFixed(2);
+        }
+
+        // console.log("final payout -> ", this.payout);
+
+        // now map providers
+        data.blocked_traffic.provider = vanders
+          .map((item: any) => {
+            if (item == null) return null;
+        // console.log("vanders -> ", vanders);
+
+        // calculate grand total first
+        let grandTotal = 0;
+
+        vanders.forEach((item: any) => {
+          if (!item) return;
+
+          const match = item.match(/\$([\d.]+)/);
+
+          if (match) {
+            grandTotal += parseFloat(match[1]);
+          }
+        });
+
+        // console.log("grandTotal -> ", grandTotal);
+
+        // set average payout
+        if (vanders.length > 0) {
+          this.payout = +(grandTotal / vanders.length).toFixed(2);
+        }
+
+        // console.log("final payout -> ", this.payout);
+
+        // now map providers
+        data.blocked_traffic.provider = vanders
+          .map((item: any) => {
+            if (item == null) return null;
+
+            if (typeof item === 'string') {
+              return (
+                this.providerList.find(p => p.text === item) || 
+                { id: null, text: item }
+              );
+            }
+
+            if (typeof item === 'number') {
+              return (
+                this.providerList.find(p => p.id === item) || 
+                { id: item, text: String(item) }
+              );
+            }
+
+            if (item && item.text) return item;
+
+            return item;
+          })
+          .filter(Boolean);
+            if (typeof item === 'string') {
+              return (
+                this.providerList.find(p => p.text === item) || 
+                { id: null, text: item }
+              );
+            }
+
+            if (typeof item === 'number') {
+              return (
+                this.providerList.find(p => p.id === item) || 
+                { id: item, text: String(item) }
+              );
+            }
+
+            if (item && item.text) return item;
+
+            return item;
+          })
+          .filter(Boolean);
 
         data.blocked_traffic.country = normalizeToArray(data.blocked_traffic.country).map((item: any) => {
           if (item == null) return null;
@@ -299,6 +398,7 @@ export class CreateCampaignsComponent implements OnInit {
         }).filter(Boolean);
 
         // patch form
+        console.log("data to patch -> ", data);
         this.campaignForm.patchValue(data);
       }
     });
@@ -309,8 +409,11 @@ export class CreateCampaignsComponent implements OnInit {
 
     if (!value) return;
 
-    const [clicks, target] = value.split('-').map(Number);
-
+    let  [clicks, target] = value.split('-').map(Number);
+    // target = this.campaignForm.get('budget.cpc')?.value || target || 0;
+    console.log(" payout on click -> ", this.payout );
+    target = this.payout * clicks;
+    console.log(" clicks -> ", clicks );    console.log(" target -> ", target );
     this.campaignForm.patchValue({
       clicks,
       target
@@ -322,7 +425,24 @@ export class CreateCampaignsComponent implements OnInit {
   }
 
   onBlockedProviderChange(selected: any[]) {
+    console.log(" selected provider -> ", selected );
     this.campaignForm.get('blocked_traffic.provider')?.setValue(selected || []);
+    let total = 0;
+    selected.map(ele => {
+      console.log("ele.text -> ", ele.text);
+      const match = ele.text.match(/\$([\d.]+)/);
+      if (match) {
+        total += parseFloat(match[1]);
+      }
+    });
+    console.log(" Total -> ", total);
+    this.payout = total/selected.length;
+    this.campaignForm.patchValue({
+      budget: {
+        ...this.campaignForm.value.budget,
+        cpc: this.payout
+      }
+    });
   }
 
   onAllowDeviceChange(selected: any[]) {

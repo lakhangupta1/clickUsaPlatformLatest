@@ -1,34 +1,21 @@
 <!-- ============================================================== -->
 <!-- Logo -->
 <!-- ============================================================== -->
-<!-- <div class="brand-logo d-none d-lg-flex align-items-center">
+<div class="brand-logo d-none d-lg-flex align-items-center">
     <a class="navbar-brand" [routerLink]="['/']">
        
         @if(themeOptions.theme === 'dark') {
-      
-        <img src="assets/images/logos/logo.svg" alt="homepage" />
+            <img src="../../../assets/images/usLeadLogo-removebg.png" alt="homepage" class="sidebar-logo" />
+        <!-- <img src="assets/images/logos/logo.svg" alt="homepage" /> -->
         } @else {
-
+            <!-- <img src="../../../assets/images/usLeadLogo-removebg.png" alt="homepage" class="sidebar-logo" /> -->
         <img src="assets/images/logos/dark-logo.svg" alt="homepage" />
         }
     </a>
-</div> -->
-<div class="brand-logo d-none d-lg-flex align-items-center p-0">
-    <!-- <img src="../../../assets/images/logo-light-text.png" alt="homepage" /> -->
-    <ng-container *ngIf="data; else elseblock">
-        <ng-container *ngIf="themeOptions.theme === 'dark'; else lightTheme">
-            <a [routerLink]="'/dashboard'"><img src="{{appDomain}}{{data}}" alt="{{company_name}}"
-                    class="img-fluid pt-1" /></a>
-        </ng-container>
-        <ng-template #lightTheme>
-            <a [routerLink]="'/dashboard'"> <img src="{{appDomain}}{{data}}" alt="{{company_name}}"
-                    class="img-fluid pt-1" /></a>
-        </ng-template>
-    </ng-container>
-    <ng-template #elseblock>
-        <a [routerLink]="'/dashboard'"><span class="pt-1">{{company_name}}</span></a>
-    </ng-template>
 </div>
+<!-- <div class="brand-logo d-none d-lg-flex align-items-center p-0">
+    <img src="../../../assets/images/usLeadLogo-removebg.png" alt="homepage" class="sidebar-logo" />
+</div> -->
 
 <!-- ============================================================== -->
 <!-- End Logo -->
