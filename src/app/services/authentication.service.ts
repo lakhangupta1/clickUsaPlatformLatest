@@ -113,6 +113,7 @@ export class AuthenticationService {
         localStorage.setItem('currentUser', JSON.stringify(user['payload'][0]));
         this.currentUserSubject.next(user['payload'][0]);
         const decoded = jwtDecode(user['payload'][0].token);
+        localStorage.setItem('token', user['payload'][0].token);
         this.details.next(decoded);
         console.log(" decoded login token -> ", decoded );
         const perm = decoded?.['userDetail']?.permissions;

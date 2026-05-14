@@ -103,3 +103,17 @@
   background: rgba(255,255,255,0.3);
   border-radius: 10px;
 }
+/* Sidebar Brand Logo */
+.brand-logo {
+    height: 70px;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Dashboard Logo */
+.sidebar-logo {
+    width: 150px;      /* adjust size */
+    height: 45px;
+    object-fit: contain;
+    display: block;
+}

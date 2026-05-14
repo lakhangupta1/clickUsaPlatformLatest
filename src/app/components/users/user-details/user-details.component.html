@@ -1,92 +1,115 @@
 <div class="container mt-4" *ngIf="userData">
 
   <!-- 🔹 BASIC INFO -->
-  <div class="card mb-3 shadow-sm">
+  <div class="card mb-4 shadow-sm">
 
     <!-- FIXED HEADER WITH BUTTON -->
     <div class="card-header d-flex justify-content-between align-items-center">
-      <span class="fw-bold">Basic Information</span>
 
-      <a 
+      <span class="fw-bold">
+        Basic Information
+      </span>
+
+      <a
         routerLink="/user/edit/{{userData?._id}}"
-        class="btn btn-sm btn-primary d-flex align-items-center gap-1">
+        class="btn btn-sm btn-primary text-white"
+      >
         <i class="fa fa-edit"></i>
         Edit
       </a>
     </div>
-
     <div class="card-body row">
-      <div class="col-md-6 mb-2">
-        <strong>Full Name:</strong>
-        {{ userData?.first_name }} {{ userData?.last_name }}
-      </div>
-
-      <div class="col-md-6 mb-2">
-        <strong>Email:</strong>
-        {{ userData?.email }}
-      </div>
-
-      <div class="col-md-6 mb-2">
-        <strong>Phone:</strong>
-        {{ userData?.phone }}
-      </div>
-
-      <div class="col-md-6 mb-2">
-        <strong>Company:</strong>
-        {{ userData?.company }}
-      </div>
-
-      <div class="col-md-4 mb-2">
-        <strong>Country:</strong>
-        {{ userData?.country }}
-      </div>
-
-      <div class="col-md-4 mb-2">
-        <strong>Currency:</strong>
-        {{ userData?.currency }}
-      </div>
-
-      <div class="col-md-4 mb-2">
-        <strong>Status:</strong>
-
-        <span class="badge text-uppercase"
-                [ngClass]="{
-                'bg-success': userData?.status === 'active',
-                'bg-danger': userData?.status === 'Inactive',
-                'bg-warning text-dark': userData?.status === 'paused'
-                }">
-
-            {{ userData?.status }}
-
-        </span>
+      <div class="col-md-6 mb-3">
+        <strong>Full Name</strong>
+        <div>
+          {{ userData?.first_name }} {{ userData?.last_name }}
         </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <strong>Email</strong>
+        <div>
+          {{ userData?.email }}
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <strong>Phone</strong>
+        <div>
+          {{ userData?.phone }}
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <strong>Company</strong>
+        <div>
+          {{ userData?.company }}
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <strong>Country</strong>
+        <div>
+          {{ userData?.country }}
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <strong>Currency</strong>
+        <div>
+          {{ userData?.currency }}
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <strong>Status</strong>
+        <div>
+          <span
+            class="badge text-uppercase"
+            [ngClass]="{
+              'bg-success': userData?.status === 'active',
+              'bg-danger': userData?.status === 'Inactive',
+              'bg-warning text-dark': userData?.status === 'paused'
+            }"
+          >
+            {{ userData?.status }}
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- 🔹 ADDRESS -->
-  <div class="card mb-3 shadow-sm">
-    <div class="card-header fw-bold">Address Details</div>
+  <div class="card mb-4 shadow-sm">
 
+    <div class="card-header fw-bold">
+      Address Details
+    </div>
     <div class="card-body row">
-      <div class="col-md-6 mb-2">
-        <strong>Address:</strong>
-        {{ userData?.profile?.address }}
+      <div class="col-md-6 mb-3">
+        <strong>Address</strong>
+        <div>
+          {{ userData?.profile?.address }}
+        </div>
       </div>
 
-      <div class="col-md-6 mb-2">
-        <strong>State:</strong>
-        {{ userData?.profile?.state }}
+      <div class="col-md-6 mb-3">
+        <strong>State</strong>
+        <div>
+          {{ userData?.profile?.state }}
+        </div>
       </div>
 
-      <div class="col-md-4 mb-2">
-        <strong>Pincode:</strong>
-        {{ userData?.profile?.pincode }}
+      <div class="col-md-4 mb-3">
+        <strong>Pincode</strong>
+        <div>
+          {{ userData?.profile?.pincode }}
+        </div>
       </div>
     </div>
   </div>
 
   <!-- 🔹 PAYMENT DETAILS -->
-  <div class="card mb-3 shadow-sm">
+  <!-- <div class="card mb-3 shadow-sm">
     <div class="card-header fw-bold">Payment Details</div>
 
     <div class="card-body row">
@@ -109,31 +132,47 @@
       <div class="col-md-6 mb-2">
         <strong>Paypal:</strong>
         {{ userData?.profile?.paypal }}
+      </div> -->
+
+  <!-- FIXED (No ngClass needed) -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header fw-bold">
+      Account Information
+    </div>
+    <div class="card-body row">
+      <div class="col-md-6 mb-3">
+        <strong>Verification Status</strong>
+        <div>
+          <span
+            class="badge"
+            [class.bg-success]="userData?.profile?.is_verified"
+            [class.bg-danger]="!userData?.profile?.is_verified"
+          >
+            {{ userData?.profile?.is_verified
+              ? 'Verified'
+              : 'Not Verified' }}
+          </span>
+        </div>
       </div>
 
-      <!-- FIXED (No ngClass needed) -->
-      <div class="col-md-6 mb-2">
-        <strong>Verified:</strong>
-        <span class="badge"
-              [class.bg-success]="userData?.profile?.is_verified"
-              [class.bg-danger]="!userData?.profile?.is_verified">
-          {{ userData?.profile?.is_verified ? 'Verified' : 'Not Verified' }}
-        </span>
-      </div>
-
-      <div class="col-md-6 mb-2">
-        <strong> wallet_balance : </strong>
-        <span class="badge"
-              [class.bg-success]="userData?.wallet_balance"
-              [class.bg-danger]="!userData?.wallet_balance">
-          $ {{ userData?.wallet_balance }}
-        </span>
+      <div class="col-md-6 mb-3">
+        <strong>Wallet Balance</strong>
+        <div>
+          <span
+            class="badge"
+            [class.bg-success]="userData?.wallet_balance"
+            [class.bg-danger]="!userData?.wallet_balance"
+          >
+            $ {{ userData?.wallet_balance }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
 
+  
   <!-- 🔹 BANK DETAILS -->
-  <div class="card mb-3 shadow-sm" *ngIf="userData?.profile?.bank">
+  <!-- <div class="card mb-3 shadow-sm" *ngIf="userData?.profile?.bank">
     <div class="card-header fw-bold">Bank Details</div>
 
     <div class="card-body row">
@@ -157,28 +196,33 @@
         {{ userData?.profile?.bank?.bank_name }}
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- 🔹 META INFO -->
   <div class="card shadow-sm">
-    <div class="card-header fw-bold">System Info</div>
-
+    <div class="card-header fw-bold">
+      System Info
+    </div>
     <div class="card-body row">
-      <div class="col-md-6 mb-2">
-        <strong>Created At:</strong>
-        {{ userData?.profile?.createdAt | date:'medium' }}
+      <div class="col-md-6 mb-3">
+        <strong>Created At</strong>
+        <div>
+          {{ userData?.profile?.createdAt | date:'medium' }}
+        </div>
       </div>
 
-      <div class="col-md-6 mb-2">
-        <strong>Updated At:</strong>
-        {{ userData?.profile?.updatedAt | date:'medium' }}
+      <div class="col-md-6 mb-3">
+        <strong>Updated At</strong>
+        <div>
+          {{ userData?.profile?.updatedAt | date:'medium' }}
+        </div>
       </div>
-
-      <div class="col-md-12 mb-2">
-        <strong>User ID:</strong>
-        {{ userData?._id }}
+      <div class="col-md-12 mb-3">
+        <strong>User ID</strong>
+        <div class="text-break">
+          {{ userData?._id }}
+        </div>
       </div>
     </div>
   </div>
-
 </div>

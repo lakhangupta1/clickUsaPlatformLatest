@@ -1,4 +1,6 @@
 .angular/
 node_modules/
 dist/
+/platform-2.1
+/old_platform-2.1
 *.zip
