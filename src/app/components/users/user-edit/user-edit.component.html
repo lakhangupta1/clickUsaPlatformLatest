@@ -132,32 +132,31 @@
         <div class="col-md-6 mb-3">
           <label>Payment Type</label>
           <select class="form-control" formControlName="pay_type">
-            <option value="">Select</option>
-            <option value="BANK">Bank</option>
-            <option value="UPI">UPI</option>
-            <option value="PAYPAL">PayPal</option>
-            <option value="PAYTM">Paytm</option>
+              <option value="">Select</option>
+              <option value="PAYNEER">PAYNEER</option>
+              <option value="PAYPAL">PAYPAL</option>
+              <option value="STRIPE">STRIPE</option>          
           </select>
         </div>
 
       </div>
 
       <!-- DYNAMIC PAYMENT FIELDS -->
-      <div class="card-body row">
+      <!-- <div class="card-body row">
 
-        <!-- UPI -->
+        
         <div class="col-md-6 mb-3">
           <label>UPI ID</label>
           <input type="text" class="form-control" formControlName="upi">
         </div>
 
-        <!-- PAYPAL -->
+        
         <div class="col-md-6 mb-3">
           <label>Paypal Email</label>
           <input type="email" class="form-control" formControlName="paypal">
         </div>
 
-        <!-- PAYTM -->
+        
         <div class="col-md-6 mb-3">
           <label>Paytm</label>
           <input type="text" class="form-control" formControlName="paytm">
@@ -165,7 +164,7 @@
 
       </div>
 
-      <!-- BANK -->
+      
       <div formGroupName="bank">
         <div class="card-header fw-bold">Bank Details</div>
         <div class="card-body row">
@@ -191,7 +190,7 @@
 
         </div>
       </div>
-
+ -->
     </div>
 
     <!-- 🔹 SUBMIT -->

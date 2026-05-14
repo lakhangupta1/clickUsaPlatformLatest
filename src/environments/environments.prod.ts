@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  scheme: 'https://',
-  apiUrl: 'api.proffcus.com',
+  scheme: 'http://',
+  apiUrl: '3.6.88.86:3000',
   filename: 'offers.csv',
   statsFileName: 'stats.csv'
 };

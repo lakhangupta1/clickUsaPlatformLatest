@@ -11,7 +11,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { FeatherModule } from 'angular-feather';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { options } from 'src/app/config';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PublisherService } from 'src/app/services/publisher.service';
@@ -68,7 +68,8 @@ export class VerticalNavigationComponent implements OnInit {
     private translate: TranslateService,
     private authService: AuthenticationService,
     private publisherService: PublisherService,
-    private networkService: NetworkService
+    private networkService: NetworkService,
+    private router: Router
   ) {
     this.translate.setDefaultLang('en');
   }
@@ -124,7 +125,7 @@ export class VerticalNavigationComponent implements OnInit {
   logout() {
     this.authService.logout();
     sessionStorage.removeItem('preVisitedPath');
-
+    this.router.navigate(['/login']);
   }
 
   getInitials(name: string): string {
