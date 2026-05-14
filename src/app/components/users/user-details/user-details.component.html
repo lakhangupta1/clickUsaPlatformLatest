@@ -121,6 +121,14 @@
         </span>
       </div>
 
+      <div class="col-md-6 mb-2">
+        <strong> wallet_balance : </strong>
+        <span class="badge"
+              [class.bg-success]="userData?.wallet_balance"
+              [class.bg-danger]="!userData?.wallet_balance">
+          $ {{ userData?.wallet_balance }}
+        </span>
+      </div>
     </div>
   </div>
 

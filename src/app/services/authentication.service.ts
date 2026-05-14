@@ -153,9 +153,9 @@ export class AuthenticationService {
     localStorage.removeItem('AccountToken');
     localStorage.removeItem('currentUser');
     // clear permissions on logout
+    this.router.navigate(['/login']);
     try { this.permissionsService.flushPermissions(); } catch (e) {}
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
   }
 
   // networkLogin(userDetails) {

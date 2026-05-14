@@ -2,20 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 // live data
-// export const environment = {
-//     production: false,
-//     scheme : 'https://',
-//     apiUrl: 'api.proffcus.com',
-//     filename: 'offers.csv',
-//     statsFileName:'stats.csv'
-// };
 
 
 // local data
 // export const environment = {
 //     production: false,
 //     scheme : 'http://',
-//     apiUrl: 'api.proffcus.tes',
+//     apiUrl: '3.6.88.86:3000',
 //     filename: 'offers.csv',
 //     statsFileName:'stats.csv'
 // };

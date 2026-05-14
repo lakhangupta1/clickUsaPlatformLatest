@@ -72,8 +72,8 @@
                     
                     <hr>
 
-                    <h6 class="fw-bold mb-3">Financial Details</h6>
                     <!-- add Financial details in future -->
+                    <!-- <h6 class="fw-bold mb-3">Financial Details</h6>
                     <div class="col-md-4 mb-2">
                         <span class="text-muted">Bank Account Holder Name </span>
                         <div>{{UserData?.account_holder_name}}</div>
@@ -92,7 +92,7 @@
                     <div class="col-md-4 mb-2">
                         <span class="text-muted">Bank IFSC CODE </span>
                         <div>{{UserData?.bank_name}}</div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-4 mb-2">
                         <span class="text-muted"> currency </span>
@@ -170,7 +170,7 @@
                     [(ngModel)]="editPublisher.currency"
                     name="currency" required>
                 <option value="">Select Currency</option>
-                <option value="INR">INR - Indian Rupee</option>
+                <!-- <option value="INR">INR - Indian Rupee</option> -->
                 <option value="USD">USD - US Dollar</option>
                 <option value="EUR">EUR - Euro</option>
                 <option value="GBP">GBP - British Pound</option>
@@ -184,68 +184,67 @@
             <select class="form-control"
                     [(ngModel)]="editPublisher.pay_type"
                     name="pay_type" required>
-                <option value="">Select Payment Type</option>
-                <option value="BANK">BANK</option>
-                <option value="UPI">UPI</option>
+                <option value="">Select Payment Type</option>                
+                <option value="PAYNEER">PAYNEER</option>
                 <option value="PAYPAL">PAYPAL</option>
-                <option value="PAYTM">PAYTM</option>
+                <option value="STRIPE">STRIPE</option>
             </select>
             </div>
 
             <!-- BANK -->
-            <ng-container>
-            <div class="col-md-6 mb-3">
-                <label>Account Holder Name</label>
-                <input type="text" class="form-control"
-                    [(ngModel)]="editPublisher.account_holder_name"
-                    name="account_holder_name">
-            </div>
+            <!-- <ng-container>
+                 <div class="col-md-6 mb-3">
+                    <label>Account Holder Name</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editPublisher.account_holder_name"
+                        name="account_holder_name">
+                </div>
 
-            <div class="col-md-6 mb-3">
-                <label>Account Number</label>
-                <input type="text" class="form-control"
-                    [(ngModel)]="editPublisher.account_number"
-                    name="account_number">
-            </div>
+                <div class="col-md-6 mb-3">
+                    <label>Account Number</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editPublisher.account_number"
+                        name="account_number">
+                </div>
 
-            <div class="col-md-6 mb-3">
-                <label>IFSC Code</label>
-                <input type="text" class="form-control"
-                    [(ngModel)]="editPublisher.ifsc_code"
-                    name="ifsc_code">
-            </div>
+                <div class="col-md-6 mb-3">
+                    <label>IFSC Code</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editPublisher.ifsc_code"
+                        name="ifsc_code">
+                </div>
 
-            <div class="col-md-6 mb-3">
-                <label>Bank Name</label>
-                <input type="text" class="form-control"
-                    [(ngModel)]="editPublisher.bank_name"
-                    name="bank_name">
-            </div>
-            </ng-container>
+                <div class="col-md-6 mb-3">
+                    <label>Bank Name</label>
+                    <input type="text" class="form-control"
+                        [(ngModel)]="editPublisher.bank_name"
+                        name="bank_name">
+                </div>
+            </ng-container> -->
 
             <!-- UPI -->
-            <div class="col-md-6 mb-3">
+            <!-- <div class="col-md-6 mb-3">
             <label>UPI</label>
             <input type="text" class="form-control"
                     [(ngModel)]="editPublisher.upi"
                     name="upi">
-            </div>
+            </div> -->
 
             <!-- PAYPAL -->
-            <div class="col-md-6 mb-3">
+            <!-- <div class="col-md-6 mb-3">
             <label>Paypal</label>
             <input type="text" class="form-control"
                     [(ngModel)]="editPublisher.paypal"
                     name="paypal">
-            </div>
+            </div> -->
 
             <!-- PAYTM -->
-            <div class="col-md-6 mb-3">
+            <!-- <div class="col-md-6 mb-3">
             <label>Paytm</label>
             <input type="text" class="form-control"
                     [(ngModel)]="editPublisher.paytm"
                     name="paytm">
-            </div>
+            </div> -->
 
         </div>
         </form>

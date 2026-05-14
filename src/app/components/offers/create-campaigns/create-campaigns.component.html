@@ -185,12 +185,12 @@
 
       <div class="col-md-4">
         <label>Total Budget</label>
-        <input type="number" class="form-control mb-2" placeholder="Total Budget" formControlName="total">
+        <input type="number" class="form-control mb-2" placeholder="Total Budget $0.00" formControlName="total">
       </div>
 
       <div class="col-md-4">
         <label>Daily Budget</label>
-        <input type="number" class="form-control mb-2" placeholder="Daily Budget" formControlName="daily">
+        <input type="number" class="form-control mb-2" placeholder="Daily Budget $0.00" formControlName="daily">
       </div>
     </div>
 
@@ -214,7 +214,7 @@
       <!-- Right: Target Display ₹ -->
       <div class="col-md-6 text-end mt-4">
         <span class="badge bg-success fs-6">
-          Total Funds:  {{ campaignForm.get('target')?.value || 0 }}
+          Total Funds: ${{ campaignForm.get('target')?.value || 0.00 }}
         </span>
       </div>
 

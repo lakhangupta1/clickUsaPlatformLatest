@@ -11,9 +11,95 @@
         </div>
     </div>
 
-<div class="row g-3 mb-3">
+<div class="row g-3 mb-3" *ngxPermissionsOnly="['User']">
+    <!-- Campaign Data Card -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body rounded-3 user-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="card-label mb-1">
+                            Campaign Data
+                        </p>
+                        <h2 class="card-value mb-0">
+                            {{ userDashboardData?.totalCampaigns }}
+                        </h2>
+                    </div>
+                    <div class="text-end">
+                        <div class="card-icon bg-primary-subtle">
+                            <i
+                                [ngClass]="
+                                    userDashboardData?.userdata1 >= userDashboardData?.userdata2
+                                    ? 'fas fs-5 fa-arrow-up text-success'
+                                    : 'fas fs-5 fa-arrow-down text-danger'
+                                ">
+                            </i>
+                        </div>
+
+                        <small class="card-percent d-block">
+                            (
+                            {{
+                                calculatePercentage1(
+                                    userDashboardData?.Campaigns1,
+                                    userDashboardData?.Campaigns2
+                                ) | number:'1.1-1'
+                            }}%
+                            )
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer-text">
+                    {{ userDashboardData?.Campaigns1 }}
+                    /
+                    {{ userDashboardData?.Campaigns2 }}
+                </div>
+                <div class="progress mt-2 progress-custom">
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        [ngClass]="
+                            calculatePercentage1(
+                                userDashboardData?.Campaigns1,
+                                userDashboardData?.Campaigns2
+                            ) >= 0
+                            ? 'bg-success'
+                            : 'bg-danger'
+                        "
+                        [style.width.%]="
+                            getProgressWidth(
+                                userDashboardData?.Campaigns1,
+                                userDashboardData?.Campaigns2
+                            )
+                        ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Clicks Card -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body rounded-3 user-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="card-label mb-1">
+                            Total Clicks
+                        </p>
+
+                        <h2 class="card-value mb-0">
+                            {{ userDashboardData?.totalCpc }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-3 mb-3" *ngxPermissionsOnly="['Admin']">
     <!-- User Data Card -->
-    <div *ngxPermissionsOnly="['Admin']" class="col-lg-4 col-md-6">
+    <div class="col-lg-4 col-md-6">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body rounded-3 user-card">
                 <div class="d-flex justify-content-between align-items-start">
@@ -133,7 +219,7 @@
                             Wallet Balance
                         </p>
                         <h2 class="card-value">
-                            $ {{ dashboardData?.walletBalance }} 139.00
+                            $ {{ dashboardData?.totalWallatBalance }} 
                         </h2>
                     </div>
                     <div class="text-end">
@@ -152,7 +238,10 @@
         </div>
     </div>
 </div>
-    <div class="col-12">
+
+
+<!-- report card   -->
+    <!-- <div class="col-12">
         <div class="row">
             <div class="col-lg-4 col-md-6" *ngFor="let item of progressCardsData | keyvalue">
                 <div class="card bg-box position-relative">
@@ -162,17 +251,13 @@
                             {{ item['key'].toUpperCase() }}
                         </h4>
                         <div class="text-end">
-                            <h4 class=" fs-9 fw-light" [ngStyle]="{ 'color': item['value']['color'] }">
-                                <!-- <i
-                                    [ngClass]="item['value']['previousValue'] <=
-                                     item['value']['currentValue'] ? 'fas fa-arrow-up text-success' : 'fas fa-arrow-down text-danger'"></i> -->
+                            <h4 class=" fs-9 fw-light" [ngStyle]="{ 'color': item['value']['color'] }">                                
                                 {{ item['value']['currentValue'] }}
                             </h4>
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <i
-                                [ngClass]="item['value']['previousValue'] <= item['value']['currentValue'] ? 'fas fs-5 fa-arrow-up text-success' : 'fas fs-5 fa-arrow-down text-danger' "></i>
-                            <!-- <i class="fas fa-caret-down text-warning fs-5"></i> -->
+                                [ngClass]="item['value']['previousValue'] <= item['value']['currentValue'] ? 'fas fs-5 fa-arrow-up text-success' : 'fas fs-5 fa-arrow-down text-danger' "></i>                            
                             <span class="fs-4 fw-medium" [ngClass]="item['value']['previousValue'] <= 
                                     item['value']['currentValue'] ? 'text-success' : 'text-danger'">
                                 {{ item['value']['percentValue']|number: '1.1-1' }}% ({{
@@ -194,11 +279,9 @@
 
         </div>
     </div>
-    <!-- </div> -->
-</div>
+</div> -->
 
 <div class="row">
-    <!-- Column -->
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
@@ -220,26 +303,6 @@
                                         <option value="6">Last Month</option>
                                     </select>
                                 </div>
-                                <!-- <ul class="list-unstyled mb-0 hstack gap-3">
-                                    <li>
-                                        <h6 class="text-muted mb-0 hstack gap-2 fw-normal">
-                                            <span class="round-10 rounded-circle"
-                                                style="background-color: #abc0de;"></span>Click
-                                        </h6>
-                                    </li>
-                                    <li>
-                                        <h6 class="text-muted mb-0 hstack gap-2 fw-normal">
-                                            <span class="round-10 rounded-circle"
-                                                style="background-color: #3ee6a8;"></span>Conversion
-                                        </h6>
-                                    </li>
-                                    <li>
-                                        <h6 class="text-muted mb-0 hstack gap-2 fw-normal">
-                                            <span class="round-10 rounded-circle"
-                                                style="background-color: #575b5e;"></span>CR
-                                        </h6>
-                                    </li>
-                                </ul> -->
                             </div>
                         </div>
                     </div>
