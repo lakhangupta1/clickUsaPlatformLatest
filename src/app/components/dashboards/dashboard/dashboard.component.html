@@ -331,17 +331,17 @@
         <div class="card w-100 overflow-hidden">
             <div class="card-body pb-8">
                 <div class="d-md-flex no-block align-items-center">
-                    <h4 class="card-title mb-0 text-uppercase">Top app ids</h4>
+                    <h4 class="card-title mb-0 text-uppercase">Top Clicks</h4>
                     <div class="ms-auto">
-                        <select class="form-select" [(ngModel)]="topAppIdsLimit" (change)="onChange('topAppIds')">
+                        <select class="form-select" [(ngModel)]="topCampaignsClicksLimit" (change)="onChange('topCampaignClicks')">
                             <option selected value="5">5</option>
                             <option value="10">10</option>
-                            <option value="20">10</option>
+                            <option value="20">20</option>
                             <option value="50">50</option>
                         </select>
                     </div>
                     <div class="mx-4">
-                        <select class="form-select" [(ngModel)]="topAppIdsDateRange" (change)="onChange('topAppIds')">
+                        <select class="form-select" [(ngModel)]="topCampaigndateRange" (change)="onChange('topCampaignClicks')">
                             <option selected value="1">Today</option>
                             <option value="2">Yesterday</option>
                             <option value="3">This Week</option>
@@ -360,29 +360,37 @@
                                 #
                             </th>
                             <th class="border-bottom fs-3">
-                                App Id
+                                Campaign Name/Id
                             </th>
-                            <th class="border-bottom ">
-                                Offer Name
+                            <!-- <th class="border-bottom ">
+                                Campaigns Name
+                            </th> -->
+                            <th class="border-bottom fs-3 ">
+                                Target Clicks
                             </th>
                             <th class="border-bottom fs-3 ">
-                                Conversion
+                                Provided Clicks
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngIf="topAppIdsData.length; else noTopAppIdsData">
-                            <tr *ngFor="let item of topAppIdsData; let i = index">
+                        <ng-container *ngIf="topCampaignsData.length; else noTopAppIdsData">
+                            <tr *ngFor="let item of topCampaignsData; let i = index">
                                 <td>{{i+1}}</td>
                                 <td>
-                                    <span style="color: #2962ff; cursor: pointer;"
+                                    <!-- <span style="color: #2962ff; cursor: pointer;"
                                         (click)="onClickAppId(item['app_id'])">
                                         {{ item['app_id'] ? item['app_id'] : '' }}
-                                    </span>
+                                    </span> -->
+                                    <a [routerLink]="['/offers/campaign-details', item._id]"
+                                        class="fw-bold text-primary">
+                                        {{ item.camp_name }}
+                                    </a>
+                                    <div class="text-muted small">({{ item._id }})</div>
                                 </td>
-                                <td>{{ item['offer_name'] ? (item['offer_name']) : '' }}</td>
+                                <td>{{ item['clicks'] }}</td>
                                 <!-- <td>{{ item['offer_name'] ? item['offer_name'] : ''}}</td> -->
-                                <td>{{ item['conversion'] ? item['conversion'] : '' }}</td>
+                                <td>{{ item['getClicks'] }}</td>
                             </tr>
                         </ng-container>
                         <ng-template #noTopAppIdsData>

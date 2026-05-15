@@ -5,15 +5,17 @@ import { MultiselectedComponent } from 'src/app/shared/multiselected/multiselect
 import { ActivatedRoute, Router } from '@angular/router';
 import { OffersService } from 'src/app/services/offers.service';
 import { Globalconstant } from 'src/app/const/global';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-create-campaigns',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MultiselectedComponent],
+  imports: [CommonModule, ReactiveFormsModule, MultiselectedComponent, NgxPermissionsModule],
   templateUrl: './create-campaigns.component.html',
   styleUrls: ['./create-campaigns.component.scss']
 })
 export class CreateCampaignsComponent implements OnInit {
+  getClicksChange : boolean = false;
   payout : number = 0;
   campaignForm!: FormGroup;
   campaignId: string | null = null;
@@ -177,7 +179,8 @@ export class CreateCampaignsComponent implements OnInit {
       }),
       clicks : [0],
       target : [0],
-      status: ['active']
+      status: ['active'],
+      getClicks : [0]
     });
 
     // Check Edit Mode
@@ -569,6 +572,7 @@ export class CreateCampaignsComponent implements OnInit {
     const trimmedPayload = trimAllStrings(payload);
 
     console.log("FINAL PAYLOAD:", trimmedPayload);
+    trimmedPayload['getClicksChange'] = this.getClicksChange;
 
     if (this.isEditMode) {
       this.campaignService.updateCampaign(this.campaignId, trimmedPayload).subscribe({
@@ -590,4 +594,12 @@ export class CreateCampaignsComponent implements OnInit {
       });
     }
   }
+
+  onGetClicksChange(event: any) {
+    this.getClicksChange = true;
+    // const value = event.target.value;
+    // console.log('UI Changed Value:', value);
+    // console.log(" total cpc -> ", this.campaignForm.get('budget.cpc')?.value );
+  }
+
 }

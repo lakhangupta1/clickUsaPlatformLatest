@@ -123,6 +123,43 @@ export class AuthenticationService {
     }));
   }
 
+  refreshToken() {
+    return this.http.post( this.getSubDomain() + '/user/refresh-token', {},
+      {  withCredentials: true }
+    ).pipe( map((res: any) => { if (res?.payload?.[0]) { const userData = res.payload[0];
+          // Save user
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify(userData)
+          );
+          this.currentUserSubject.next(userData);
+          // Save access token
+          localStorage.setItem(
+            'token',
+            userData.token
+          );
+          // Decode token
+          const decoded: any = jwtDecode(userData.token);
+          this.details.next(decoded);
+          // Load permissions
+          const permissions =
+            decoded?.userDetail?.permissions || [];
+          this.permissionsService.loadPermissions(
+            permissions
+          );
+        }
+        return res;
+      })
+    );
+  }
+
+  setAccessToken(token: string) {
+    localStorage.setItem('accessToken', token);
+  }
+
+  getAccessToken() {
+    return localStorage.getItem('accessToken');
+  }
   // externalLogin(userDetails) {
   //   localStorage.setItem('currentUser', JSON.stringify(userDetails));
   //   this.currentUserSubject.next(userDetails);
