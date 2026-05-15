@@ -171,6 +171,51 @@ input, select {
   margin-bottom: 3px;
 }
 
-.option-card small {
-  color: #6b7280;
+/* Card Styling */
+.custom-card {
+  border-radius: 14px;
+  background: #ffffff;
+  transition: 0.3s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  border-left: 4px solid #0ea5a4;
+  padding-left: 10px;
+}
+
+/* Labels */
+.custom-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #334155;
+}
+
+/* Inputs & Select */
+.custom-input {
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+/* Focus Effect */
+.custom-input:focus {
+  border-color: #0ea5a4;
+  box-shadow: 0 0 0 0.15rem rgba(14, 165, 164, 0.2);
+}
+
+/* Placeholder */
+.custom-input::placeholder {
+  color: #94a3b8;
 }

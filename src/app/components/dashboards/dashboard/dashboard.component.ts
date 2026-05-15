@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { FeatherModule } from 'angular-feather';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +22,8 @@ import { NgxPermissionsService } from 'ngx-permissions';
     FormsModule,
     CommonModule,
     NgbProgressbarModule,
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    RouterModule
   ],
   styleUrls: ['./dashboard.component.css'],
 })
@@ -37,9 +38,11 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   };
 
   progressCards: any;
-  topAppIdsLimit = 5;
+  topCampaignsClicksLimit = 5;
   topAppIdsDateRange = 1;
+  topCampaigndateRange = 1;
   topAppIdsData = [];
+  topCampaignsData : any = [];
   dashboardData : any;
   userDashboardData : any;
   permissions : any;
@@ -65,31 +68,31 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     legend: { show: 1, position: 'bottom', horizontalAlign: 'center' },
     grid: { show: true, strokeDashArray: 3, borderColor: 'rgba(0,0,0,0.1)', xaxis: { lines: { show: true } }, yaxis: { lines: { show: true } } },
     fill: { type: 'gradient', gradient: { shade: 'light', type: "horizontal", shadeIntensity: 0.5, gradientToColors: undefined, inverseColors: true, opacityFrom: 0.5, opacityTo: 0.3, stops: [0, 50, 100] }, },
-    xaxis: {
+    // xaxis: {
 
-    },
-    yaxis: [
-        {
-          seriesName: 'Click',
-          min: 0,
-          labels: { show: false },
-        },
-        {
-          seriesName: 'Conversion',
-          opposite: false,
-          min: 0,
-          max:100,
-          labels: { show: false },
-        },
-        {
-          tickAmount:5,
-          seriesName: 'CR',
-          opposite: true,
-          title: { text: 'CR (0-1)' },
-          min: 0,
-          max: 1,
-        },
-      ],
+    // },
+    // yaxis: [
+    //     {
+    //       seriesName: 'Click',
+    //       min: 0,
+    //       labels: { show: false },
+    //     },
+    //     {
+    //       seriesName: 'Conversion',
+    //       opposite: false,
+    //       min: 0,
+    //       max:100,
+    //       labels: { show: false },
+    //     },
+    //     {
+    //       tickAmount:5,
+    //       seriesName: 'CR',
+    //       opposite: true,
+    //       title: { text: 'CR (0-1)' },
+    //       min: 0,
+    //       max: 1,
+    //     },
+    //   ],
     // yaxis: { type: 'category', categories: [], labels: { show: false, formatter: function (val) { return val.toFixed(2); } } },
     tooltip: { theme: 'dark', x: { show: false } }
   };
@@ -107,13 +110,34 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       if(this.permissions?.['Admin']){
         console.log(" Admin user -> getDashboardData subscribe ");
         this.getDashboardData();
+        this.getTopClicksForUser('admin'); // remove in last after test.
       }else{
         console.log(" Non Admin user -> getDashboardData subscribe ");
         this.getDashboardDataForUser();
+        this.getTopClicksForUser('user');
       }
     });
   }
 
+  getTopClicksForUser(role : any = "user"){
+    let dateRange = this.generateDateRange(this.topCampaigndateRange);
+    let filter = {
+      key : 'hello Lakhan',
+      dateRange,
+      role,
+      limit : this.topCampaignsClicksLimit
+    }
+    console.log(" filter -> ", filter );
+    this.dashboardService.getTopClicksForUser(filter).subscribe({
+      next : ( res : any ) => {
+        console.log(" getTopClicksForUser res -> ", res );
+        this.topCampaignsData = res.payload;
+      },
+      error : ( error : any ) => {
+        console.log(" getTopClicksForUser error -> ", error );
+      }
+    })
+  }
   getDashboardDataForUser(){
     let filter = {
       dateRangeForAllStats: this.getDateRange(this.progressCardsDateRange),
@@ -139,8 +163,9 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     let dropdownOptions = JSON.stringify({
       "progressCardsDateRange": +this.progressCardsDateRange,
       "statChartDateRange": +this.statChartDateRange,
-      "topAppIdsLimit": +this.topAppIdsLimit,
-      "topAppIdsDateRange": +this.topAppIdsDateRange
+      // "topAppIdsLimit": +this.topAppIdsLimit,
+      // "topAppIdsDateRange": +this.topAppIdsDateRange,
+      "topCampaigndateRange" : +this.topCampaigndateRange,
     });
   }
 
@@ -172,8 +197,8 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     let filter = {
       dateRangeForAllStats: this.getDateRange(this.progressCardsDateRange),
       dateRangeForStatistics: this.getDateRange(this.statChartDateRange),
-      dateRangeForAppIds: this.getDateRange(this.topAppIdsDateRange),
-      limitForAppIds: this.topAppIdsLimit,
+      // dateRangeForAppIds: this.getDateRange(this.topAppIdsDateRange),
+      // limitForAppIds: this.topAppIdsLimit,
       getAllStats: getProgressCardsData,
       getOverallStat: getStatChartData,
       getTopAppIdStat: getTopAppIdsData
@@ -202,7 +227,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       dateRangeForAllStats: this.getDateRange(this.progressCardsDateRange),
       dateRangeForStatistics: this.getDateRange(this.statChartDateRange),
       dateRangeForAppIds: this.getDateRange(this.topAppIdsDateRange),
-      limitForAppIds: this.topAppIdsLimit,
+      // limitForAppIds: this.topAppIdsLimit,
       getAllStats: getProgressCardsData,
       getOverallStat: getStatChartData,
       getTopAppIdStat: getTopAppIdsData
@@ -274,33 +299,91 @@ export class DashboardComponent implements AfterViewInit, OnInit {
         return;
       }
       getStatChartData = true;
-    } else if (value == "topAppIds") {
+    } else if (value == "topCampaignClicks") {
       if (this.topAppIdsDateRange == 0) {
         this.toastrService.info('Please select valid date range!');
         return;
       }
-      if (this.topAppIdsLimit == 0) {
-        this.toastrService.info('Please select valid limit!');
-        return;
-      }
+      // if (this.topAppIdsLimit == 0) {
+      //   this.toastrService.info('Please select valid limit!');
+      //   return;
+      // }
+      console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
+      console.log(" this.limit ", this.topCampaignsClicksLimit, " date -> " , this.topCampaigndateRange)
       getTopAppIdsData = true;
     }
 
-    // console.log(" onChange dashboard time ");
+    // console.log(" dashboard time ");
     // console.log("getProgressCardsData -> ", getProgressCardsData);
     // console.log("getStatChartData -> ", getStatChartData);
     // console.log("getTopAppIdsData -> ", getTopAppIdsData);
 
     if(this.permissions?.['Admin']){
-      console.log(" Admin user -> onChange getDashboardData ");
+      console.log(" Admin user -> getDashboardData ");
       this.getDashboardData(getProgressCardsData, getStatChartData, getTopAppIdsData);
+      this.getTopClicksForUser('admin'); // remove in last after test 
     }else{
-      console.log(" Non Admin user -> onChange getDashboardDataForUser ");
+      console.log(" Non Admin user -> getDashboardDataForUser ");
       this.getDashboardDataForUserFilter(getProgressCardsData, getStatChartData, getTopAppIdsData);
+      this.getTopClicksForUser('user');
     }
     // this.getDashboardData(getProgressCardsData, getStatChartData, getTopAppIdsData);
     this.setLocalStorageDropdownOptions();
   }
+
+  // generateDateRange(n: number) {
+  //   const now = new Date();
+  //   let startDate: any;
+  //   let endDate: any;
+  //   const formatDate = (date: Date, time: string) => {
+  //     return ( date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + time );
+  //   };
+
+  //   // Today
+  //   if (n === 1) {
+  //     startDate = formatDate(now, "T00:00");
+  //     endDate = formatDate(now, "T23:59");
+  //   }
+  //   // Yesterday
+  //   else if (n === 2) {
+  //     const yesterday = new Date();
+  //     yesterday.setDate(yesterday.getDate() - 1);
+  //     startDate = formatDate(yesterday, "T00:00");
+  //     endDate = formatDate(yesterday, "T23:59");
+  //   }
+  //   // This Week
+  //   else if (n === 3) {
+  //     const firstDay = new Date();
+  //     firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+  //     startDate = formatDate(firstDay, "T00:00");
+  //     endDate = formatDate(now, "T23:59");
+  //   }
+  //   // Last Week
+  //   else if (n === 4) {
+  //     const firstDay = new Date();
+  //     firstDay.setDate(firstDay.getDate() - firstDay.getDay() - 7);
+  //     const lastDay = new Date();
+  //     lastDay.setDate(lastDay.getDate() - lastDay.getDay() - 1);
+  //     startDate = formatDate(firstDay, "T00:00");
+  //     endDate = formatDate(lastDay, "T23:59");
+  //   }
+
+  //   // This Month
+  //   else if (n === 5) {
+  //     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  //     startDate = formatDate(firstDay, "T00:00");
+  //     endDate = formatDate(now, "T23:59");
+  //   }
+
+  //   // Last Month
+  //   else if (n === 6) {
+  //     const firstDay = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  //     const lastDay = new Date(now.getFullYear(), now.getMonth(), 0);
+  //     startDate = formatDate(firstDay, "T00:00");
+  //     endDate = formatDate(lastDay, "T23:59");
+  //   }
+  //   return { startDate, endDate };
+  // }
 
   generateDateRange( n : any ) {
     let now = new Date();

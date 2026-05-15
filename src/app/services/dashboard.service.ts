@@ -22,4 +22,7 @@ export class DashboardService {
   getDashboardDataForUser(filter : any){
     return this.http.post<any>(this.domain + '/api/get/dashboard/data/for/user', filter);
   }
+  getTopClicksForUser(filter : any ){
+    return this.http.post<any>(this.domain + '/api/get/dashboard/top/clicks/user', filter);
+  }
 }

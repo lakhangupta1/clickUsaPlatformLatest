@@ -1,5 +1,3 @@
-<!-- add-payment.component.html -->
-
 <div class="container mt-5">
 
   <div class="row justify-content-center">
@@ -17,7 +15,6 @@
           <form [formGroup]="paymentForm">
 
             <!-- Amount -->
-
             <div class="mb-3">
 
               <label class="form-label">
@@ -41,7 +38,6 @@
             </div>
 
             <!-- Currency -->
-
             <div class="mb-4">
 
               <label class="form-label">
@@ -52,54 +48,66 @@
                 class="form-select form-select-lg"
                 formControlName="currency">
 
-                <option value="INR">
-                  INR
+                <option value="USD">
+                  USD - US Dollar
                 </option>
 
-                <option value="USD">
-                  USD
+                <option value="EUR">
+                  EUR - Euro
+                </option>
+
+                <option value="GBP">
+                  GBP - British Pound
+                </option>
+
+                <option value="AED">
+                  AED - UAE Dirham
                 </option>
 
               </select>
 
             </div>
 
-            <!-- Payment Methods -->
-
+            <!-- Payment Type -->
             <div class="mb-4">
 
               <label class="form-label">
-                Supported Payment Methods
+                Payment Type
               </label>
 
-              <div class="payment-methods">
+              <select
+                class="form-select form-select-lg"
+                formControlName="pay_type">
 
-                <span class="badge bg-primary">
-                  UPI
-                </span>
+                <option value="">
+                  Select Payment Type
+                </option>
 
-                <span class="badge bg-success">
-                  QR Code
-                </span>
+                <option value="PAYNEER">
+                  PAYNEER
+                </option>
 
-                <span class="badge bg-dark">
-                  Debit Card
-                </span>
+                <option value="PAYPAL">
+                  PAYPAL
+                </option>
 
-                <span class="badge bg-warning text-dark">
-                  Credit Card
-                </span>
+                <option value="STRIPE">
+                  STRIPE
+                </option>
 
-                <span class="badge bg-info text-dark">
-                  Net Banking
-                </span>
+              </select>
+
+              <div
+                class="text-danger mt-1"
+                *ngIf="f['pay_type'].touched && f['pay_type'].invalid">
+
+                Payment type required
 
               </div>
 
             </div>
 
             <!-- Pay Button -->
-
             <button
               type="button"
               class="btn btn-primary w-100 btn-lg"

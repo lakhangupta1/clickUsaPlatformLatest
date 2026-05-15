@@ -10,6 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AppComponent {
   theme= new BehaviorSubject(null)
-  title = 'Publisher Admin | Publisher Admin Dashboard';
+  title = 'Us Lead Wave';
   
 }

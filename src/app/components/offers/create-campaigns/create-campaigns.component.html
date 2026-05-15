@@ -275,16 +275,23 @@
 </div>
 
     <!-- STATUS -->
-    <div class="card p-3 mb-3">
-      <h5>Status</h5>
-
-      <div class="row">
-        <div class="col-md-6">
-          <!-- <label for="status">Status</label> id="status" -->
-          <select class="form-control" formControlName="status">
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
-          </select>
+    <div class="card custom-card shadow-sm border-0 mb-4">
+      <div class="card-body">
+        <h5>Status Settings</h5>
+        <div class="row g-4">
+          <!-- Status -->
+          <div class="col-md-6">
+            <label for="status" class="form-label custom-label"> Status </label>
+            <select id="status" class="form-select custom-input" formControlName="status">
+              <option value="active">Active</option>
+              <option value="paused">Paused</option>
+            </select>
+          </div>
+          <!-- Provided Clicks -->
+          <div class="col-md-6" *ngxPermissionsOnly="['Admin']">
+            <label for="getClicks" class="form-label custom-label"> Provided Clicks </label>
+            <input (input)="onGetClicksChange($event)" id="getClicks" type="number" class="form-control custom-input" placeholder="Enter provided clicks" formControlName="getClicks">
+          </div>
         </div>
       </div>
     </div>
