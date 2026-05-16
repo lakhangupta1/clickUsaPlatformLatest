@@ -25,4 +25,7 @@ export class DashboardService {
   getTopClicksForUser(filter : any ){
     return this.http.post<any>(this.domain + '/api/get/dashboard/top/clicks/user', filter);
   }
+  getStatisticsGraphData(filter : any){
+    return this.http.post<any>(this.domain + '/api/dashboard/getStatisticsGraphData', filter);
+  }
 }

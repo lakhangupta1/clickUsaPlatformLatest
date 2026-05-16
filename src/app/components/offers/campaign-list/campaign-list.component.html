@@ -1,11 +1,25 @@
 
-lakhan<div class="container mt-4">
+<div class="container mt-4">
 
   <h4 class="mb-3">Campaign List</h4>
 
   <!-- FILTER -->
   <div class="card p-3 mb-3">
     <div class="row g-2">
+
+      <div class="col-md-3 col-sm-12" *ngxPermissionsOnly="['Admin']">
+        <ng-select
+          class="w-100"
+          name="company"
+          [items]="allUsers"
+          bindLabel="company"
+          bindValue="_id"
+          [(ngModel)]="companyUserId"
+          placeholder="Select company"
+          [searchable]="true"
+          [clearable]="!!companyUserId">
+        </ng-select>
+      </div>
 
       <div class="col-md-2">
         <input class="form-control"

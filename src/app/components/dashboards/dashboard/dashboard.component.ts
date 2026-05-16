@@ -58,66 +58,404 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   }
 
   statChartDateRange = 1;
-  public statChartData: any = {
-    series: [],
-    chart: { fontFamily: 'Nunito Sans,sans-serif', height: 370, type: 'area', toolbar: { show: !1 } },
-    dataLabels: { enabled: false },
-    markers: { size: 1, strokeColors: "transparent" },
-    stroke: { curve: 'smooth', width: '3', },
-    colors: [this.colors['click'], this.colors['conversion'], this.colors['cr']],
-    legend: { show: 1, position: 'bottom', horizontalAlign: 'center' },
-    grid: { show: true, strokeDashArray: 3, borderColor: 'rgba(0,0,0,0.1)', xaxis: { lines: { show: true } }, yaxis: { lines: { show: true } } },
-    fill: { type: 'gradient', gradient: { shade: 'light', type: "horizontal", shadeIntensity: 0.5, gradientToColors: undefined, inverseColors: true, opacityFrom: 0.5, opacityTo: 0.3, stops: [0, 50, 100] }, },
-    // xaxis: {
+  // public statChartData: any = {
+  //   series: [],
+  //   chart: { fontFamily: 'Nunito Sans,sans-serif', height: 370, type: 'area', toolbar: { show: !1 } },
+  //   dataLabels: { enabled: false },
+  //   markers: { size: 1, strokeColors: "transparent" },
+  //   stroke: { curve: 'smooth', width: '3', },
+  //   colors: [this.colors['click'], this.colors['conversion'], this.colors['cr']],
+  //   legend: { show: 1, position: 'bottom', horizontalAlign: 'center' },
+  //   grid: { show: true, strokeDashArray: 3, borderColor: 'rgba(0,0,0,0.1)', xaxis: { lines: { show: true } }, yaxis: { lines: { show: true } } },
+  //   fill: { type: 'gradient', gradient: { shade: 'light', type: "horizontal", shadeIntensity: 0.5, gradientToColors: undefined, inverseColors: true, opacityFrom: 0.5, opacityTo: 0.3, stops: [0, 50, 100] }, },
+  //   xaxis: {
 
-    // },
-    // yaxis: [
-    //     {
-    //       seriesName: 'Click',
-    //       min: 0,
-    //       labels: { show: false },
-    //     },
-    //     {
-    //       seriesName: 'Conversion',
-    //       opposite: false,
-    //       min: 0,
-    //       max:100,
-    //       labels: { show: false },
-    //     },
-    //     {
-    //       tickAmount:5,
-    //       seriesName: 'CR',
-    //       opposite: true,
-    //       title: { text: 'CR (0-1)' },
-    //       min: 0,
-    //       max: 1,
-    //     },
-    //   ],
-    // yaxis: { type: 'category', categories: [], labels: { show: false, formatter: function (val) { return val.toFixed(2); } } },
-    tooltip: { theme: 'dark', x: { show: false } }
+  //   },
+  //   yaxis: [
+  //       {
+  //         seriesName: 'Click',
+  //         min: 0,
+  //         labels: { show: false },
+  //       },
+  //       {
+  //         seriesName: 'Conversion',
+  //         opposite: false,
+  //         min: 0,
+  //         max:100,
+  //         labels: { show: false },
+  //       },
+  //       {
+  //         tickAmount:5,
+  //         seriesName: 'CR',
+  //         opposite: true,
+  //         title: { text: 'CR (0-1)' },
+  //         min: 0,
+  //         max: 1,
+  //       },
+  //     ],
+  //   // yaxis: { type: 'category', categories: [], labels: { show: false, formatter: function (val) { return val.toFixed(2); } } },
+  //   tooltip: { theme: 'dark', x: { show: false } }
+  // };
+
+  plotOptions: {
+    bar: {
+      columnWidth: '35%',
+      borderRadius: 4
+    }
+  }
+ statChartData: any = {
+    series: [
+      {
+        name: 'Created Campaign',
+        type: 'column',
+        data: [50, 20, 30, 44, 22, 33, 21]
+      },
+      {
+        name: 'Clicks',
+        type: 'line',
+        data: [550, 1000, 600, 800, 65, 90, 750]
+      },
+      {
+        name: 'Provided Clicks',
+        type: 'line',
+        data: [35, 444, 55, 600, 60, 85, 900]
+      }
+    ],
+
+    chart: {
+      height: 370,
+      type: 'line',
+
+      toolbar: {
+        show: true
+      },
+
+      zoom: {
+        enabled: true
+      }
+    },
+
+    plotOptions: {
+      bar: {
+        columnWidth: '35%',
+        borderRadius: 5
+      }
+    },
+
+    dataLabels: {
+      enabled: false
+    },
+
+    stroke: {
+      curve: 'smooth',
+      width: [0, 3, 3]
+    },
+
+    fill: {
+      opacity: [0.9, 1, 1]
+    },
+
+    colors: [
+      '#f59e0b', // campaign
+      '#2563eb', // clicks
+      '#16a34a'  // provided clicks
+    ],
+
+    labels: [
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun'
+    ],
+
+    xaxis: {
+      categories: [
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat',
+        'Sun'
+      ]
+    },
+
+    yaxis: [
+
+      // Campaign axis
+      {
+        title: {
+          text: 'Campaigns'
+        },
+
+        min: 0,
+        max: 50
+      },
+
+      // Clicks axis
+      {
+        opposite: true,
+
+        title: {
+          text: 'Clicks'
+        },
+
+        min: 0,
+        max: 1000
+      }
+    ],
+
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left'
+    },
+
+    tooltip: {
+      shared: true,
+      intersect: false
+    },
+
+    markers: {
+      size: 4,
+      hover: {
+        size: 6
+      }
+    },
+
+    grid: {
+      borderColor: '#e5e7eb',
+      strokeDashArray: 4
+    }
   };
-
   constructor(private router: Router, private toastrService: ToastrService, private dashboardService: DashboardService,
     private permissionsService: NgxPermissionsService
   ) { }
 
   ngOnInit(): void {    
     // this.getDashboardData();
+    this.getStatisticsGraphData();
     this.permissions = this.permissionsService.getPermissions();
     this.permissionsService.permissions$.subscribe(perms => {
       this.permissions = perms;
-      console.log(" permissions lakhan subscribe -> ", this.permissions);
       if(this.permissions?.['Admin']){
-        console.log(" Admin user -> getDashboardData subscribe ");
         this.getDashboardData();
         this.getTopClicksForUser('admin'); // remove in last after test.
       }else{
-        console.log(" Non Admin user -> getDashboardData subscribe ");
         this.getDashboardDataForUser();
         this.getTopClicksForUser('user');
       }
     });
   }
+
+  getStatisticsGraphData() {
+
+    const filter = {
+      dateRange: 'week'
+    };
+
+    this.dashboardService
+      .getStatisticsGraphData(filter)
+      .subscribe({
+
+        next: (res: any) => {
+
+          console.log('res -> ', res);
+
+          if (!res?.err && res?.payload) {
+
+            const graphData = res.payload || [];
+
+            const maxCampaigns = Math.max(
+              ...graphData.map(
+                (x: any) => x.createdCampaign || 0
+              ),
+              10
+            );
+
+            const maxClicks = Math.max(
+              ...graphData.map(
+                (x: any) => x.clicks || 0
+              ),
+              100
+            );
+
+            const maxProvidedClicks = Math.max(
+              ...graphData.map(
+                (x: any) => x.providedClicks || 0
+              ),
+              100
+            );
+
+            this.statChartData = {
+
+              series: [
+
+                {
+                  name: 'Created Campaign',
+                  type: 'column',
+                  data: graphData.map(
+                    (x: any) => x.createdCampaign || 0
+                  )
+                },
+
+                {
+                  name: 'Clicks',
+                  type: 'line',
+                  data: graphData.map(
+                    (x: any) => x.clicks || 0
+                  )
+                },
+
+                {
+                  name: 'Provided Clicks',
+                  type: 'line',
+                  data: graphData.map(
+                    (x: any) => x.providedClicks || 0
+                  )
+                }
+              ],
+
+              chart: {
+                height: 370,
+                type: 'line',
+
+                toolbar: {
+                  show: true
+                },
+
+                zoom: {
+                  enabled: true
+                }
+              },
+
+              plotOptions: {
+                bar: {
+                  columnWidth: '35%',
+                  borderRadius: 4
+                }
+              },
+
+              dataLabels: {
+                enabled: false
+              },
+
+              stroke: {
+                curve: 'smooth',
+                width: [0, 3, 3]
+              },
+
+              fill: {
+                opacity: [0.9, 1, 1]
+              },
+
+              colors: [
+                '#f59e0b',
+                '#2563eb',
+                '#16a34a'
+              ],
+
+              xaxis: {
+
+                categories: graphData.map(
+                  (x: any) => x.day || ''
+                ),
+
+                title: {
+                  text: 'Days'
+                }
+              },
+
+              yaxis: [
+
+                // Campaign Axis
+                {
+                  seriesName: 'Created Campaign',
+
+                  title: {
+                    text: 'Campaigns'
+                  },
+
+                  min: 0,
+
+                  max: Math.ceil(maxCampaigns / 5) * 5,
+
+                  tickAmount: 5
+                },
+
+                // Clicks Axis
+                {
+                  seriesName: 'Clicks',
+
+                  opposite: true,
+
+                  title: {
+                    text: 'Clicks'
+                  },
+
+                  min: 0,
+
+                  max: Math.ceil(maxClicks / 100) * 100,
+
+                  tickAmount: 5
+                },
+
+                // Provided Clicks Axis
+                {
+                  seriesName: 'Provided Clicks',
+
+                  opposite: true,
+
+                  show: false,
+
+                  min: 0,
+
+                  max: Math.ceil(maxProvidedClicks / 100) * 100,
+
+                  tickAmount: 5
+                }
+              ],
+
+              legend: {
+                position: 'top',
+                horizontalAlign: 'left'
+              },
+
+              tooltip: {
+                shared: true,
+                intersect: false
+              },
+
+              markers: {
+                size: 4,
+
+                hover: {
+                  size: 6
+                }
+              },
+
+              grid: {
+                borderColor: '#e5e7eb',
+                strokeDashArray: 4
+              }
+            };
+          }
+        },
+
+        error: (error: any) => {
+
+          console.log(
+            'getStatisticsGraphData error -> ',
+            error
+          );
+        }
+      });
+  }
+
+
+
 
   getTopClicksForUser(role : any = "user"){
     let dateRange = this.generateDateRange(this.topCampaigndateRange);
@@ -127,10 +465,9 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       role,
       limit : this.topCampaignsClicksLimit
     }
-    console.log(" filter -> ", filter );
     this.dashboardService.getTopClicksForUser(filter).subscribe({
       next : ( res : any ) => {
-        console.log(" getTopClicksForUser res -> ", res );
+        // console.log(" getTopClicksForUser res -> ", res );
         this.topCampaignsData = res.payload;
       },
       error : ( error : any ) => {
@@ -145,7 +482,6 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     }
     this.dashboardService.getDashboardDataForUser(filter).subscribe({
       next: (res: any) => {
-        console.log(" dashboard api response for user -> ", res);
         if (!res?.err && res?.payload) {
           this.userDashboardData = res.payload; 
         }
@@ -206,7 +542,6 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     console.log(" filter -> ", filter);
     this.dashboardService.getDashboardDataForUser(filter).subscribe({
       next: (res: any) => {
-        console.log(" dashboard api response -> ", res);
         if (!res?.err && res?.payload) {
           this.userDashboardData = res.payload;       
         }
@@ -262,6 +597,21 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     return Math.round(percentage * 10) / 10;
   }
 
+  calculatePercentageForUser(current: any, previous: any): number {
+    const currentValue = parseFloat(current) || 0;
+    const previousValue = parseFloat(previous) || 0;
+    // Avoid divide by zero
+    if (previousValue === 0) {
+      return currentValue > 0 ? 100 : 0;
+    }
+
+    const percentage =
+      ((currentValue - previousValue) / previousValue) * 100;
+
+    // Limit between 0 and 100
+    return Math.min(Math.max(Math.round(percentage * 10) / 10, 0), 100);
+  }
+
   calculatePercentage(dividend: number, divisor: number) {
     if (dividend == 0 && divisor == 0) {
       return 0;
@@ -280,6 +630,10 @@ export class DashboardComponent implements AfterViewInit, OnInit {
 
   getProgressWidth(current: any, previous: any): number {
     const percentage = Math.abs(this.calculatePercentage1(current, previous));
+    return percentage > 100 ? 100 : percentage;
+  }
+  getProgressWidthForUser(current: any, previous: any): number {
+    const percentage = Math.abs(this.calculatePercentageForUser(current, previous));
     return percentage > 100 ? 100 : percentage;
   }
   onChange( value : any ) {

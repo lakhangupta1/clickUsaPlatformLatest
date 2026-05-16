@@ -15,7 +15,7 @@
     <!-- Campaign Data Card -->
     <div class="col-lg-4 col-md-6">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-body rounded-3 user-card">
+            <div class="card-body rounded-3 user-card" style="background: linear-gradient(135deg, #84afec, #dbeafe);">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <p class="card-label mb-1">
@@ -79,16 +79,125 @@
     <!-- Total Clicks Card -->
     <div class="col-lg-4 col-md-6">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-body rounded-3 user-card">
+            <div class="card-body rounded-3 user-card" style="background: linear-gradient(135deg, #f58787, #fee2e2);">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <p class="card-label mb-1">
                             Total Clicks
                         </p>
-
                         <h2 class="card-value mb-0">
-                            {{ userDashboardData?.totalCpc }}
-                        </h2>
+                            {{ userDashboardData?.totalClick }}
+                        </h2>                        
+                    </div>
+                    <div class="text-end">
+                        <div class="card-icon bg-primary-subtle">
+                            <i
+                                [ngClass]="
+                                    userDashboardData?.userdata1 >= userDashboardData?.userdata2
+                                    ? 'fas fs-5 fa-arrow-up text-success'
+                                    : 'fas fs-5 fa-arrow-down text-danger'
+                                ">
+                            </i>
+                        </div>
+
+                        <small class="card-percent d-block">
+                            (
+                            {{
+                                calculatePercentage1(
+                                    userDashboardData?.totalClicks1,
+                                    userDashboardData?.totalClicks2
+                                ) | number:'1.1-1'
+                            }}%
+                            )
+                        </small>
+                    </div>
+                </div>
+
+                <div class="card-footer-text">
+                    {{ userDashboardData?.totalClicks1 }}
+                    /
+                    {{ userDashboardData?.totalClicks2 }}
+                </div>
+                <div class="progress mt-2 progress-custom">
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        [ngClass]="
+                            calculatePercentageForUser(
+                                userDashboardData?.totalClicks1,
+                                userDashboardData?.totalClicks2
+                            ) >= 0
+                            ? 'bg-success'
+                            : 'bg-danger'
+                        "
+                        [style.width.%]="
+                            getProgressWidthForUser(
+                                userDashboardData?.totalClicks1,
+                                userDashboardData?.totalClicks2
+                            )
+                        ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body rounded-3 user-card" style="background: linear-gradient(135deg, #3be998, #d1fae5);">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="card-label mb-1">
+                            Total Provided Clicks
+                        </p>
+                        <h2 class="card-value mb-0">
+                            {{ userDashboardData?.totalProvidedClicks }}
+                        </h2>                        
+                    </div>
+                    <div class="text-end">
+                        <div class="card-icon bg-primary-subtle">
+                            <i
+                                [ngClass]="
+                                    userDashboardData?.userdata1 >= userDashboardData?.userdata2
+                                    ? 'fas fs-5 fa-arrow-up text-success'
+                                    : 'fas fs-5 fa-arrow-down text-danger'
+                                ">
+                            </i>
+                        </div>
+
+                        <small class="card-percent d-block">
+                            (
+                            {{
+                                calculatePercentageForUser(
+                                    userDashboardData?.providedClicks1,
+                                    userDashboardData?.providedClicks2
+                                ) | number:'1.1-1'
+                            }}%
+                            )
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer-text">
+                    {{ userDashboardData?.providedClicks1 }}
+                    /
+                    {{ userDashboardData?.providedClicks2 }}
+                </div>
+                <div class="progress mt-2 progress-custom">
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        [ngClass]="
+                            calculatePercentageForUser(
+                                userDashboardData?.providedClicks1,
+                                userDashboardData?.providedClicks2
+                            ) >= 0
+                            ? 'bg-success'
+                            : 'bg-danger'
+                        "
+                        [style.width.%]="
+                            getProgressWidthForUser(
+                                userDashboardData?.providedClicks1,
+                                userDashboardData?.providedClicks2
+                            )
+                        ">
                     </div>
                 </div>
             </div>
@@ -219,7 +328,7 @@
                             Wallet Balance
                         </p>
                         <h2 class="card-value">
-                            $ {{ dashboardData?.totalWallatBalance }} 
+                            $ {{ dashboardData?.totalWallatBalance | number:'1.2-2' }}
                         </h2>
                     </div>
                     <div class="text-end">
@@ -292,7 +401,7 @@
                                 <h4 class="card-title">Statistics</h4>
                             </div>
                             <div class="ms-auto">
-                                <div class="">
+                                <!-- <div class="">
                                     <select class="form-select" [(ngModel)]="statChartDateRange"
                                         (change)="onChange('statChart')">
                                         <option selected value="1">Today</option>
@@ -302,17 +411,25 @@
                                         <option value="5">This Month</option>
                                         <option value="6">Last Month</option>
                                     </select>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="col-12">
-                        <div style="height:370px;" class="d-flex flex-column">
-                            <apx-chart [series]="statChartData.series" [chart]="statChartData.chart"
-                                [xaxis]="statChartData.xaxis" [yaxis]="statChartData.yaxis" [grid]="statChartData.grid"
-                                [stroke]="statChartData.stroke" [tooltip]="statChartData.tooltip"
-                                [fill]="statChartData.fill" [dataLabels]="statChartData.dataLabels"
-                                [legend]="statChartData.legend" [colors]="statChartData.colors"
+                        <div style="height:370px;" class="d-flex flex-column">                           
+                            <apx-chart
+                                [series]="statChartData.series"
+                                [chart]="statChartData.chart"
+                                [xaxis]="statChartData.xaxis"
+                                [yaxis]="statChartData.yaxis"
+                                [grid]="statChartData.grid"
+                                [stroke]="statChartData.stroke"
+                                [tooltip]="statChartData.tooltip"
+                                [fill]="statChartData.fill"
+                                [dataLabels]="statChartData.dataLabels"
+                                [legend]="statChartData.legend"
+                                [colors]="statChartData.colors"
+                                [plotOptions]="statChartData.plotOptions"
                                 [markers]="statChartData.markers">
                             </apx-chart>
                         </div>
