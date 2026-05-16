@@ -35,7 +35,7 @@ export class OffersService {
     return this.http.post(this.domain + '/api/get/campaigns', data);
   }
 
-  countOffers(data) {
+  countOffers(data : any) {
     return this.http.post(this.domain + '/api/count/' + this.routeType + '/offers', data);
   }
 

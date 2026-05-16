@@ -6,19 +6,23 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, timeout } from 'rxjs/operators';
 
 import { OffersService } from 'src/app/services/offers.service';
+import { UserService } from 'src/app/services/user.service';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-campaign-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, NgbPaginationModule],
+  imports: [CommonModule, FormsModule, RouterModule, NgbPaginationModule, NgSelectModule, NgxPermissionsModule],
   templateUrl: './campaign-list.component.html',
   styleUrl: './campaign-list.component.scss'
 })
 export class CampaignListComponent implements OnInit {
-
+  allUsers : any[] = [];
   campaigns: any[] = [];
+  userCount : number = 0;
   loading = false;
-
+  companyUserId: string | null = null;
   // FILTER
   filter = {
     id: '',
@@ -33,10 +37,21 @@ export class CampaignListComponent implements OnInit {
   limit = 5;
   offerCount = 0;
 
-  constructor(private offersService: OffersService) {}
+  constructor(private offersService: OffersService, private userService : UserService) {}
 
   ngOnInit(): void {
     this.getPage(1);
+    this.userService.getAllUserDetails({ }).subscribe({
+      next: (result: any) => {
+        console.log("result -> ", result);
+        this.allUsers = result?.payload || [];
+        this.userCount = result?.userCount || 0;
+        console.log(" total user userCount -> ", this.userCount);
+      },
+      error: (error) => {
+        console.error("error -> ", error);
+      }
+    });
   }
 
   // ✅ MAIN API CALL
@@ -49,6 +64,10 @@ export class CampaignListComponent implements OnInit {
       skip: (this.page - 1) * this.limit,
       limit: this.limit
     };
+    
+    if(this.companyUserId){
+      payload['companyUserId'] = this.companyUserId
+    }
 
     console.log('Payload:', payload);
 
