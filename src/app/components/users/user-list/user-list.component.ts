@@ -3,10 +3,11 @@ import { UserService } from 'src/app/services/user.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NgbPagination, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPagination, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 // import { IModal, ModalType, Size } from 'src/app/shared/model/model/model.component';
 import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-user-list',
@@ -28,9 +29,12 @@ export class UserListComponent implements OnInit {
   status: string = '';
   limit: number = 10;
   selectedRecord: any;
+  selectedId: any;
 
   constructor(private userService: UserService, 
-    private toastr : ToastrService
+    private toastr : ToastrService,
+    private modalService: NgbModal
+
   ) {}
 
   ngOnInit(): void {
@@ -130,5 +134,23 @@ export class UserListComponent implements OnInit {
         console.error("error -> ", error);
       }
     });
+  }
+
+  openDeleteModal(content: any, id?: any): void {
+    this.selectedId = id;
+    this.modalService.open(content, {
+      centered: true,
+      backdrop: 'static',
+      size: 'md'
+    });
+  }
+
+  confirmDelete(modal: any): void {
+    console.log('DELETE ID => ', this.selectedId);
+    // if(this.selectedId){
+      this.userService.deleteUser(this.selectedId);
+    // }
+    // CALL DELETE API HERE
+    modal.close();
   }
 }

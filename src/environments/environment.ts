@@ -8,7 +8,7 @@
 // export const environment = {
 //     production: false,
 //     scheme : 'http://',
-//     apiUrl: '3.6.88.86:3000',
+//     apiUrl: '3.6.88.86:3000',// api.usleadwave.com
 //     filename: 'offers.csv',
 //     statsFileName:'stats.csv'
 // };

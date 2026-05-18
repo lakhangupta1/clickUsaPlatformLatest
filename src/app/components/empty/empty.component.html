@@ -1,0 +1,160 @@
+<!-- empty.component.html -->
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <!-- <div class="logo">
+    UsLeadWave
+  </div> -->
+    <div class="logo-section">
+        <img
+        src="../../../assets/images/usLeadLogo-removebg.svg"
+        alt="UsLeadWave Logo"
+        class="logo-img"
+        >
+    </div>
+    <div class="nav-actions">
+    <a routerLink="/login" class="login-btn">
+      Login
+    </a>
+
+    <a routerLink="/signup" class="signup-btn">
+      Sign Up
+    </a>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero-section">
+
+  <div class="hero-content">
+
+    <h1>
+      Powerful Affiliate Tracking Platform
+    </h1>
+
+    <p>
+      Track clicks, conversions, offers and campaign performance
+      with real-time analytics and smart reporting tools.
+    </p>
+
+    <div class="hero-buttons">
+
+      <a routerLink="/signup" class="primary-btn">
+        Get Started
+      </a>
+
+      <a routerLink="/login" class="secondary-btn">
+        Login
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+
+  <h2>About Our Company</h2>
+
+  <p>
+    UsLeadWave helps advertisers and publishers manage campaigns,
+    optimize traffic and track conversions with advanced analytics.
+    Our platform is built for performance, scalability and accuracy.
+  </p>
+
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+
+  <h2>Our Features</h2>
+
+  <div class="features-grid">
+
+    <div class="feature-card" *ngFor="let feature of features">
+
+      <h3>{{ feature.title }}</h3>
+
+      <p>
+        {{ feature.description }}
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+
+  <div class="stat-card">
+    <h2>10M+</h2>
+    <p>Clicks Tracked</p>
+  </div>
+
+  <div class="stat-card">
+    <h2>500K+</h2>
+    <p>Conversions</p>
+  </div>
+
+  <div class="stat-card">
+    <h2>1200+</h2>
+    <p>Active Campaigns</p>
+  </div>
+
+  <div class="stat-card">
+    <h2>99.9%</h2>
+    <p>Server Uptime</p>
+  </div>
+
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+
+  <h2>What Our Clients Say</h2>
+
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card" *ngFor="let item of testimonials">
+
+      <p class="message">
+        "{{ item.message }}"
+      </p>
+
+      <h4>{{ item.name }}</h4>
+
+      <span>{{ item.company }}</span>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CALL TO ACTION -->
+<section class="cta-section">
+
+  <h2>Start Growing Your Campaigns Today</h2>
+
+  <p>
+    Join our platform and manage your affiliate business efficiently.
+  </p>
+
+  <a routerLink="/signup" class="primary-btn">
+    Create Free Account
+  </a>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+  <div>
+    © 2026 UsLeadWave. All Rights Reserved.
+  </div>
+
+</footer>

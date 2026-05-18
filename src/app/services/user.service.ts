@@ -27,4 +27,8 @@ export class UserService {
   updateUser( id :any, userData : any ){
     return this.http.post<any>(this.domain + '/api/update/user/byadmin/' + id, userData );
   }
+
+  deleteUser(id: any) { 
+    return this.http.delete( `${this.domain}/api/delete/user?id=${id}`);
+  }
 }
