@@ -1,10 +1,16 @@
 import { Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
-import { AuthenticationGuard } from './components/authentication/authentication.guard';
+// import { AuthenticationGuard } from './components/authentication/authentication.guard';
+import { EmptyComponent } from './components/empty/empty.component';
 
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: EmptyComponent,
+    // pathMatch: 'full'
+  },
   {
     path: '',
     component: FullComponent,
@@ -13,7 +19,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
       {
-        path: 'dashboard',
+        path: '',
         loadChildren: () =>
           import('./components/dashboards/dashboard.routes').then(
             (m) => m.DashboardRoutes
@@ -76,12 +82,12 @@ export const routes: Routes = [
             (m) => m.AuthenticationRoutes
           ),
       },
-      {
-        path: '',
-        loadChildren: () => import('./components/external/external.routes').then(
-          (m) => m.ExternalRoutes
-        )
-      },
+      // {
+      //   path: '',
+      //   loadChildren: () => import('./components/external/external.routes').then(
+      //     (m) => m.ExternalRoutes
+      //   )
+      // },
     ],
   },
   {

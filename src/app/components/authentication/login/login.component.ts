@@ -35,6 +35,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.companylogo();
+    const token = localStorage.getItem('token');
+    const currentUser =  localStorage.getItem('currentUser');
+    if (token || currentUser) {
+      // REDIRECT TO DASHBOARD
+      this.router.navigate(['/dashboard']);
+    }
+    
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', [
         Validators.required,
@@ -100,20 +107,10 @@ export class LoginComponent implements OnInit {
 
         if ((data as any )?.err) {
           this.toastrService.error('Invalid email or password!', 'Error!');
-          // return;
+          return;
         }
-
-        //  Save token (IMPORTANT)
-        // const token = data?.payload?.[0]?.token;
-        // const refreshToken = data?.payload?.[0]?.refreshtoken;
-
-        // if (token) {
-        //   localStorage.setItem('token', token);
-        //   localStorage.setItem('refreshToken', refreshToken);
-        //   localStorage.setItem("user", JSON.stringify([{ refreshToken, token }]))
-        // }
-        let preVisitedPath =  "/dashboard"; // sessionStorage.getItem("preVisitedPath") ||
-        this.router.navigateByUrl(preVisitedPath);
+        const preVisitedPath = sessionStorage.getItem('preVisitedPath') || '/dashboard';
+        window.location.href = preVisitedPath;
       },
       error: () => {
         this.toastrService.error('Invalid email or password!', 'Error!');

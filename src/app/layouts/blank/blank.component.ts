@@ -8,4 +8,11 @@ import { RouterModule } from '@angular/router';
   templateUrl: './blank.component.html',
   styleUrls: [],
 })
-export class BlankComponent {}
+export class BlankComponent {
+  ngOnInit(): void {
+    let lastLoginUrl = (window.location.pathname)
+    if(!(lastLoginUrl ==='/logout')){
+    localStorage.setItem("lastLoginUrl",lastLoginUrl)
+    }
+  }
+}
