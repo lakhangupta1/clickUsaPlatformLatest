@@ -1,0 +1,94 @@
+<div class="chat-widget">
+
+  <!-- Floating toggle button -->
+  <button class="chat-toggle-btn" (click)="toggleChat()" title="Messages">
+    <i class="ti-comment-alt"></i>
+  </button>
+
+  <!-- Chat window -->
+  <div class="chat-window" *ngIf="isOpen">
+
+    <!-- Header -->
+    <div class="chat-header">
+      <span>
+        <i class="ti-comment-alt me-1"></i>
+        <ng-container *ngIf="isAdmin && selectedUser">{{ convDisplayName(selectedUser) }}</ng-container>
+        <ng-container *ngIf="!isAdmin && selectedAdmin">{{ adminDisplayName(selectedAdmin) }}</ng-container>
+        <ng-container *ngIf="(isAdmin && !selectedUser) || (!isAdmin && !selectedAdmin)">Messages</ng-container>
+      </span>
+      <button class="close-btn" (click)="toggleChat()"><i class="ti-close"></i></button>
+    </div>
+
+    <!-- ===== ADMIN VIEW ===== -->
+    <ng-container *ngIf="isAdmin">
+
+      <!-- Conversation list -->
+      <ng-container *ngIf="!selectedUser">
+        <div class="conversation-list">
+          <div *ngFor="let conv of conversations" class="conv-item" (click)="selectUser(conv)">
+            <div class="conv-avatar">{{ convDisplayName(conv).charAt(0).toUpperCase() }}</div>
+            <div class="conv-info">
+              <div class="conv-name">{{ convDisplayName(conv) }}</div>
+              <div class="conv-preview">{{ conv.lastMessage || 'No messages yet' }}</div>
+            </div>
+            <span *ngIf="conv.unreadCount > 0" class="unread-badge">{{ conv.unreadCount }}</span>
+          </div>
+          <div *ngIf="conversations.length === 0" class="empty-state">No conversations yet</div>
+        </div>
+      </ng-container>
+
+      <!-- Admin: message thread -->
+      <ng-container *ngIf="selectedUser">
+        <button class="back-btn" (click)="backToList()"><i class="ti-arrow-left"></i> Back</button>
+        <div class="messages-container" #messagesContainer>
+          <div *ngFor="let msg of messages" class="message"
+               [class.sent]="isMine(msg)" [class.received]="!isMine(msg)">
+            <div class="bubble">{{ msg.message }}</div>
+            <div class="time">{{ msg.createdAt | date:'shortTime' }}</div>
+          </div>
+          <div *ngIf="messages.length === 0" class="empty-state">No messages yet</div>
+        </div>
+        <div class="input-area">
+          <input [(ngModel)]="newMessage" (keydown)="onKeyDown($event)"
+                 placeholder="Type a reply..." class="msg-input" />
+          <button class="send-btn" (click)="sendMessage()"><i class="ti-location-arrow"></i></button>
+        </div>
+      </ng-container>
+
+    </ng-container>
+
+    <!-- ===== USER VIEW ===== -->
+    <ng-container *ngIf="!isAdmin">
+
+      <!-- Admin selector tabs (shown when multiple admins) -->
+      <div *ngIf="admins.length > 1" class="admin-tabs">
+        <button *ngFor="let admin of admins" class="admin-tab"
+                [class.active]="selectedAdmin?._id === admin._id"
+                (click)="selectAdmin(admin)">
+          {{ adminDisplayName(admin) }}
+        </button>
+      </div>
+
+      <!-- Message thread -->
+      <div class="messages-container" #messagesContainer>
+        <div *ngFor="let msg of messages" class="message"
+             [class.sent]="isMine(msg)" [class.received]="!isMine(msg)">
+          <div class="bubble">{{ msg.message }}</div>
+          <div class="time">{{ msg.createdAt | date:'shortTime' }}</div>
+        </div>
+        <div *ngIf="messages.length === 0 && admins.length > 0" class="empty-state">
+          Say hello to your admin!
+        </div>
+        <div *ngIf="admins.length === 0" class="empty-state">Loading...</div>
+      </div>
+
+      <div class="input-area" *ngIf="admins.length > 0">
+        <input [(ngModel)]="newMessage" (keydown)="onKeyDown($event)"
+               placeholder="Message admin..." class="msg-input" />
+        <button class="send-btn" (click)="sendMessage()"><i class="ti-location-arrow"></i></button>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
