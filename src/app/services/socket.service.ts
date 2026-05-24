@@ -54,6 +54,14 @@ export class SocketService {
     return this.messageSubject.asObservable();
   }
 
+  reconnectWithToken(token: string) {
+    if (!this.socket) return;
+    this.socket.auth = { token };
+    if (!this.socket.connected) {
+      this.socket.connect();
+    }
+  }
+
   get isConnected(): boolean {
     return !!this.socket?.connected;
   }

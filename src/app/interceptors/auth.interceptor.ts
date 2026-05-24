@@ -12,6 +12,7 @@ import { catchError, filter, switchMap, take } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 
 import { AuthenticationService } from '../services/authentication.service';
+import { SocketService } from '../services/socket.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,7 +20,10 @@ export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(
+    private authService: AuthenticationService,
+    private socketService: SocketService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
@@ -74,6 +78,9 @@ export class AuthInterceptor implements HttpInterceptor {
         this.isRefreshing = false;
         const newToken = response?.payload?.[0]?.token;
         this.refreshTokenSubject.next(newToken);
+        if (newToken) {
+          this.socketService.reconnectWithToken(newToken);
+        }
         return next.handle(this.attachToken(req, newToken));
       }),
       catchError((refreshError) => {
