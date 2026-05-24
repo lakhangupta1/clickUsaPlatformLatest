@@ -30,6 +30,7 @@ import { VantadashboardComponent } from "src/app/components/dashboards/vantadash
 import { SmartDashboardComponent } from 'src/app/components/dashboards/smart-dashboard/smart-dashboard.component';
 import { filter } from 'rxjs';
 import { PublisherData } from 'src/app/shared/model/profile.model';
+import { ChatComponent } from 'src/app/components/chat/chat.component';
 
  
 
@@ -60,7 +61,8 @@ import { PublisherData } from 'src/app/shared/model/profile.model';
     VantadashboardComponent,
     SmartDashboardComponent,
     BreadcrumbComponent,
-    NgbPopoverModule
+    NgbPopoverModule,
+    ChatComponent
   ],
   templateUrl: './full.component.html',
 })
