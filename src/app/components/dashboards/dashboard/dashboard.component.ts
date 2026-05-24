@@ -412,7 +412,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
 
                   min: 0,
 
-                  max: Math.ceil(maxProvidedClicks / 100) * 100,
+                  max: Math.ceil(maxClicks / 100) * 100,
 
                   tickAmount: 5
                 }

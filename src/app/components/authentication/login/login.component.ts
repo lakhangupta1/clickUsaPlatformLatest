@@ -15,7 +15,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class LoginComponent implements OnInit {
   showPassword: boolean = false;
   logo: string = 'user1.jpg';
-  isLoginFormSubmitted: boolean = true;
+  isLoginFormSubmitted: boolean = false;
   loginForm!: FormGroup;
   domain: string = '';
 
@@ -47,11 +47,7 @@ export class LoginComponent implements OnInit {
         Validators.required,
         Validators.email,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/)
-      ]),
+      password: new FormControl('', [Validators.required]),
       termsConditions: new FormControl(true, [Validators.requiredTrue])
     })
   }
@@ -87,12 +83,12 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.isLoginFormSubmitted = true;
-
+    console.log(" 1 ")
     if (this.loginForm.invalid) {
       this.toastrService.error('Please fill out the form correctly.', 'Login Failed');
       return;
     }
-
+    console.log(" 2 ")
     const payload = {
       userDetails: {
         email: this.loginForm.value.email,
@@ -100,7 +96,7 @@ export class LoginComponent implements OnInit {
         // user_type: 'publisher'
       }
     };
-
+    console.log(" 3 ")
     this.authenticationService.login(payload.userDetails).subscribe({
       next: (data: any) => {
         console.log("response:", data);
@@ -110,7 +106,7 @@ export class LoginComponent implements OnInit {
           return;
         }
         const preVisitedPath = sessionStorage.getItem('preVisitedPath') || '/dashboard';
-        window.location.href = preVisitedPath;
+        this.router.navigateByUrl(preVisitedPath);
       },
       error: () => {
         this.toastrService.error('Invalid email or password!', 'Error!');

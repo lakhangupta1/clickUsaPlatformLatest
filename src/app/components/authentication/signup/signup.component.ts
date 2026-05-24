@@ -189,9 +189,7 @@ export class SignupComponent implements OnInit {
     this.isVerifying = true;
     this.authenticationService.verifyOtp(payload).subscribe({
       next: (response: any) => {
-        // console.log(" response -> ", response );
         this.isVerifying = false;
-        // console.log("Verify OTP Response:", response);
         // SUCCESS
         if (response && !response.err) {
           this.toasterService.success(response.msg || 'OTP Verified');
@@ -200,20 +198,20 @@ export class SignupComponent implements OnInit {
           //  Save token (IMPORTANT)
           const token = response.payload?.[0]?.token;
           const refreshToken = response?.payload?.[0]?.refreshtoken;
-          // console.log(" token -> ", token );
-          // console.log(" response ", response );
           if (token) {
             localStorage.setItem('currentUser', JSON.stringify(response['payload'][0]));
             localStorage.setItem('token', token);
-            localStorage.setItem('refreshToken', refreshToken);
+            // localStorage.setItem('refreshToken', refreshToken);
           }
           this.permissionsService.loadPermissions(['User']);
           // let preVisitedPath = sessionStorage.getItem("preVisitedPath") || "/dashboard";
-          let preVisitedPath = "/dashboard";
+          let preVisitedPath = "/login";
           this.router.navigateByUrl(preVisitedPath);
         }else {
           // INVALID OTP
           this.toasterService.error(response?.msg || 'Invalid OTP');
+          // let preVisitedPath = "/login";
+          // this.router.navigateByUrl(preVisitedPath);
         }
       },
 
@@ -239,6 +237,8 @@ export class SignupComponent implements OnInit {
         } else {
           this.toasterService.error(backendMsg);
         }
+        let preVisitedPath = "/login";
+        this.router.navigateByUrl(preVisitedPath);
       }
 
     });

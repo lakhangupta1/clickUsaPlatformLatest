@@ -100,11 +100,13 @@
             {{ getError('currency') }}
           </small>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 d-flex align-items-end gap-2">
+          <div class="flex-grow-1">
             <label>Wallet Balance</label>
-            <input type="text" class="form-control" formControlName="wallet_balance">
+            <input type="text" class="form-control"  formControlName="wallet_balance">
+          </div>
+            <input  class="btn btn-success px-4"  type="button"  value="Send Email" (click)="sendEmail(userEditForm.get('wallet_balance').value, userEditForm.get('email').value, userEditForm.get('first_name').value)">
         </div>
-
       </div>
     </div>
 

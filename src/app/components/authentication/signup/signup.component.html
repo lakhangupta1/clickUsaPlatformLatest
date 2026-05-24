@@ -107,7 +107,7 @@
                    formControlName="password"
                    [class.is-invalid]="isInvalid('password')" />
 
-            <!-- ✅ ENABLE VALIDATION -->
+            <!-- ENABLE VALIDATION -->
             <div class="invalid-feedback" *ngIf="isInvalid('password')">
               <div *ngIf="publisherRegisterForm.get('password')?.errors?.['required']">
                 Password required

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OffersService } from 'src/app/services/offers.service';
 import { Globalconstant } from 'src/app/const/global';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-campaigns',
@@ -141,7 +142,8 @@ export class CreateCampaignsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private campaignService: OffersService
+    private campaignService: OffersService,
+    private toaster : ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -578,6 +580,9 @@ export class CreateCampaignsComponent implements OnInit {
       this.campaignService.updateCampaign(this.campaignId, trimmedPayload).subscribe({
         next: (res: any) => {
           console.log("UPDATE SUCCESS:", res);
+          if(res.err){
+            this.toaster.error(res.msg);
+          }
           this.router.navigate(['/offers/campaign-list']);
           // this.router.navigate(['/add-payment']);
         },
