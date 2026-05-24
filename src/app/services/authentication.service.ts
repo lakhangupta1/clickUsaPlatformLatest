@@ -117,7 +117,10 @@ export class AuthenticationService {
         this.details.next(decoded);
         console.log(" decoded login token -> ", decoded );
         const perm = decoded?.['userDetail']?.permissions;
-        this.permissionsService.loadPermissions(perm);
+        if (Array.isArray(perm) && perm.length) {
+          this.permissionsService.loadPermissions(perm);
+        }else{
+        }
       }
       return user;
     }));
@@ -190,7 +193,7 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem('AccountToken');
     localStorage.removeItem('currentUser');
-    // clear permissions on logout
+    localStorage.removeItem('token');
     this.router.navigate(['/login']);
     try { this.permissionsService.flushPermissions(); } catch (e) {}
     this.currentUserSubject.next(null);

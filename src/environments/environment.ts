@@ -3,12 +3,20 @@
 // The list of file replacements can be found in `angular.json`.
 // live data
 
+// to create build
+// node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod
+
+// scp -i ~/Downloads/yskill.pem ~/clickUsaPlatformLatest/platform-2.1/platform-2.1.zip ubuntu@3.6.88.86:/var/www/
+
+
+// platform-2.1.zip 
+
 
 // local data
 // export const environment = {
 //     production: false,
-//     scheme : 'http://',
-//     apiUrl: '3.6.88.86:3000',// api.usleadwave.com
+//     scheme : 'https://',
+//     apiUrl: 'api.usleadwave.com',// api.usleadwave.com
 //     filename: 'offers.csv',
 //     statsFileName:'stats.csv'
 // };

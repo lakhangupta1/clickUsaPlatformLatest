@@ -198,4 +198,19 @@ export class UserEditComponent implements OnInit {
 
     return 'Invalid value';
   }
+
+  sendEmail( wallet_balance : any, email : any, first_name : any ){
+    this.userService.sendEmailToDeposite({ email, wallet_balance, first_name }).subscribe({
+      next : ( res : any ) => {
+        if(!res.err){
+          console.log(" res sendEmail -> ", res );
+          this.toaster.success(" Email Sent successfully ");
+        }
+      },
+      error : ( error : any ) => {
+        console.log(" error sendEmail -> ", error );
+        this.toaster.error(" Email Not Send ");
+      }
+    })
+  }
 }

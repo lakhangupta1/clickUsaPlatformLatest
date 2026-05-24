@@ -45,7 +45,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import { NgxPermissionsModule, NgxPermissionsService,NgxPermissionsStore,USE_PERMISSIONS_STORE } from 'ngx-permissions';
 import { AuthenticationService } from './services/authentication.service';
-import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { SpinnerInterceptor } from './shared/interceptors/spinner.interceptor';
 
@@ -60,7 +59,6 @@ export function momentAdapterFactory() {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide : HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
     { provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
     { provide :HTTP_INTERCEPTORS,useClass:SpinnerInterceptor,multi:true},
     { provide: USE_PERMISSIONS_STORE, useValue: true },

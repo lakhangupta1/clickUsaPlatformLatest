@@ -10,35 +10,23 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
     const permissionsService = inject(NgxPermissionsService);
 
     const currentUser = authService.currentUserValue;
-    console.log("currentUser-- in authGuard -> ", currentUser );
-    const domain = authService.getDomain();
-    // console.log("domain---",domain)
-    const token = localStorage.getItem('AccountToken');
-    const permissions = authService.getUserDetails;
-    console.log(" permissions in authGuard -> ", permissions );
-    if (permissions) {
-        if (permissions?.userDetail?.permissions?.length) {
-            permissionsService.loadPermissions(permissions?.userDetail?.permissions);
-        } else {
-            router.navigate(['/login']);
-            return false;
-        }
-    }
-    console.log(" authService -> ", authService );
-    console.log(" currentUser -> ", currentUser );
-    if (currentUser && !authService.getUserDetails['loginType']) {
-        return true;
+    const token = localStorage.getItem('token') || localStorage.getItem('AccountToken');
+
+    // Not logged in — redirect to login
+    if (!currentUser || !token) {
+        router.navigate(['/login']);
+        return false;
     }
 
-    if (currentUser && authService.getUserDetails['loginType'] && !token) {
-        return true;
+    // Load permissions from JWT (backend may place them inside userDetail or at top level)
+    const decoded = authService.getUserDetails;
+    const perms: string[] =
+        decoded?.userDetail?.permissions ||
+        (Array.isArray(decoded?.permissions) ? decoded.permissions : []);
+    if (perms.length) {
+        permissionsService.loadPermissions(perms);
     }
-    const lastLoginUrl = localStorage.getItem('lastLoginUrl');
-    if (lastLoginUrl && lastLoginUrl !== '/logout') {
-        router.navigate([lastLoginUrl]);
-    } else {
-        router.navigate(['/login']);
-    }
-    return false;
+
+    return true;
 };
 

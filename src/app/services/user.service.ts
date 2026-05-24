@@ -27,8 +27,17 @@ export class UserService {
   updateUser( id :any, userData : any ){
     return this.http.post<any>(this.domain + '/api/update/user/byadmin/' + id, userData );
   }
+  
+  sendEmailToDeposite(payload : any){
+    return this.http.post<any>(this.domain + '/api/send/email/toDeposite', payload);
+  }
 
-  deleteUser(id: any) { 
-    return this.http.delete( `${this.domain}/api/delete/user?id=${id}`);
+  // deleteUser(id: any) { 
+  //   console.log(" deleteUser service -> ", id );
+  //   return this.http.delete( `${this.domain}/api/delete/user/?id=${id}`);
+  // }
+  deleteUser(id: string | number) {
+    console.log('deleteUser service -> ', id);
+    return this.http.post<any>(this.domain + '/api/delete/user', { id });
   }
 }
