@@ -211,7 +211,20 @@ export class AuthenticationService {
     console.log(" otpData -> " , otpData );
     return this.http.post(this.getSubDomain() + '/user/verifyOtp', otpData);
   }
+  // Request password reset (send OTP to email)
+  forgetPassword(userDetails: any) {
+    return this.http.post(this.getSubDomain() + '/user/forgetpassword', userDetails);
+  }
+
+  // Set new password after OTP verification
+  setPassword(data: any) {
+    return this.http.post(this.getSubDomain() + '/user/resetpassword', data);
+  }
   
+  verifyOtpToForgotPassword(data : any ){
+    console.log(" verifyOtpToForgotPassword otpData -> " , data );
+    return this.http.post(this.getSubDomain() + '/user/verifyOtpToForgotPassword', data);
+  }
   // Adv_Register(userDetails: FormData, domain: string) {
   //   return this.http.post(this.getSubDomain() + '/registerAdvertiser/add/' + domain, userDetails);
   // }
