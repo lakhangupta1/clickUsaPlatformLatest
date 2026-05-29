@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-empty',
@@ -12,7 +13,8 @@ import { Router, RouterModule } from '@angular/router';
 export class EmptyComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
@@ -25,6 +27,9 @@ export class EmptyComponent implements OnInit {
     //   // REDIRECT TO DASHBOARD
     //   this.router.navigate(['/dashboard']);
     // }
+    this.authService.logout();
+    this.router.navigate(['/']);
+    // localStorage.clear();
 
   }
 

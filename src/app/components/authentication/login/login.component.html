@@ -60,8 +60,7 @@
                                         formControlName="termsConditions">
                                     <label class="form-check-label fs-3 ms-2" for="customCheck1">Accept <a
                                             href="javascript:void(0)">Terms & Conditions</a></label>
-                                    <!-- <a  href="javascript:void(0)" id="to-recover"
-                                        class="text-dark fs-3 ms-auto"><i class="fa fa-lock me-2"></i> Forgot pwd?</a> -->
+                                    <a href="javascript:void(0)" class="text-info fs-3 ms-auto" (click)="openForgotModal()" style="text-decoration:underline"><i class="fa fa-lock me-2"></i> Forgot pwd?</a>
                                 </div>
                             </div>
                         </div>
@@ -83,30 +82,48 @@
                 </div>
             </div>
         </div>
-        <div id="recoverform">
-            <div class="logo">
-                <span class="db"><img src="assets/images/logo-icon.png" alt="logo" /></span>
-                <h5 class="font-medium mb-4">Recover Password</h5>
-                <span>Enter your Email and instructions will be sent to you!</span>
-            </div>
-            <div class="row mt-3">
-                <!-- Form -->
-                <form class="col-12">
-                    <!-- email -->
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <input class="form-control form-control-lg" type="email" required="" placeholder="Username">
-                        </div>
+        <!-- Forgot password modal template -->
+        <ng-template #forgotModal let-modal>
+            <div class="modal-content p-3">
+                <h5 class="text-center mb-3">Reset Password</h5>
+
+                <div *ngIf="step === 1">
+                    <p>Enter your email and we'll send an OTP.</p>
+                    <input type="email" class="form-control mb-2" [(ngModel)]="forgotEmail" placeholder="Email">
+                </div>
+
+                <div *ngIf="step === 2">
+                    <p class="text-center">Enter OTP sent to <b>{{ userEmail }}</b></p>
+                    <input type="text" class="form-control text-center mb-2" maxlength="6" [(ngModel)]="otp" placeholder="Enter OTP" style="font-size:18px; letter-spacing:5px;" />
+                </div>
+
+                <div *ngIf="step === 3">
+                    <p>Set a new password for <b>{{ userEmail }}</b></p>
+                    <div class="input-group mb-2">
+                        <input [type]="showNewPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="newPassword" placeholder="New password">
+                        <span class="input-group-text" style="cursor:pointer" (click)="showNewPassword = !showNewPassword">
+                            <i class="{{ showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye' }}"></i>
+                        </span>
                     </div>
-                    <!-- pwd -->
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <button class="btn d-block w-100 btn-lg btn-danger" type="submit"
-                                name="action">Reset</button>
-                        </div>
+
+                    <div class="input-group mb-2">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="confirmPassword" placeholder="Confirm password">
+                        <span class="input-group-text" style="cursor:pointer" (click)="showConfirmPassword = !showConfirmPassword">
+                            <i class="{{ showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye' }}"></i>
+                        </span>
                     </div>
-                </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+
+                    <button *ngIf="step === 1" class="btn btn-primary" [disabled]="isSending" (click)="sendResetEmail()">{{ isSending ? 'Sending...' : 'Send OTP' }}</button>
+
+                    <button *ngIf="step === 2" class="btn btn-success" [disabled]="isVerifying || otp.length !== 6" (click)="verifyOtpInModal(modal)">{{ isVerifying ? 'Verifying...' : 'Verify OTP' }}</button>
+
+                    <button *ngIf="step === 3" class="btn btn-success" [disabled]="isResetting" (click)="resetPassword(modal)">{{ isResetting ? 'Updating...' : 'Update Password' }}</button>
+                </div>
             </div>
-        </div>
+        </ng-template>
     </div>
 </div>
